@@ -1,7 +1,7 @@
 #include "C:\raylib\raylib\src\raylib.h"
 
 typedef struct{
-
+ 
     int vida;
     int defesa;
     int ataque;
@@ -10,7 +10,10 @@ typedef struct{
     Vector2 pos;
     Rectangle hitbox;
     Texture2D spriteIbama[4][6];
+    Texture2D spriteAtual;
+    
+} Capivara;
+    
+void loadCapivara(Capivara *ibama){};
 
-} Ibama;
-
-void LoadIbama(Ibama *ibama){};
+void mudaPos(Capivara *ibama){};

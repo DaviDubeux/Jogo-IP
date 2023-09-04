@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "C:\raylib\raylib\src\raylib.h"
+#include "capivara.h"
 
 
 int main(){
 
-    SetConfigFlags(FLAG_VSYNC_HINT);
+    Capivara capivara;
+    loadCapivara(&capivara);
+
+    SetConfigFlags(FLAG_VSYNC_HINT); 
     InitWindow(0, 0, "TNG - current");
     if (!IsWindowFullscreen()) ToggleFullscreen();
     
@@ -15,15 +19,16 @@ int main(){
     const float W2 = screenWidth / 2.0f;
     const float H2 = screenHeight / 2.0f;
     
-    Texture icon_dd_final = LoadTexture("assets/icon_dd_final.png");
     InitAudioDevice();
     SetMasterVolume(0.2f);
     int playing = 0;
     
     printf("%f, %f\n", W2, H2);
 
-    Vector2 player = {.x = 10.0f, .y = 10.0f};
-    const float pspeed = 1000.0f;
+    capivara.pos.x = -16.0f;
+    capivara.pos.y = -16.0f;
+
+    const float pspeed = 200.0f;
     Camera2D camera = {.offset = {screenWidth / 2.0f, screenHeight / 2.0f}, .target = {0}, .rotation = 0, .zoom = 0.5};
     
     SetTargetFPS(60);
@@ -36,59 +41,36 @@ int main(){
         double delta = GetTime() - time;
         time = GetTime();
 
-        if (IsKeyDown(KEY_W)) { player.y -= pspeed * delta; }
+        if (IsKeyDown(KEY_W)) { capivara.pos.y -= pspeed * delta; }
+        if (IsKeyDown(KEY_S)) { capivara.pos.y += pspeed * delta; }
+        if (IsKeyDown(KEY_D)) { capivara.pos.x += pspeed * delta; }
+        if (IsKeyDown(KEY_A)) { capivara.pos.x -= pspeed * delta; }
+        if (capivara.pos.x > 100.0f){ mudaPos(&capivara); }
 
-        if (IsKeyDown(KEY_S)) { player.y += pspeed * delta; }
-
-        if (IsKeyDown(KEY_D)) { player.x += pspeed * delta; }
-
-        if (IsKeyDown(KEY_A)) { player.x -= pspeed * delta; }
-
-        camera.target.x = player.x;
-        camera.target.y = player.y;
+        //camera.target.x = capivara.pos.x + .0f;
+        //camera.target.y = capivara.pos.y + 10.0f;
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
 
-        sprintf(buf, "%02.02f, cam: (%02.02f, %02.0f2), p (%02.02f, %02.02f)",
-                0.0f, camera.target.x, camera.target.y, player.x, player.y);
-        if(playing) DrawText("Yes baby", 10, 50, 15, RED);
-        DrawText(buf, 10, 10, 20, DARKGRAY);
+        sprintf(buf, "%02.02f, cam: (%02.02f, %02.0f2), p (%02.02f, %02.02f)", 0.0f, camera.target.x, camera.target.y, capivara.pos.x, capivara.pos.y);
+        DrawText(buf, 10, 10, 20, WHITE);
 
         BeginMode2D(camera);
-
-
         DrawCircle(0, 0, 10, BLUE);
-        DrawRectangle(player.x, player.y, 40, 40, RED);
 
-        DrawText(
-            "Este círculo azul é o centro do mundo.\nUse WASD para se "
-            "movimentar...",
-            10, 10, 20, DARKGRAY);
+        DrawTexture(capivara.spriteAtual, capivara.pos.x, capivara.pos.y, WHITE);
 
-        DrawText("Este mundo é a sua tela, o código é a sua tinta.", 700, 10, 20, DARKGRAY);
-        DrawText("Você pode usar imagens.", 1400, 10, 20, DARKGRAY);
-
-
-        DrawTexture(icon_dd_final, player.x, player.y, WHITE);
-        DrawText("Animações???", 2100, 10, 20, DARKGRAY);
-
-        if(!playing && player.x > 1800) {
+        if(!playing && capivara.pos.x > 1800) {
             playing = 1;
         }
-        DrawText("Música?", 2700, 10, 20, DARKGRAY);
 
-
-        DrawText("Projeto de IP OwO", 3200, 10, 40, BLACK);
-
-        DrawText("Estamos ansiosos para ver\no que vocês vão criar.", 3200, 70, 30, BLUE);
-
-
-        EndMode2D();
+ 
+       EndMode2D();
         EndDrawing();
     }
 
-    UnloadTexture(icon_dd_final);
+    UnloadTexture(capivara.spriteAtual);
 
     CloseAudioDevice();
     CloseWindow();
