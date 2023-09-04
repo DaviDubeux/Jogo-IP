@@ -1,0 +1,16 @@
+#include "C:\raylib\raylib\src\raylib.h"
+
+typedef struct{
+
+    int vida;
+    int defesa;
+    int ataque;
+    int upgrades; // 0 - nada; 1 - cágado; 2 - aranha; 3 - galinha;
+    int direcao; // 0 - L;   1 - NE;   2 - N;   3 - NO;   4 - O;   5 - SO;   6 - S;   7 - SE;
+    Vector2 pos;
+    Rectangle hitbox;
+    Texture2D spriteIbama[4][6];
+
+} Ibama;
+
+void LoadIbama(Ibama *ibama){};
