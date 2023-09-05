@@ -7,14 +7,8 @@ loadCapivara(Capivara *capivara){
     capivara->ataque = 20;
     capivara->upgrades = 0;
     capivara->direcao = 6;
-    capivara->pos.x = -16.0f;
-    capivara->pos.y = -16.0f;
+    capivara->pos.x = 624;
+    capivara->pos.y = 344;
     capivara->hitbox = (Rectangle) {capivara->pos.x, capivara->pos.y, 32, 32};
-    capivara->spriteAtual = LoadTexture("./assets/seta.png");
     
-}
-
-mudaPos(Capivara *capivara){
-    capivara->pos.x = 400;
-    capivara->pos.y = 400;
 }

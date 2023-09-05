@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../jogoLuan"
+		},
+		{
+			"path": "../exemplo-raylib"
+		},
+		{
+			"path": "../../../../../../../raylib/raylib/src"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"stdio.h": "c",
+			"raylib.h": "c"
+		}
+	}
+}
