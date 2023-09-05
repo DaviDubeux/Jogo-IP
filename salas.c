@@ -1,14 +1,17 @@
+#include "C:\raylib\raylib\src\raylib.h"
 #include "salas.h"
 
-loadSalas(Sala *sala[]){
-    (*sala[0])->height = 10; // em quadrados
-    (*sala[0])->width = 12; // em quadrados
-    (*sala[0])->qtdMoveis = 0;
-    (*sala[0])->movel = NULL;
-    (*sala[0])->qtdSaidas = 0;
-    (*sala[0])->saida = NULL;
-    (*sala[0])->frame = (Vector2){(WIDTH/2) - ((*sala[0])->width)*square/2, (HEIGHT/2) - ((*sala[0])->height)*square/2};
+void loadSala1(Sala *sala, const int screenW, const int screenH){
+    sala->width = 12.0f; // em quadrados
+    sala->height = 10.0f; // em quadrados
+    sala->qtdMoveis = 0;
+    sala->movel = NULL;
+    sala->qtdSaidas = 0;
+    sala->saida = NULL;
+    sala->pos = (Vector2){(screenW/2.0f) - ((sala->width)*square/2.0f),
+                            (screenH/2.0f) - ((sala->height)*square/2.0f)};
 
-    (*sala[0])->hitbox = (Rectangle){(WIDTH/2) - ((*sala[0])->width - 2)*square/2, (HEIGHT/2) - ((*sala[0])->height - 2)*square/2,
-                                  (WIDTH/2) + ((*sala[0])->width - 2)*square/2, (HEIGHT/2) + ((*sala[0])->height - 2)*square/2};
+    sala->hitbox = (Rectangle){(screenW/2.0f) - ((sala->width - 4.0f)*square/2.0f),
+                               (screenH/2.0f) - ((sala->height - 4.0f)*square/2.0f),
+                               12.0f*square, 10.0f*square};
 }

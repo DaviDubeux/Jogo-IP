@@ -5,21 +5,24 @@
 #include "salas.h"
 #include "colisao.h"
 
-#define WIDTH 1280
-#define HEIGHT 720
-
 
 int main(){
 
-    InitWindow(WIDTH, HEIGHT, "As aventuras de Thalya");
+    InitWindow(0, 0, "As aventuras de Thalya");
+    if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
+    const float screenWidth = (const float) GetScreenWidth();
+    const float screenHeight = (const float) GetScreenHeight();
     Capivara capivara;
-    Sala sala[1];
+    Sala sala1;
 
     // LOADS
-    loadCapivara(&capivara);
-    loadSalas(sala);
+    loadCapivara(&capivara, screenWidth, screenHeight);
+    loadSala1(&sala1, screenWidth, screenHeight);
+
+
+    printf("%f, %f", capivara.pos.x, capivara.pos.y);
 
     // LOAD TEXTURES
     capivara.spriteAtual = LoadTexture("./assets/capivara.png");
@@ -30,7 +33,7 @@ int main(){
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawRectangleV(sala[0].frame, (Vector2){12*square, 10*square}, RED);
+        DrawRectangleV(sala1.pos, (Vector2){sala1.pos.x + 12*square, sala1.pos.y + 10*square}, RED);
         DrawTextureV(capivara.spriteAtual, capivara.pos, RAYWHITE);
 
         EndDrawing();

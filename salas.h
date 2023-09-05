@@ -1,7 +1,7 @@
+#ifndef SALA
+#define SALA
 #include "C:\raylib\raylib\src\raylib.h"
 
-#define WIDTH 1280
-#define HEIGHT 720
 #define square 32
 
 typedef struct{
@@ -13,15 +13,22 @@ typedef struct{
 
 typedef struct{
 
-    int height, width;
+    float width, height;
     int qtdMoveis;
     Movel *movel;
     int qtdSaidas;
     Rectangle *saida;
     Rectangle hitbox;
-    Vector2 frame;
+    Vector2 pos;
     Texture2D textura;
 
 }Sala;
 
-void loadSalas(Sala *sala[]){}
+void loadSala1(Sala *sala, const float screenW, const float screenH){};
+void loadSala2(Sala *sala, const float screenW, const float screenH){};
+void loadSala3(Sala *sala, const float screenW, const float screenH){};
+void loadSala4(Sala *sala, const float screenW, const float screenH){};
+void loadSala5(Sala *sala, const float screenW, const float screenH){};
+void loadSala6(Sala *sala, const float screenW, const float screenH){};
+
+#endif

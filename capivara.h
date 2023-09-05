@@ -1,3 +1,5 @@
+#ifndef CAPIVARA
+#define CAPIVARA
 #include "C:\raylib\raylib\src\raylib.h"
 
 typedef struct{
@@ -14,5 +16,6 @@ typedef struct{
     
 } Capivara;
     
-void loadCapivara(Capivara *capivara){};
+void loadCapivara(Capivara *capivara, const float screenW, const float screenH){};
 
+#endif
