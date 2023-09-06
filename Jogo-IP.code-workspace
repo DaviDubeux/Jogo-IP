@@ -16,7 +16,8 @@
 	"settings": {
 		"files.associations": {
 			"stdio.h": "c",
-			"raylib.h": "c"
+			"raylib.h": "c",
+			"*.m": "c"
 		}
 	}
 }

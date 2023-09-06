@@ -4,13 +4,6 @@
 #define square 96.0f
 
 typedef struct{
-
-    Rectangle hitbox;
-    Texture2D textura;
-
-}Obstaculo;
-
-typedef struct{
     Rectangle hitbox;
     bool aberta;
 }Portas;
@@ -23,11 +16,11 @@ typedef struct{
     Vector2 posImagem;
     Rectangle paredes[8];
     Portas portas[4]; // 0 - cima; 1 - esquerda; 2 - direita; 3 - baixo
-    Rectangle saidas[4];
+    Rectangle saidas[4]; // 0 - cima; 1 - esquerda; 2 - direita; 3 - baixo
 
     // específicos da sala
-    int qtdMoveis;
-    Obstaculo *obstaculo;
+    int qtdObstaculos;
+    Rectangle *obstaculo;
     Texture2D textura;
 
 }Sala;
@@ -56,21 +49,60 @@ void loadSalas(Sala *sala, const int screenW, const int screenH){ // dá load em
     sala->saidas[2] = (Rectangle){sala->posImagem.x + 12*square, sala->posImagem.y + 4*square, square, 2*square};
     sala->saidas[3] = (Rectangle){sala->posImagem.x + 5*square, sala->posImagem.y + 10*square, 2*square, square};
 }
+
+// jardim
 void loadSala1(Sala *sala1, const int screenW, const int screenH){ // específicos da sala 1
 
-    sala1->qtdMoveis = 0;
+    sala1->qtdObstaculos = 0;
     sala1->obstaculo = NULL;
-    sala1->portas[0].aberta = 1;
-    sala1->portas[1].aberta = 0;
-    sala1->portas[2].aberta = 0;
-    sala1->portas[3].aberta = 0;
+    sala1->portas[0].aberta = 1; sala1->portas[1].aberta = 0;
+    sala1->portas[2].aberta = 0; sala1->portas[3].aberta = 0;
     // sala1->textura = LoadTexture();
-
 }
-void loadSala2(Sala *sala2, const float screenW, const float screenH);
-void loadSala3(Sala *sala3, const float screenW, const float screenH);
-void loadSala4(Sala *sala4, const float screenW, const float screenH);
-void loadSala5(Sala *sala5, const float screenW, const float screenH);
-void loadSala6(Sala *sala6, const float screenW, const float screenH);
+
+// hub
+void loadSala2(Sala *sala2, const float screenW, const float screenH){
+    sala2->qtdObstaculos = 0;
+    sala2->obstaculo = NULL;
+    sala2->portas[0].aberta = 1; sala2->portas[1].aberta = 1;
+    sala2->portas[2].aberta = 1; sala2->portas[3].aberta = 1;
+    // sala2->textura = LoadTexture();
+}
+
+// cagado
+void loadSala3(Sala *sala3, const float screenW, const float screenH){
+    sala3->qtdObstaculos = 0;
+    sala3->obstaculo = NULL;
+    sala3->portas[0].aberta = 0; sala3->portas[1].aberta = 0;
+    sala3->portas[2].aberta = 1; sala3->portas[3].aberta = 0;
+    // sala3->textura = LoadTexture();
+}
+
+// aranhas
+void loadSala4(Sala *sala4, const float screenW, const float screenH){
+    sala4->qtdObstaculos = 0;
+    sala4->obstaculo = NULL;
+    sala4->portas[0].aberta = 0; sala4->portas[1].aberta = 1;
+    sala4->portas[2].aberta = 0; sala4->portas[3].aberta = 0;
+    // sala4->textura = LoadTexture();
+}
+
+// galinha
+void loadSala5(Sala *sala5, const float screenW, const float screenH){
+    sala5->qtdObstaculos = 0;
+    sala5->obstaculo = NULL;
+    sala5->portas[0].aberta = 1; sala5->portas[1].aberta = 0;
+    sala5->portas[2].aberta = 0; sala5->portas[3].aberta = 1;
+    // sala5->textura = LoadTexture();
+}
+
+// peixe
+void loadSala6(Sala *sala6, const float screenW, const float screenH){
+    sala6->qtdObstaculos = 0;
+    sala6->obstaculo = NULL;
+    sala6->portas[0].aberta = 0; sala6->portas[1].aberta = 0;
+    sala6->portas[2].aberta = 0; sala6->portas[3].aberta = 1;
+    // sala6->textura = LoadTexture();
+}
 
 #endif
