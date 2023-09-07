@@ -33,7 +33,7 @@ int main(){
 
     // ANIMATION
         int desenho_capivara = square;
-        int clique_w = 0, clique_s = 0, clique_a = 0, clique_d = 0;
+        int clique = 0;
     //
     
     while(!WindowShouldClose()){
@@ -49,9 +49,9 @@ int main(){
             capivara.hitbox.y = capivara.pos.y;
             
             //costas //mudar a forma como anda a cada clique
-            clique_w++; 
-            DrawTextureRec(capivara.sprite, (Rectangle) {(square*6) + (square * clique_w), 0, square, square}, capivara.pos, WHITE);
-            clique_w = clique_w%2;
+            if((((int)GetTime())%2)==1){ clique = 1; }
+            else { clique = 3; }
+            DrawTextureRec(capivara.sprite, (Rectangle) {(square*6) + (square * clique), 0, square, square}, capivara.pos, WHITE);
             desenho_capivara = (square * 7);
 
         }
@@ -61,9 +61,9 @@ int main(){
             capivara.hitbox.y = capivara.pos.y;
 
             //frente //mudar sprite depois //mudar a forma como anda a cada clique
-            clique_s += 2; 
-            DrawTextureRec(capivara.sprite, (Rectangle) { (square * clique_s), 0, square, square}, capivara.pos, WHITE); 
-            clique_s = clique_s%2;
+            if(((int)GetTime())%2==1){ clique = 1; }
+            else { clique = 3; }
+            DrawTextureRec(capivara.sprite, (Rectangle) { (square * clique), 0, square, square}, capivara.pos, WHITE);
             desenho_capivara = (square * 1);
 
         }
@@ -73,9 +73,9 @@ int main(){
             capivara.hitbox.x = capivara.pos.x;
 
             //direita //mudar a forma como anda a cada clique
-            clique_d++;
-            DrawTextureRec(capivara.sprite, (Rectangle) { (square * clique_d), 0, square, square}, capivara.pos, WHITE);
-            clique_d = clique_d%2;
+            if(((int)GetTime())%2==1){ clique = 1; }
+            else { clique = 3; }
+            DrawTextureRec(capivara.sprite, (Rectangle) { (square * clique), 0, square, square}, capivara.pos, WHITE);
             desenho_capivara = (square * 1);
 
         }
@@ -85,9 +85,9 @@ int main(){
             capivara.hitbox.x = capivara.pos.x;
 
             //esquerda //mudar a forma como anda a cada clique
-            clique_a++;
-            DrawTextureRec(capivara.sprite, (Rectangle) {(square*3) + (square * clique_a), 0, square, square}, capivara.pos, WHITE);
-            clique_a = clique_a%2;
+            if(((int)GetTime())%2==1){ clique = 1; }
+            else { clique = 3; }
+            DrawTextureRec(capivara.sprite, (Rectangle) {(square*3) + (square * clique), 0, square, square}, capivara.pos, WHITE);
             desenho_capivara = (square * 4);
 
         }
