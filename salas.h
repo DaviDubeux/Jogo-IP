@@ -73,7 +73,7 @@ void loadSalas(Sala *sala, const int screenW, const int screenH){ // dá load em
 }
 
 // jardim
-void loadSala1(Sala *sala1, const int screenW, const int screenH){ // específicos da sala 1
+void loadSala1(Sala *sala1, const float screenW, const float screenH){ // específicos da sala 1
 
     sala1->qtdObstaculos = 0;
     sala1->obstaculo = NULL;
@@ -81,7 +81,7 @@ void loadSala1(Sala *sala1, const int screenW, const int screenH){ // específic
     sala1->porta[esquerda].aberta = false; sala1->saida[esquerda].saidaPara = saidaFechada;
     sala1->porta[direita].aberta = false;  sala1->saida[direita].saidaPara = saidaFechada;
     sala1->porta[baixo].aberta = false;    sala1->saida[baixo].saidaPara = saidaFechada;
-    // sala1->textura = LoadTexture();
+    sala1->textura = LoadTexture("./assets/salaJardim.png");
 }
 
 // hub
@@ -92,7 +92,7 @@ void loadSala2(Sala *sala2, const float screenW, const float screenH){
     sala2->porta[esquerda].aberta = true; sala2->saida[esquerda].saidaPara = salaCagado;
     sala2->porta[direita].aberta = true;  sala2->saida[direita].saidaPara = salaAranhas;
     sala2->porta[baixo].aberta = true;    sala2->saida[baixo].saidaPara = salaJardim;
-    // sala2->textura = LoadTexture();
+    sala2->textura = LoadTexture("./assets/salaHub.png");
 }
 
 // cagado
@@ -103,7 +103,7 @@ void loadSala3(Sala *sala3, const float screenW, const float screenH){
     sala3->porta[esquerda].aberta = false; sala3->saida[esquerda].saidaPara = saidaFechada;
     sala3->porta[direita].aberta = true;  sala3->saida[direita].saidaPara = salaHub;
     sala3->porta[baixo].aberta = false;    sala3->saida[baixo].saidaPara = saidaFechada;
-    // sala3->textura = LoadTexture();
+    sala3->textura = LoadTexture("./assets/salaCagado.png");
 }
 
 // aranhas
@@ -114,7 +114,7 @@ void loadSala4(Sala *sala4, const float screenW, const float screenH){
     sala4->porta[esquerda].aberta = true; sala4->saida[esquerda].saidaPara = salaHub;
     sala4->porta[direita].aberta = false;  sala4->saida[direita].saidaPara = saidaFechada;
     sala4->porta[baixo].aberta = false;    sala4->saida[baixo].saidaPara = saidaFechada;
-    // sala4->textura = LoadTexture();
+    sala4->textura = LoadTexture("./assets/salaAranhas.png");
 }
 
 // galinha
@@ -125,7 +125,7 @@ void loadSala5(Sala *sala5, const float screenW, const float screenH){
     sala5->porta[esquerda].aberta = false; sala5->saida[esquerda].saidaPara = saidaFechada;
     sala5->porta[direita].aberta = false;  sala5->saida[direita].saidaPara = saidaFechada;
     sala5->porta[baixo].aberta = true;    sala5->saida[baixo].saidaPara = salaHub;
-    // sala5->textura = LoadTexture();
+    sala5->textura = LoadTexture("./assets/salaGalinha.png");
 }
 
 // peixe
@@ -136,7 +136,7 @@ void loadSala6(Sala *sala6, const float screenW, const float screenH){
     sala6->porta[esquerda].aberta = false; sala6->saida[esquerda].saidaPara = saidaFechada;
     sala6->porta[direita].aberta = false;  sala6->saida[direita].saidaPara = saidaFechada;
     sala6->porta[baixo].aberta = true;    sala6->saida[baixo].saidaPara = salaGalinha;
-    // sala6->textura = LoadTexture();
+    sala6->textura = LoadTexture("./assets/salaPeixe.png");
 }
 
 #endif

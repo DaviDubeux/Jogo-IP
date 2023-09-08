@@ -23,13 +23,25 @@ int main(){
     // LOADS
     loadCapivara(&capivara, screenWidth, screenHeight);
     for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
-    loadSala1(&(sala[0]), screenWidth, screenHeight);
-    loadSala2(&(sala[1]), screenWidth, screenHeight);
-    loadSala3(&(sala[2]), screenWidth, screenHeight);
-    loadSala4(&(sala[3]), screenWidth, screenHeight);
-    loadSala5(&(sala[4]), screenWidth, screenHeight);
-    loadSala6(&(sala[5]), screenWidth, screenHeight);
+    loadSala1(&(sala[salaJardim]), screenWidth, screenHeight);
+    loadSala2(&(sala[salaHub]), screenWidth, screenHeight);
+    loadSala3(&(sala[salaCagado]), screenWidth, screenHeight);
+    loadSala4(&(sala[salaAranhas]), screenWidth, screenHeight);
+    loadSala5(&(sala[salaGalinha]), screenWidth, screenHeight);
+    loadSala6(&(sala[salaPeixe]), screenWidth, screenHeight);
 
+    sala[salaJardim].textura.width = 1152.0f;
+    sala[salaJardim].textura.height = 960.0f;
+    sala[salaHub].textura.width = 1152.0f;
+    sala[salaHub].textura.height = 960.0f;
+    sala[salaCagado].textura.width = 1152.0f;
+    sala[salaCagado].textura.height = 960.0f;
+    sala[salaAranhas].textura.width = 1152.0f;
+    sala[salaAranhas].textura.height = 960.0f;
+    sala[salaGalinha].textura.width = 1152.0f;
+    sala[salaGalinha].textura.height = 960.0f;
+    sala[salaPeixe].textura.width = 1152.0f;
+    sala[salaPeixe].textura.height = 960.0f;
 
     // ANIMATION
         int desenho_capivara = square;
@@ -129,6 +141,7 @@ int main(){
 
         // anima a capivara normalmente desde o último movimento
         int par = ((int)GetTime())%2;
+        DrawTexture(sala[salaAtual].textura, sala[salaAtual].posImagem.x, sala[salaAtual].posImagem.y, RAYWHITE);
         DrawTextureRec(capivara.sprite, (Rectangle) {(desenho_capivara - square) + (square * par), 0, square, square}, capivara.pos, WHITE);
         capivara.prevPos = capivara.pos;
 
@@ -136,6 +149,12 @@ int main(){
     }
 
     UnloadTexture(capivara.sprite);
+    UnloadTexture(sala[salaJardim].textura);
+    UnloadTexture(sala[salaHub].textura);
+    UnloadTexture(sala[salaCagado].textura);
+    UnloadTexture(sala[salaAranhas].textura);
+    UnloadTexture(sala[salaGalinha].textura);
+    UnloadTexture(sala[salaPeixe].textura);
     
     return 0;
 }
