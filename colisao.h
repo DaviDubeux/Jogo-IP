@@ -7,8 +7,8 @@ void fixCollision(Capivara *capivara, Sala *sala){
     bool collision = 0;
     bool collisionX = 0;
     bool collisionY = 0;
-    Rectangle prevX = {capivara->prevPos.x, capivara->pos.y, capivara->hitbox.width, capivara->hitbox.height};
-    Rectangle prevY = {capivara->pos.x, capivara->prevPos.y, capivara->hitbox.width, capivara->hitbox.height};
+    Rectangle prevX = {capivara->prevHitbox.x, capivara->hitbox.y, capivara->hitbox.width, capivara->hitbox.height};
+    Rectangle prevY = {capivara->hitbox.x, capivara->prevHitbox.y, capivara->hitbox.width, capivara->hitbox.height};
 
     // paredes
     for (int i = 0; i < 8; i++){
@@ -18,12 +18,14 @@ void fixCollision(Capivara *capivara, Sala *sala){
         collisionY = CheckCollisionRecs(sala->paredes[i], prevY);
         
         if (collision && !collisionX && collisionY){
-            capivara->pos.x = capivara->prevPos.x;
-            capivara->hitbox.x = capivara->pos.x;
+            capivara->hitbox.x = capivara->prevHitbox.x;
+            capivara->hitbox.x = capivara->hitbox.x;
+            updateFrame(capivara);
         }
         if (collision && collisionX && !collisionY){
-            capivara->pos.y = capivara->prevPos.y;
-            capivara->hitbox.y = capivara->pos.y;
+            capivara->hitbox.y = capivara->prevHitbox.y;
+            capivara->hitbox.y = capivara->hitbox.y;
+            updateFrame(capivara);
         }
         
     }
@@ -38,14 +40,36 @@ void fixCollision(Capivara *capivara, Sala *sala){
             collisionY = CheckCollisionRecs(sala->porta[i].hitbox, prevY);
             
             if (collision && !collisionX && collisionY){
-                capivara->pos.x = capivara->prevPos.x;
-                capivara->hitbox.x = capivara->pos.x;
+                capivara->hitbox.x = capivara->prevHitbox.x;
+                capivara->hitbox.x = capivara->hitbox.x;
+                updateFrame(capivara);
             }
             if (collision && collisionX && !collisionY){
-                capivara->pos.y = capivara->prevPos.y;
-                capivara->hitbox.y = capivara->pos.y;
+                capivara->hitbox.y = capivara->prevHitbox.y;
+                capivara->hitbox.y = capivara->hitbox.y;
+                updateFrame(capivara);
             }
         }
+    }
+
+    // obstaculos
+    for (int i = 0; i < sala->qtdObstaculos; i++){
+
+        collision = CheckCollisionRecs(sala->obstaculo[i], capivara->hitbox);
+        collisionX = CheckCollisionRecs(sala->obstaculo[i], prevX);
+        collisionY = CheckCollisionRecs(sala->obstaculo[i], prevY);
+        
+        if (collision && !collisionX && collisionY){
+            capivara->hitbox.x = capivara->prevHitbox.x;
+            capivara->hitbox.x = capivara->hitbox.x;
+            updateFrame(capivara);
+        }
+        if (collision && collisionX && !collisionY){
+            capivara->hitbox.y = capivara->prevHitbox.y;
+            capivara->hitbox.y = capivara->hitbox.y;
+            updateFrame(capivara);
+        }
+
     }
 }
 
@@ -60,26 +84,30 @@ void updateRoom(Capivara *capivara, Sala *sala){
         if (collision){
             
             if (i == cima){
-                capivara->pos.y += 9*square;
-                capivara->hitbox.y = capivara->pos.y;
+                capivara->hitbox.y += 9*square;
+                capivara->hitbox.y = capivara->hitbox.y;
+                updateFrame(capivara);
 
                 capivara->salaAtual = sala->saida[i].saidaPara;
             }
             if (i == esquerda){
-                capivara->pos.x += 11*square;
-                capivara->hitbox.x = capivara->pos.x;                    
+                capivara->hitbox.x += 11*square;
+                capivara->hitbox.x = capivara->hitbox.x;
+                updateFrame(capivara);
             
                 capivara->salaAtual = sala->saida[i].saidaPara;
             }
             if (i == direita){
-                capivara->pos.x -= 11*square;
-                capivara->hitbox.x = capivara->pos.x;
+                capivara->hitbox.x -= 11*square;
+                capivara->hitbox.x = capivara->hitbox.x;
+                updateFrame(capivara);
 
                 capivara->salaAtual = sala->saida[i].saidaPara;
             }
             if (i == baixo){
-                capivara->pos.y -= 9*square;
-                capivara->hitbox.y = capivara->pos.y;
+                capivara->hitbox.y -= 9*square;
+                capivara->hitbox.y = capivara->hitbox.y;
+                updateFrame(capivara);
 
                 capivara->salaAtual = sala->saida[i].saidaPara;
             }
