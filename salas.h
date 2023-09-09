@@ -43,7 +43,7 @@ typedef struct{
     // gerais de todas as salas
     float width;
     float height;
-    Vector2 posImagem;
+    Vector2 frame;
     Rectangle paredes[8];
     Porta porta[4]; //
     Saida saida[4]; //
@@ -56,29 +56,30 @@ typedef struct{
 }Sala;
 
 void loadSalas(Sala *sala, const float screenW, const float screenH){ // dá load em coisas em comuns das salas
-    sala->width = 12.0f; // em quadrados
-    sala->height = 10.0f; // em quadrados
-    sala->posImagem = (Vector2){(screenW/2.0f) - ((sala->width)*square/2.0f),
-                                (screenH/2.0f) - ((sala->height)*square/2.0f)};
-    sala->paredes[0] = (Rectangle){sala->posImagem.x + square, sala->posImagem.y, 4*square, square};
-    sala->paredes[1] = (Rectangle){sala->posImagem.x + 7*square, sala->posImagem.y, 4*square, square};
-    sala->paredes[2] = (Rectangle){sala->posImagem.x, sala->posImagem.y + square, square, 3*square};
-    sala->paredes[3] = (Rectangle){sala->posImagem.x + 11*square, sala->posImagem.y + square, square, 3*square};
-    sala->paredes[4] = (Rectangle){sala->posImagem.x, sala->posImagem.y + 6*square, square, 3*square};
-    sala->paredes[5] = (Rectangle){sala->posImagem.x + 11*square, sala->posImagem.y + 6*square, square, 3*square};
-    sala->paredes[6] = (Rectangle){sala->posImagem.x + square, sala->posImagem.y + 9*square, 4*square, square};
-    sala->paredes[7] = (Rectangle){sala->posImagem.x + 7*square, sala->posImagem.y + 9*square, 4*square, square};
+    sala->width = 12*square; // em quadrados
+    sala->height = 10*square; // em quadrados
+    sala->frame = (Vector2){(screenW/2.0f) - ((sala->width)/2.0f),
+                            (screenH/2.0f) - ((sala->height)/2.0f)};
+    sala->paredes[0] = (Rectangle){sala->frame.x + square, sala->frame.y, 4*square, square};
+    sala->paredes[1] = (Rectangle){sala->frame.x + 7*square, sala->frame.y, 4*square, square};
+    sala->paredes[2] = (Rectangle){sala->frame.x, sala->frame.y + square, square, 3*square};
+    sala->paredes[3] = (Rectangle){sala->frame.x + 11*square, sala->frame.y + square, square, 3*square};
+    sala->paredes[4] = (Rectangle){sala->frame.x, sala->frame.y + 6*square, square, 3*square};
+    sala->paredes[5] = (Rectangle){sala->frame.x + 11*square, sala->frame.y + 6*square, square, 3*square};
+    sala->paredes[6] = (Rectangle){sala->frame.x + square, sala->frame.y + 9*square, 4*square, square};
+    sala->paredes[7] = (Rectangle){sala->frame.x + 7*square, sala->frame.y + 9*square, 4*square, square};
 
-    sala->porta[cima].hitbox = (Rectangle){sala->posImagem.x + 5*square, sala->posImagem.y, 2*square, square};
-    sala->porta[esquerda].hitbox = (Rectangle){sala->posImagem.x, sala->posImagem.y + 4*square, square, 2*square};
-    sala->porta[direita].hitbox = (Rectangle){sala->posImagem.x + 11*square, sala->posImagem.y + 4*square, square, 2*square};
-    sala->porta[baixo].hitbox = (Rectangle){sala->posImagem.x + 5*square, sala->posImagem.y + 9*square, 2*square, square};
+    sala->porta[cima].hitbox = (Rectangle){sala->frame.x + 5*square, sala->frame.y, 2*square, square};
+    sala->porta[esquerda].hitbox = (Rectangle){sala->frame.x, sala->frame.y + 4*square, square, 2*square};
+    sala->porta[direita].hitbox = (Rectangle){sala->frame.x + 11*square, sala->frame.y + 4*square, square, 2*square};
+    sala->porta[baixo].hitbox = (Rectangle){sala->frame.x + 5*square, sala->frame.y + 9*square, 2*square, square};
 
-    sala->saida[cima].hitbox = (Rectangle){sala->posImagem.x + 5*square, sala->posImagem.y - square, 2*square, square};
-    sala->saida[esquerda].hitbox = (Rectangle){sala->posImagem.x - square, sala->posImagem.y + 4*square, square, 2*square};
-    sala->saida[direita].hitbox = (Rectangle){sala->posImagem.x + 12*square, sala->posImagem.y + 4*square, square, 2*square};
-    sala->saida[baixo].hitbox = (Rectangle){sala->posImagem.x + 5*square, sala->posImagem.y + 10*square, 2*square, square};
+    sala->saida[cima].hitbox = (Rectangle){sala->frame.x + 5*square, sala->frame.y - square, 2*square, square};
+    sala->saida[esquerda].hitbox = (Rectangle){sala->frame.x - square, sala->frame.y + 4*square, square, 2*square};
+    sala->saida[direita].hitbox = (Rectangle){sala->frame.x + 12*square, sala->frame.y + 4*square, square, 2*square};
+    sala->saida[baixo].hitbox = (Rectangle){sala->frame.x + 5*square, sala->frame.y + 10*square, 2*square, square};
 }
+
 void unloadSalas(Sala *sala){
     free(sala->obstaculo);
     UnloadTexture(sala->textura);
@@ -105,10 +106,10 @@ void loadSala2(Sala *sala2){
     sala2->obstaculo = (Rectangle *) malloc((sala2->qtdObstaculos)*sizeof(Rectangle));
     if (sala2->obstaculo == NULL){ return; }
 
-    sala2->obstaculo[0] = (Rectangle){sala2->posImagem.x + 2*square, sala2->posImagem.y + 1*square, 2*square, 1*square};
-    sala2->obstaculo[1] = (Rectangle){sala2->posImagem.x + 8*square, sala2->posImagem.y + 1*square, 2*square, 1*square};
-    sala2->obstaculo[2] = (Rectangle){sala2->posImagem.x + 2*square, sala2->posImagem.y + 8*square, 1*square, 1*square};
-    sala2->obstaculo[3] = (Rectangle){sala2->posImagem.x + 7*square, sala2->posImagem.y + 8*square, 3*square, 1*square};
+    sala2->obstaculo[0] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 1*square, 2*square, 1*square};
+    sala2->obstaculo[1] = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 2*square, 1*square};
+    sala2->obstaculo[2] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 8*square, 1*square, 1*square};
+    sala2->obstaculo[3] = (Rectangle){sala2->frame.x + 7*square, sala2->frame.y + 8*square, 3*square, 1*square};
 
     sala2->porta[cima].aberta = true;     sala2->saida[cima].saidaPara = salaGalinha;
     sala2->porta[esquerda].aberta = true; sala2->saida[esquerda].saidaPara = salaCagado;
@@ -125,10 +126,10 @@ void loadSala3(Sala *sala3){
     sala3->obstaculo = (Rectangle *) malloc((sala3->qtdObstaculos)*sizeof(Rectangle));
     if (sala3->obstaculo == NULL){ return; }
 
-    sala3->obstaculo[0] = (Rectangle){sala3->posImagem.x + 7*square, sala3->posImagem.y + 1*square, 3*square, 1*square};
-    sala3->obstaculo[1] = (Rectangle){sala3->posImagem.x + 1*square, sala3->posImagem.y + 3*square, 1*square, 4*square};
-    sala3->obstaculo[2] = (Rectangle){sala3->posImagem.x + 4*square, sala3->posImagem.y + 3*square, 2*square, 4*square};
-    sala3->obstaculo[3] = (Rectangle){sala3->posImagem.x + 2*square, sala3->posImagem.y + 4*square, 2*square, 2*square}; // sofá
+    sala3->obstaculo[0] = (Rectangle){sala3->frame.x + 7*square, sala3->frame.y + 1*square, 3*square, 1*square};
+    sala3->obstaculo[1] = (Rectangle){sala3->frame.x + 1*square, sala3->frame.y + 3*square, 1*square, 4*square};
+    sala3->obstaculo[2] = (Rectangle){sala3->frame.x + 4*square, sala3->frame.y + 3*square, 2*square, 4*square};
+    sala3->obstaculo[3] = (Rectangle){sala3->frame.x + 2*square, sala3->frame.y + 4*square, 2*square, 2*square}; // sofá
 
     sala3->porta[cima].aberta = false;     sala3->saida[cima].saidaPara = salaCagado;
     sala3->porta[esquerda].aberta = false; sala3->saida[esquerda].saidaPara = salaCagado;
@@ -141,8 +142,19 @@ void loadSala3(Sala *sala3){
 
 // aranhas
 void loadSala4(Sala *sala4){
-    sala4->qtdObstaculos = 0;
-    sala4->obstaculo = NULL;
+    sala4->qtdObstaculos = 8;
+    sala4->obstaculo = (Rectangle *) malloc((sala4->qtdObstaculos)*sizeof(Rectangle));
+    if (sala4->obstaculo == NULL){ return; }
+
+    sala4->obstaculo[0] = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 1*square, 2*square, 1*square};
+    sala4->obstaculo[1] = (Rectangle){sala4->frame.x + 6*square, sala4->frame.y + 1*square, 2*square, 1*square};
+    sala4->obstaculo[2] = (Rectangle){sala4->frame.x + 6*square, sala4->frame.y + 3*square, 2*square, 3*square};
+    sala4->obstaculo[3] = (Rectangle){sala4->frame.x + 10*square, sala4->frame.y + 3*square, 1*square, 2*square};
+    sala4->obstaculo[4] = (Rectangle){sala4->frame.x + 10*square, sala4->frame.y + 6*square, 1*square, 1*square};
+    sala4->obstaculo[5] = (Rectangle){sala4->frame.x + 9*square, sala4->frame.y + 7*square, 2*square, 2*square};
+    sala4->obstaculo[6] = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 8*square, 1*square, 1*square};
+    sala4->obstaculo[7] = (Rectangle){sala4->frame.x + 3*square, sala4->frame.y + 8*square, 1*square, 1*square};
+
     sala4->porta[cima].aberta = false;     sala4->saida[cima].saidaPara = salaAranhas;
     sala4->porta[esquerda].aberta = true;  sala4->saida[esquerda].saidaPara = salaHub;
     sala4->porta[direita].aberta = false;  sala4->saida[direita].saidaPara = salaAranhas;
