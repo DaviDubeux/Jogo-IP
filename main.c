@@ -5,15 +5,14 @@
 #include "salas.h"
 #include "colisao.h"
 
-
 int main(){
+    int gameMode = menu;
 
     InitWindow(0, 0, "As aventuras de Thalya");
     if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
     double time = GetTime();
-    int menu = 1;
 
     const float screenWidth = (const float) GetScreenWidth();   
     const float screenHeight = (const float) GetScreenHeight();
@@ -21,7 +20,7 @@ int main(){
     Capivara capivara;
     Sala sala[6];
 
-    // LOADS
+//-------------------------------------------------------------------LOADS-------------------------------------------------------------------
     loadCapivara(&capivara, screenWidth, screenHeight);
     for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
     loadSala1(&(sala[salaJardim]));
@@ -55,17 +54,17 @@ int main(){
     //
     
     while(!WindowShouldClose()){
-        if (menu){
+//-------------------------------------------------------------------MENU-------------------------------------------------------------------
+        if (gameMode == menu){
             // menu
-            if (IsKeyPressed(KEY_Q)){
-                menu = 0;
-            }
-
             BeginDrawing();
             ClearBackground(RAYWHITE);
             EndDrawing();
+
+            if (IsKeyPressed(KEY_Q)){ gameMode = explorando; }
         }
-        else{
+//----------------------------------------------------------------EXPLORANDO----------------------------------------------------------------
+        else if (gameMode == explorando){
             double delta = GetTime() - time;
             time = GetTime();
             int salaAtual = capivara.salaAtual;
@@ -74,7 +73,7 @@ int main(){
                 capivara.hitbox.y -= capivara.speed * delta;
                 updateFrame(&capivara);
                 
-                            //costas //mudar a forma como anda a cada clique
+                //costas //mudar a forma como anda a cada clique
                 if((((int)GetTime())%2)==1){ clique = 1; }
                 else { clique = 3; }
                 DrawTextureRec(capivara.sprite, (Rectangle) {(square*6) + (square * clique), 0, square, square}, capivara.frame, WHITE);
@@ -131,7 +130,7 @@ int main(){
             BeginDrawing();
             ClearBackground(RAYWHITE);
 
-            // DEBUG DE COLISÃO--------------------------------------------------------------
+            // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
 
             DrawRectangleV(sala[salaAtual].posImagem, (Vector2){sala[salaAtual].width*square, sala[salaAtual].height*square}, LIGHTGRAY);
 
@@ -172,21 +171,38 @@ int main(){
             // desenha capivara
             DrawRectangle(capivara.hitbox.x, capivara.hitbox.y, capivara.hitbox.width, capivara.hitbox.height, GOLD);
 
+            // desenha interacao
             if (capivara.interacao.interagindo){ DrawRectangle(capivara.interacao.hitbox.x, capivara.interacao.hitbox.y,
                                                  capivara.hitbox.width, capivara.hitbox.height, PINK); }
 
-            // DEBUG DE COLISÃO--------------------------------------------------------------
+            // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
 
 
             // anima a capivara normalmente desde o último movimento
             int par = ((int)GetTime())%2;
-            DrawTexture(sala[salaAtual].textura, sala[salaAtual].posImagem.x, sala[salaAtual].posImagem.y, RAYWHITE);
+            // DrawTexture(sala[salaAtual].textura, sala[salaAtual].posImagem.x, sala[salaAtual].posImagem.y, RAYWHITE);
             DrawTextureRec(capivara.sprite, (Rectangle) {(desenho_capivara - square) + (square * par), 0, square, square}, capivara.frame, WHITE);
             capivara.prevHitbox = capivara.hitbox;
-
-            if (IsKeyPressed(KEY_Q)){ menu = 1; }
-
             EndDrawing();
+
+            gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
+            if (IsKeyPressed(KEY_Q)){ gameMode = menu; }
+        }
+//-----------------------------------------------------------------COMBATE------------------------------------------------------------------
+        else if (gameMode == combate){
+            // menu
+            BeginDrawing();
+            ClearBackground(BLUE);
+            EndDrawing();
+
+            if (IsKeyPressed(KEY_Q)){
+                gameMode = explorando;
+                capivara.upgrades++;
+            }
+        }
+//---------------------------------------------------------------- GAMEOVER-----------------------------------------------------------------
+        else if (gameMode == gameOver){
+
         }
     }
 

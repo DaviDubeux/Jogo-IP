@@ -20,6 +20,14 @@ enum {
     baixo,        // baixo = 3
 }Direcao;
 
+enum{
+    menu,        // menu = 0
+    explorando,  // explorando = 1
+    combate,     // combate = 2
+    gameOver     // gameOver = 3
+}Mode;
+
+
 typedef struct{
     bool aberta;
     Rectangle hitbox;
@@ -120,7 +128,8 @@ void loadSala3(Sala *sala3){
     sala3->obstaculo[0] = (Rectangle){sala3->posImagem.x + 7*square, sala3->posImagem.y + 1*square, 3*square, 1*square};
     sala3->obstaculo[1] = (Rectangle){sala3->posImagem.x + 1*square, sala3->posImagem.y + 3*square, 1*square, 4*square};
     sala3->obstaculo[2] = (Rectangle){sala3->posImagem.x + 4*square, sala3->posImagem.y + 3*square, 2*square, 4*square};
-    sala3->obstaculo[3] = (Rectangle){sala3->posImagem.x + 2*square, sala3->posImagem.y + 4*square, 2*square, 2*square};
+    sala3->obstaculo[3] = (Rectangle){sala3->posImagem.x + 2*square, sala3->posImagem.y + 4*square, 2*square, 2*square}; // sofá
+
     sala3->porta[cima].aberta = false;     sala3->saida[cima].saidaPara = salaCagado;
     sala3->porta[esquerda].aberta = false; sala3->saida[esquerda].saidaPara = salaCagado;
     sala3->porta[direita].aberta = true;   sala3->saida[direita].saidaPara = salaHub;

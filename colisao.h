@@ -114,3 +114,41 @@ void updateRoom(Capivara *capivara, Sala *sala){
         }
     }
 }
+
+int updateBossfight(Capivara *capivara, Sala *sala){
+
+    bool bossfight = 0;
+
+    if (capivara->interacao.interagindo == true){
+        if (capivara->salaAtual == salaCagado){
+            bossfight = CheckCollisionRecs(sala->obstaculo[2], capivara->interacao.hitbox);
+            if (bossfight && capivara->upgrades == 0){
+                
+                return combate; 
+            }
+        }
+        else if (capivara->salaAtual == salaAranhas){
+            bossfight = 0;
+            if (bossfight && capivara->upgrades == 1){
+            
+                return combate; 
+            }
+        }
+        else if (capivara->salaAtual == salaGalinha){
+            bossfight = 0;
+            if (bossfight && capivara->upgrades == 2){
+            
+                return combate; 
+            }
+        }
+        else if (capivara->salaAtual == salaPeixe){
+            bossfight = 0;
+            if (bossfight && capivara->upgrades == 3){
+            
+                return combate; 
+            }
+        }
+    }
+
+    return explorando;
+}
