@@ -22,6 +22,7 @@ typedef struct{
     Vector2 frame;
     Info capivaraInfo;
     Info bossInfo;
+    Rectangle usosInfo;
     Texture2D textura;
 }Arena;
 
@@ -46,6 +47,8 @@ void loadArena(Arena *arena, const float screenW, const float screenH){
     arena->bossInfo.statsFrame = (Rectangle){arena->frame.x + 2*square, arena->frame.y + 1*square, 5*square, 2*square};
     arena->bossInfo.nomeFrame = (Vector2){arena->frame.x + 2.5*square, arena->frame.y + 1.5*square};
     arena->bossInfo.vidaFrame = (Vector2){arena->frame.x + 5.5*square, arena->frame.y + 2.5*square};
+
+    arena->usosInfo = (Rectangle){arena->frame.x + 8.25*square, arena->frame.y + 7.25*square, 3.5*square, 2.5*square};
 }
 
 #endif

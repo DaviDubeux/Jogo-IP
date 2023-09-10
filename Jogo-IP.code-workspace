@@ -20,7 +20,17 @@
 			"*.m": "c",
 			"combate.h": "c",
 			"colisao.h": "c",
-			"capivara.h": "c"
+			"capivara.h": "c",
+			"atomic": "c",
+			"compare": "c",
+			"cstddef": "c",
+			"limits": "c",
+			"memory": "c",
+			"type_traits": "c",
+			"vector": "c",
+			"xmemory": "c",
+			"xstring": "c",
+			"xutility": "c"
 		}
 	}
 }

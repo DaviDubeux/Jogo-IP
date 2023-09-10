@@ -24,7 +24,8 @@ enum{
     menu,        // menu = 0
     explorando,  // explorando = 1
     combate,     // combate = 2
-    gameOver     // gameOver = 3
+    gameOver,    // gameOver = 3
+    pausa        // pausa = 4
 }Mode;
 
 

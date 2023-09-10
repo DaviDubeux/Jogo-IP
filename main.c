@@ -8,6 +8,9 @@
 
 int main(){
     int gameMode = menu;
+    int prevGameMode = explorando;
+    char vidaExibidaCapivara[10] = "";
+    char vidaExibidaBoss[10] = "";
 
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
@@ -70,7 +73,7 @@ int main(){
             ClearBackground(RAYWHITE);
             EndDrawing();
 
-            if (IsKeyPressed(KEY_Q)){ gameMode = explorando; }
+            if (IsKeyPressed(KEY_Q)){ gameMode = prevGameMode; }
         }
 //----------------------------------------------------------------EXPLORANDO----------------------------------------------------------------
         else if (gameMode == explorando){
@@ -194,45 +197,53 @@ int main(){
             EndDrawing();
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
-            if (IsKeyPressed(KEY_Q)){ gameMode = menu; }
+            if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
         else if (gameMode == combate){
+            int turno = 0;
             int selecionado = capivara.ataqueSelecionado;
+
+            sprintf(vidaExibidaCapivara, "%2d/%2d", capivara.vida, capivara.vidaMaxima);
+            sprintf(vidaExibidaBoss, "%2d/%2d", boss[capivara.bossDerrotados].vida, boss[capivara.bossDerrotados].vidaMaxima);
 
             BeginDrawing();
             ClearBackground(RED);
 
-            if (selecionado < 3 && IsKeyPressed(KEY_DOWN) && capivara.ataque[selecionado + 1].desbloqueado){
-                capivara.ataqueSelecionado++;
+            if (IsKeyPressed(KEY_DOWN) && selecionado < 3 &&  capivara.ataque[selecionado + 1].desbloqueado){ capivara.ataqueSelecionado++; }
+            
+            if (IsKeyPressed(KEY_UP) && selecionado > 0 &&  capivara.ataque[selecionado - 1].desbloqueado){ capivara.ataqueSelecionado--; }
+
+            if (IsKeyPressed(KEY_Z)){
+                boss[capivara.bossDerrotados].vida -= capivara.ataque[selecionado].dano;
             }
-            if (selecionado > 0 && IsKeyPressed(KEY_UP) && capivara.ataque[selecionado - 1].desbloqueado){ capivara.ataqueSelecionado--; }
 
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
-
+            ///*
             DrawRectangleV(arena.frame, (Vector2){arena.width, arena.height}, LIGHTGRAY);
 
             DrawRectangleV(arena.capivaraInfo.frame, (Vector2){arena.capivaraInfo.width, arena.capivaraInfo.height}, GOLD);
             DrawRectangle(arena.capivaraInfo.statsFrame.x, arena.capivaraInfo.statsFrame.y,
                           arena.capivaraInfo.statsFrame.width, arena.capivaraInfo.statsFrame.height, DARKGREEN);
             DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
-            DrawText("20/20", arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
+            DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
             
             DrawRectangle(arena.bossInfo.frame.x, arena.bossInfo.frame.y,
                           arena.bossInfo.width, arena.bossInfo.height, GOLD);
             DrawRectangle(arena.bossInfo.statsFrame.x, arena.bossInfo.statsFrame.y,
                           arena.bossInfo.statsFrame.width, arena.bossInfo.statsFrame.height, DARKGREEN);
             DrawText(boss[capivara.bossDerrotados].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
-            DrawText("20/20", arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
+            DrawText(vidaExibidaBoss, arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
 
             DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 8*square, 3*square, SKYBLUE);
             DrawRectangle(arena.frame.x + 8*square, arena.frame.y + 7*square, 4*square, 3*square, BLUE);
 
+            // ataques
             for (int i = 0; i < 4; i++){
+                DrawRectangle(capivara.ataque[i].frame.x, capivara.ataque[i].frame.y,
+                              capivara.ataque[i].width, capivara.ataque[i].height,
+                              (i%2 == 0) ? LIGHTGRAY : DARKGRAY);
                 if (capivara.ataque[i].desbloqueado){
-                    // DrawRectangle(capivara.ataque[i].frame.x, capivara.ataque[i].frame.y,
-                    //               capivara.ataque[i].width, capivara.ataque[i].height,
-                    //               (i%2 == 0) ? LIGHTGRAY : DARKGRAY);
                     DrawText(capivara.ataque[i].nome, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
                 else{
@@ -244,21 +255,66 @@ int main(){
                 
             }
 
+            DrawRectangle(arena.usosInfo.x, arena.usosInfo.y, arena.usosInfo.width, arena.usosInfo.height, LIGHTGRAY);
+            ///*
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
             
 
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_Q)){
-                gameMode = explorando;
+            if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
+            if (boss[capivara.bossDerrotados].vida <= 0){
                 capivara.bossDerrotados++;
                 capivara.ataque[capivara.bossDerrotados].desbloqueado = true;
+                gameMode = explorando;
             }
         }
-//---------------------------------------------------------------- GAMEOVER-----------------------------------------------------------------
-        else if (gameMode == gameOver){
+//------------------------------------------------------------------PAUSA-------------------------------------------------------------------
+        else if (gameMode == pausa){
+            BeginDrawing();
+            EndDrawing();
 
+            if (IsKeyPressed(KEY_Z)){ gameMode = prevGameMode; }
+        }
+//-----------------------------------------------------------------GAMEOVER-----------------------------------------------------------------
+        else if (gameMode == gameOver){
+            // Reload
+            loadCapivaraExplorando(&capivara, screenWidth, screenHeight);
+
+            for (int i = 0; i < 4; i++){ loadBoss(&(boss[i])); }
+
+            for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
+            loadSala1(&(sala[salaJardim]));
+            // if (sala[salaJardim].obstaculo == NULL){
+            //     for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            // }
+            loadSala2(&(sala[salaHub]));
+            if (sala[salaHub].obstaculo == NULL){
+                for (int i = 0; i < 2; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            }
+            loadSala3(&(sala[salaCagado]));
+            if (sala[salaCagado].obstaculo == NULL){
+                for (int i = 0; i < 3; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            }
+            loadSala4(&(sala[salaAranhas]));
+            if (sala[salaAranhas].obstaculo == NULL){
+                for (int i = 0; i < 4; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            }
+            loadSala5(&(sala[salaGalinha]));
+            if (sala[salaGalinha].obstaculo == NULL){
+                for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            }
+            loadSala6(&(sala[salaPeixe]));
+            // if (sala[salaPeixe].obstaculo == NULL){
+            //     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            // }
+
+            loadArena(&arena, screenWidth, screenHeight);
+            loadCapivaraCombate(&capivara, &arena);
+
+            gameMode = menu;
+            prevGameMode = explorando;
         }
     }
 
