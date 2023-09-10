@@ -9,7 +9,7 @@
 int main(){
     int gameMode = menu;
 
-    InitWindow(1920, 1080, "As aventuras de Thalya");
+    InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
@@ -46,9 +46,9 @@ int main(){
         for (int i = 0; i < 4; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala5(&(sala[salaGalinha]));
-    // if (sala[salaGalinha].obstaculo == NULL){
-    //     for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
-    // }
+    if (sala[salaGalinha].obstaculo == NULL){
+        for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+    }
     loadSala6(&(sala[salaPeixe]));
     // if (sala[salaPeixe].obstaculo == NULL){
     //     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
@@ -78,55 +78,55 @@ int main(){
             time = GetTime();
             int salaAtual = capivara.salaAtual;
 
-            if (IsKeyDown(KEY_W)) {
+            if (IsKeyDown(KEY_UP)) {
                 capivara.hitbox.y -= capivara.speed * delta;
                 updateFrame(&capivara);
                 
                 //costas //ainda falta animar isso
                 //if((((int)GetTime())%2)==1){ clique = 0; }
                 //else { clique = 1; }
-                DrawTextureRec(capivara.sprite, (Rectangle) {(square*7), (square * clique), square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) {(square*7), (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 7);
                 capivara.direcao = sentidoCima;
             }
 
-            if (IsKeyDown(KEY_S)) {
+            if (IsKeyDown(KEY_DOWN)) {
                 capivara.hitbox.y += capivara.speed * delta;
                 updateFrame(&capivara);
 
                 //frente //ainda falta animar isso
                 //if(((int)GetTime())%2==1){ clique = 0; }
                 //else { clique = 1; }
-                DrawTextureRec(capivara.sprite, (Rectangle) { (square*10), (square * clique), square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) { (square*10), (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 10);
                 capivara.direcao = sentidoBaixo;
             }
 
-            if (IsKeyDown(KEY_D)) {
+            if (IsKeyDown(KEY_RIGHT)) {
                 capivara.hitbox.x += capivara.speed * delta;
                 updateFrame(&capivara);
 
                 //direita //ainda falta animar isso
                 //if(((int)GetTime())%2==1){ clique = 0; }
                 //else { clique = 1; }
-                DrawTextureRec(capivara.sprite, (Rectangle) { square, (square * clique), square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) { square, (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 1);
                 capivara.direcao = sentidoDireita;
             }
 
-            if (IsKeyDown(KEY_A)) {
+            if (IsKeyDown(KEY_LEFT)) {
                 capivara.hitbox.x -= capivara.speed * delta;
                 updateFrame(&capivara);
 
                 //esquerda //ainda falta animar isso
                 //if(((int)GetTime())%2==1){ clique = 0; }
                 //else { clique = 1; }
-                DrawTextureRec(capivara.sprite, (Rectangle) {(square*4) , (square * clique), square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 4);
                 capivara.direcao = sentidoEsquerda;
             }
 
-            if (IsKeyDown(KEY_J)){ capivara.interacao.interagindo = 1; }
+            if (IsKeyDown(KEY_Z)){ capivara.interacao.interagindo = 1; }
             else{ capivara.interacao.interagindo = 0; }
 
 
@@ -188,8 +188,8 @@ int main(){
 
             // anima a capivara normalmente desde o último movimento
             int par = ((int)GetTime())%3;
-            // DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, RAYWHITE);
-            DrawTextureRec(capivara.sprite, (Rectangle) {(desenho_capivara - square) + (square * par), 0, square, square}, capivara.frame, WHITE);
+            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, RAYWHITE);
+            DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), 0, square, square}, capivara.frame, WHITE);
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
@@ -198,46 +198,62 @@ int main(){
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
         else if (gameMode == combate){
-            int salaAtual = capivara.salaAtual;
+            int selecionado = capivara.ataqueSelecionado;
 
             BeginDrawing();
-            ClearBackground(BLUE);
+            ClearBackground(RED);
+
+            if (selecionado < 3 && IsKeyPressed(KEY_DOWN) && capivara.ataque[selecionado + 1].desbloqueado){
+                capivara.ataqueSelecionado++;
+            }
+            if (selecionado > 0 && IsKeyPressed(KEY_UP) && capivara.ataque[selecionado - 1].desbloqueado){ capivara.ataqueSelecionado--; }
 
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
+
             DrawRectangleV(arena.frame, (Vector2){arena.width, arena.height}, LIGHTGRAY);
 
             DrawRectangleV(arena.capivaraInfo.frame, (Vector2){arena.capivaraInfo.width, arena.capivaraInfo.height}, GOLD);
             DrawRectangle(arena.capivaraInfo.statsFrame.x, arena.capivaraInfo.statsFrame.y,
                           arena.capivaraInfo.statsFrame.width, arena.capivaraInfo.statsFrame.height, DARKGREEN);
-            DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 20, BLACK);
-            DrawText("20/20", arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 20, BLACK);
+            DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
+            DrawText("20/20", arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
             
             DrawRectangle(arena.bossInfo.frame.x, arena.bossInfo.frame.y,
                           arena.bossInfo.width, arena.bossInfo.height, GOLD);
             DrawRectangle(arena.bossInfo.statsFrame.x, arena.bossInfo.statsFrame.y,
                           arena.bossInfo.statsFrame.width, arena.bossInfo.statsFrame.height, DARKGREEN);
-            DrawText(boss[capivara.bossDerrotados].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 20, BLACK);
-            DrawText("20/20", arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 20, BLACK);
+            DrawText(boss[capivara.bossDerrotados].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
+            DrawText("20/20", arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
 
-            DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 12*square, 3*square, SKYBLUE);
+            DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 8*square, 3*square, SKYBLUE);
+            DrawRectangle(arena.frame.x + 8*square, arena.frame.y + 7*square, 4*square, 3*square, BLUE);
 
             for (int i = 0; i < 4; i++){
-                if (capivara.ataque[0].desbloqueado){
-                    DrawRectangle(capivara.ataque[i].frame.x, capivara.ataque[i].frame.y,
-                                  capivara.ataque[i].width, capivara.ataque[i].height, LIGHTGRAY);
+                if (capivara.ataque[i].desbloqueado){
+                    // DrawRectangle(capivara.ataque[i].frame.x, capivara.ataque[i].frame.y,
+                    //               capivara.ataque[i].width, capivara.ataque[i].height,
+                    //               (i%2 == 0) ? LIGHTGRAY : DARKGRAY);
+                    DrawText(capivara.ataque[i].nome, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
-                if (capivara.ataque[i].selecionado){
-                    DrawCircle(capivara.ataque[i].frame.x - 0.5*square, capivara.ataque[i].frame.y + 0.25*square, 0.3*square, ORANGE);
+                else{
+                    DrawText("-", capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
+                
+                DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
+                           0.375*square, ORANGE);
+                
             }
 
+            // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
             
+
 
             EndDrawing();
 
             if (IsKeyPressed(KEY_Q)){
-                gameMode = menu;
+                gameMode = explorando;
                 capivara.bossDerrotados++;
+                capivara.ataque[capivara.bossDerrotados].desbloqueado = true;
             }
         }
 //---------------------------------------------------------------- GAMEOVER-----------------------------------------------------------------
@@ -247,7 +263,8 @@ int main(){
     }
 
     //UNLOADS / FREES
-    UnloadTexture(capivara.sprite);
+    UnloadTexture(capivara.textura);
+    for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
     
     return 0;

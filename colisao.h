@@ -136,7 +136,7 @@ int updateBossfight(Capivara *capivara, Sala *sala){
             }
         }
         else if (capivara->salaAtual == salaGalinha){
-            bossfight = 0;
+            bossfight = CheckCollisionRecs(sala->obstaculo[6], capivara->interacao.hitbox);
             if (bossfight && capivara->bossDerrotados == 2){
             
                 return combate; 

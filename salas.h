@@ -45,8 +45,8 @@ typedef struct{
     float height;
     Vector2 frame;
     Rectangle paredes[8];
-    Porta porta[4]; //
-    Saida saida[4]; //
+    Porta porta[4];
+    Saida saida[4];
 
     // específicos da sala
     int qtdObstaculos;
@@ -90,10 +90,12 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
 
     sala1->qtdObstaculos = 0;
     sala1->obstaculo = NULL;
+
     sala1->porta[cima].aberta = true;      sala1->saida[cima].saidaPara = salaHub;
     sala1->porta[esquerda].aberta = false; sala1->saida[esquerda].saidaPara = salaJardim;
     sala1->porta[direita].aberta = false;  sala1->saida[direita].saidaPara = salaJardim;
     sala1->porta[baixo].aberta = false;    sala1->saida[baixo].saidaPara = salaJardim;
+
     sala1->textura = LoadTexture("./assets/salaJardim.png");
     sala1->textura.width = 1152.0f;
     sala1->textura.height = 960.0f;
@@ -115,6 +117,7 @@ void loadSala2(Sala *sala2){
     sala2->porta[esquerda].aberta = true; sala2->saida[esquerda].saidaPara = salaCagado;
     sala2->porta[direita].aberta = true;  sala2->saida[direita].saidaPara = salaAranhas;
     sala2->porta[baixo].aberta = true;    sala2->saida[baixo].saidaPara = salaJardim;
+
     sala2->textura = LoadTexture("./assets/salaHub.png");
     sala2->textura.width = 1152.0f;
     sala2->textura.height = 960.0f;
@@ -152,7 +155,7 @@ void loadSala4(Sala *sala4){
     sala4->obstaculo[3] = (Rectangle){sala4->frame.x + 10*square, sala4->frame.y + 3*square, 1*square, 2*square};
     sala4->obstaculo[4] = (Rectangle){sala4->frame.x + 10*square, sala4->frame.y + 6*square, 1*square, 1*square};
     sala4->obstaculo[5] = (Rectangle){sala4->frame.x + 9*square, sala4->frame.y + 7*square, 2*square, 2*square};
-    sala4->obstaculo[6] = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 8*square, 1*square, 1*square};
+    sala4->obstaculo[6] = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 8*square, 1*square, 1*square}; // lixeira
     sala4->obstaculo[7] = (Rectangle){sala4->frame.x + 3*square, sala4->frame.y + 8*square, 1*square, 1*square};
 
     sala4->porta[cima].aberta = false;     sala4->saida[cima].saidaPara = salaAranhas;
@@ -166,8 +169,18 @@ void loadSala4(Sala *sala4){
 
 // galinha
 void loadSala5(Sala *sala5){
-    sala5->qtdObstaculos = 0;
-    sala5->obstaculo = NULL;
+    sala5->qtdObstaculos = 8;
+    sala5->obstaculo = (Rectangle *) malloc((sala5->qtdObstaculos)*sizeof(Rectangle));
+    if (sala5->obstaculo == NULL){ return; }
+
+    sala5->obstaculo[0] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 1*square, 4*square, 1*square};
+    sala5->obstaculo[1] = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 1*square, 2*square, 1*square};
+    sala5->obstaculo[2] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 2*square, 1*square, 5*square};
+    sala5->obstaculo[3] = (Rectangle){sala5->frame.x + 3*square, sala5->frame.y + 3*square, 2*square, 2*square};
+    sala5->obstaculo[5] = (Rectangle){sala5->frame.x + 7*square, sala5->frame.y + 4*square, 2*square, 3*square};
+    sala5->obstaculo[6] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 7*square, 1*square, 1*square}; // forno
+    sala5->obstaculo[7] = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 8*square, 2*square, 1*square};
+
     sala5->porta[cima].aberta = true;      sala5->saida[cima].saidaPara = salaPeixe;
     sala5->porta[esquerda].aberta = false; sala5->saida[esquerda].saidaPara = salaGalinha;
     sala5->porta[direita].aberta = false;  sala5->saida[direita].saidaPara = salaGalinha;
