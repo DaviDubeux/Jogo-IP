@@ -25,7 +25,6 @@ enum{
     explorando,  // explorando = 1
     combate,     // combate = 2
     gameOver,    // gameOver = 3
-    pausa        // pausa = 4
 }Mode;
 
 
@@ -110,7 +109,7 @@ void loadSala2(Sala *sala2){
     if (sala2->obstaculo == NULL){ return; }
 
     sala2->obstaculo[0] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 1*square, 2*square, 1*square};
-    sala2->obstaculo[1] = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 2*square, 1*square};
+    sala2->obstaculo[1] = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 3*square, 1*square};
     sala2->obstaculo[2] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 8*square, 1*square, 1*square};
     sala2->obstaculo[3] = (Rectangle){sala2->frame.x + 7*square, sala2->frame.y + 8*square, 3*square, 1*square};
 
@@ -175,7 +174,7 @@ void loadSala5(Sala *sala5){
     if (sala5->obstaculo == NULL){ return; }
 
     sala5->obstaculo[0] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 1*square, 4*square, 1*square};
-    sala5->obstaculo[1] = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 1*square, 2*square, 1*square};
+    sala5->obstaculo[1] = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 1*square, 3*square, 1*square};
     sala5->obstaculo[2] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 2*square, 1*square, 5*square};
     sala5->obstaculo[3] = (Rectangle){sala5->frame.x + 3*square, sala5->frame.y + 3*square, 2*square, 2*square};
     sala5->obstaculo[5] = (Rectangle){sala5->frame.x + 7*square, sala5->frame.y + 4*square, 2*square, 3*square};

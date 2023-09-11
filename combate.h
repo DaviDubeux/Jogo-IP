@@ -6,6 +6,18 @@
 #include "personagens.h"
 #define square 96.0f
 
+enum{
+    escolherAtaqueCapivara,  // escolherAtaque = 0
+    escolheuErrado,          // escolheuErrado = 1
+    mostrarAtaqueCapivara,   // mostrarAtaqueCapivara = 2
+    escolherAtaqueBoss,      // escolherAtaqueBoss = 3
+    mostrarAtaqueBoss,       // mostrarAtaqueBoss = 4
+    bossMorreu,              // bossMorreu = 5
+    mostrarBossMorreu,       // mostrarBossMorrey = 6
+    sairDoCombate,           // sairDoCombate = 7
+    capivaraMorreu           // capivaraMorreu = 8
+}Vez;
+
 typedef struct{
     float width;
     float height;
