@@ -8,7 +8,7 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = combate;
+    int prevGameMode = explorando;
     int par = 0;
     int pausado = 0;
     int vez = escolherAtaqueCapivara;
@@ -130,7 +130,7 @@ int main(){
             
             EndDrawing();
 
-            if (IsKeyPressed(KEY_Q)){ gameMode = explorando; }
+            if (IsKeyPressed(KEY_Q)){ gameMode = prevGameMode; }
         }
 //----------------------------------------------------------------EXPLORANDO----------------------------------------------------------------
         else if (gameMode == explorando){
@@ -191,7 +191,7 @@ int main(){
                 else{ capivara.interacao.interagindo = 0; }
             }
 
-            //fixCollision(&capivara, &(sala[salaAtual]));
+            fixCollision(&capivara, &(sala[salaAtual]));
 
             updateRoom(&capivara, &(sala[salaAtual]));
             updateInteracaoHitbox(&capivara);
@@ -200,7 +200,7 @@ int main(){
             ClearBackground(RAYWHITE);
 
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
-            ///*
+            /*
             DrawRectangleV(sala[salaAtual].frame, (Vector2){sala[salaAtual].width, sala[salaAtual].height}, LIGHTGRAY);
 
             // desenha as paredes
@@ -243,7 +243,7 @@ int main(){
             // desenha interacao
             if (capivara.interacao.interagindo){ DrawRectangle(capivara.interacao.hitbox.x, capivara.interacao.hitbox.y,
                                                  capivara.hitbox.width, capivara.hitbox.height, PINK); }
-            //*/
+            */
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
 
 
@@ -255,7 +255,7 @@ int main(){
             EndDrawing();
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
-            if (gameMode == combate){ prevGameMode = explorando; }
+            if (gameMode == combate){ prevGameMode = explorando; vez = escolherAtaqueCapivara; }
             if (IsKeyPressed(KEY_P)){ pausado = !pausado; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
@@ -280,7 +280,7 @@ int main(){
                         boss[bossAtual].vida -= capivara.ataque[selecionado].dano;
                         capivara.ataque[selecionado].usos--;
                         sprintf(rodada, "%s usou %s!\n%s levou %d de dano",
-                        capivara.nome, capivara.ataque[selecionado].nome, boss[bossAtual].nome, capivara.ataque[selecionado].dano);
+                                capivara.nome, capivara.ataque[selecionado].nome, boss[bossAtual].nome, capivara.ataque[selecionado].dano);
                         vez = mostrarAtaqueCapivara;
                     }
                     else{
@@ -298,10 +298,11 @@ int main(){
                 vez = mostrarAtaqueBoss;
             }
 
-            if (vez == bossMorreu){ 
+            if (vez == escolherAtaqueBoss && boss[bossAtual].vida <= 0){
                 sprintf(rodada, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome); 
                 //precisa ver quando fazer isso para depois de interagir com o animal
                 desenho_skin += 2*square;
+                vez = mostrarBossMorreu;
             }
 
             if (vez == capivaraMorreu){ sprintf(rodada, "Ah não!\nTente novamente..."); }
@@ -344,10 +345,11 @@ int main(){
                 }
                 DrawRectangle(arena.usosInfo.x, arena.usosInfo.y, arena.usosInfo.width, arena.usosInfo.height, LIGHTGRAY);
             }
-            else if (vez != escolherAtaqueBoss){
+            else{
                 DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 12*square, 3*square, SKYBLUE);
                 DrawText(rodada, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
             }
+            
             ///*
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
 
@@ -363,18 +365,15 @@ int main(){
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X) && vez == escolheuErrado){ vez = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X) && vez == mostrarAtaqueCapivara){
-                if (boss[bossAtual].vida > 0){ vez = escolherAtaqueBoss; }
-                else{ vez = bossMorreu; }
-            }
+            if (IsKeyPressed(KEY_X) && vez == mostrarAtaqueCapivara){ vez = escolherAtaqueBoss; }
             if (IsKeyPressed(KEY_X) && vez == mostrarAtaqueBoss){ vez = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X) && vez == bossMorreu){ vez = sairDoCombate; }
+            if (IsKeyPressed(KEY_X) && vez == escolheuErrado){ vez = escolherAtaqueCapivara; }
             if (IsKeyPressed(KEY_X) && vez == capivaraMorreu){ gameMode = gameOver; }
-            if (IsKeyPressed(KEY_X) && vez == sairDoCombate){
+            if (IsKeyPressed(KEY_X) && vez == mostrarBossMorreu){
                 capivara.vida = capivara.vidaMaxima;
                 capivara.bossDerrotados++;
                 capivara.ataque[capivara.bossDerrotados].desbloqueado = true;
+                for (int i = 0; i < 4; i++){ capivara.ataque[i].usos = capivara.ataque[i].usosMaximo; }
                 gameMode = explorando;
             }
 

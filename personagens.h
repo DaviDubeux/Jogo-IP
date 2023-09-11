@@ -79,7 +79,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->nome[0] = '\0';
     strcpy(capivara->nome, "Agente do ibama");
 
-    capivara->ataque[0].dano = 5;  capivara->ataque[0].usos = 3; capivara->ataque[0].usosMaximo = 3;
+    capivara->ataque[0].dano = 5;  capivara->ataque[0].usos = 4; capivara->ataque[0].usosMaximo = 4;
     capivara->ataque[0].desbloqueado = true;
     capivara->ataque[0].frame = (Vector2){arena->frame.x + square, arena->frame.y + 7*square};
     capivara->ataque[0].width = 6*square; capivara->ataque[0].height = 0.75*square;
@@ -87,21 +87,21 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     strcpy(capivara->ataque[0].nome, "Canetada do Ibama");
 
     capivara->ataque[1].dano = 5;  capivara->ataque[1].usos = 10; capivara->ataque[1].usosMaximo = 10;
-    capivara->ataque[1].desbloqueado = true;
+    capivara->ataque[1].desbloqueado = false;
     capivara->ataque[1].frame = (Vector2){arena->frame.x + square, arena->frame.y + 7.75*square};
     capivara->ataque[1].width = 6*square; capivara->ataque[1].height = 0.75*square;
     capivara->ataque[1].nome[0] = '\0';
     strcpy(capivara->ataque[1].nome, "Koopa troopa");
 
     capivara->ataque[2].dano = 5;  capivara->ataque[2].usos = 10; capivara->ataque[2].usosMaximo = 10;
-    capivara->ataque[2].desbloqueado = true;
+    capivara->ataque[2].desbloqueado = false;
     capivara->ataque[2].frame = (Vector2){arena->frame.x + square, arena->frame.y + 8.5*square};
     capivara->ataque[2].width = 6*square; capivara->ataque[2].height = 0.75*square;
     capivara->ataque[2].nome[0] = '\0';
     strcpy(capivara->ataque[2].nome, "Bandaid de teia");
 
     capivara->ataque[3].dano = 5;  capivara->ataque[3].usos = 10; capivara->ataque[3].usosMaximo = 10;
-    capivara->ataque[3].desbloqueado = true;
+    capivara->ataque[3].desbloqueado = false;
     capivara->ataque[3].frame = (Vector2){arena->frame.x + square, arena->frame.y + 9.25*square};
     capivara->ataque[3].width = 6*square; capivara->ataque[3].height = 0.75*square;
     capivara->ataque[3].nome[0] = '\0';

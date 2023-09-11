@@ -12,10 +12,8 @@ enum{
     mostrarAtaqueCapivara,   // mostrarAtaqueCapivara = 2
     escolherAtaqueBoss,      // escolherAtaqueBoss = 3
     mostrarAtaqueBoss,       // mostrarAtaqueBoss = 4
-    bossMorreu,              // bossMorreu = 5
-    mostrarBossMorreu,       // mostrarBossMorrey = 6
-    sairDoCombate,           // sairDoCombate = 7
-    capivaraMorreu           // capivaraMorreu = 8
+    mostrarBossMorreu,       // mostrarBossMorreu = 5
+    capivaraMorreu           // capivaraMorreu = 6
 }Vez;
 
 typedef struct{
