@@ -70,17 +70,18 @@ int main(){
     // if (sala[salaPeixe].obstaculo == NULL){
     //     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     // }
-
+    
     loadArena(&arena, screenWidth, screenHeight);
     loadCapivaraCombate(&capivara, &arena);
-
+    
     setas = LoadTexture("./assets/setas.png");
     setas.height = 350.0f;
     setas.width = 350.0f;
-
+    
     // ANIMATION
-    int desenho_capivara = square;
-    int clique = 0;
+        int desenho_capivara = square, 
+            desenho_skin = 0; //se quiser mudar a skin soma 2*square
+        int clique = 0; 
     //
     
     while(!WindowShouldClose()){
@@ -145,7 +146,7 @@ int main(){
                     //costas //ainda falta animar isso
                     //if((((int)GetTime())%2)==1){ clique = 0; }
                     //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) {(square*7), (square * clique), square, square}, capivara.frame, WHITE);
+                    DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                     desenho_capivara = (square * 7);
                     capivara.direcao = sentidoCima;
                 }
@@ -157,7 +158,7 @@ int main(){
                     //frente //ainda falta animar isso
                     //if(((int)GetTime())%2==1){ clique = 0; }
                     //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) { (square*10), (square * clique), square, square}, capivara.frame, WHITE);
+                    DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                     desenho_capivara = (square * 10);
                     capivara.direcao = sentidoBaixo;
                 }
@@ -169,7 +170,7 @@ int main(){
                     //direita //ainda falta animar isso
                     //if(((int)GetTime())%2==1){ clique = 0; }
                     //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) { square, (square * clique), square, square}, capivara.frame, WHITE);
+                    DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                     desenho_capivara = (square * 1);
                     capivara.direcao = sentidoDireita;
                 }
@@ -181,7 +182,7 @@ int main(){
                     //esquerda //ainda falta animar isso
                     //if(((int)GetTime())%2==1){ clique = 0; }
                     //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , (square * clique), square, square}, capivara.frame, WHITE);
+                    DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                     desenho_capivara = (square * 4);
                     capivara.direcao = sentidoEsquerda;
                 }
@@ -248,8 +249,8 @@ int main(){
 
             // anima a capivara normalmente desde o último movimento
             if (!pausado){ par = ((int)GetTime())%3; }
-            //DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, RAYWHITE);
-            DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), 0, square, square}, capivara.frame, WHITE);
+            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, RAYWHITE);
+            DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square}, capivara.frame, WHITE);
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
@@ -297,7 +298,11 @@ int main(){
                 vez = mostrarAtaqueBoss;
             }
 
-            if (vez == bossMorreu){ sprintf(rodada, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome); }
+            if (vez == bossMorreu){ 
+                sprintf(rodada, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome); 
+                //precisa ver quando fazer isso para depois de interagir com o animal
+                desenho_skin += 2*square;
+            }
 
             if (vez == capivaraMorreu){ sprintf(rodada, "Ah não!\nTente novamente..."); }
 
