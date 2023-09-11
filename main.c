@@ -18,6 +18,11 @@ int main(){
     int ataqueDoBoss = 0;
     char rodada[100];
 
+    //menu
+    Texture2D setas;
+    int opcoes = 0;
+    int creditos = 0;
+
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
@@ -69,6 +74,10 @@ int main(){
     loadArena(&arena, screenWidth, screenHeight);
     loadCapivaraCombate(&capivara, &arena);
 
+    setas = LoadTexture("./assets/setas.png");
+    setas.height = 350.0f;
+    setas.width = 350.0f;
+
     // ANIMATION
     int desenho_capivara = square;
     int clique = 0;
@@ -79,10 +88,48 @@ int main(){
         if (gameMode == menu){
             // menu
             BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground(DARKBLUE);
+            
+            // Colocar em uma função
+            //DrawText("Click Me", button_0.rect.x + button_0.rect.width / 2 - MeasureText("Click Me", 20) / 2, button_0.rect.y + button_0.rect.height / 2 - 20 / 2, 20, WHITE);
+
+            //Entrar no jogo
+            if(opcoes == 0 && creditos == 0){
+                DrawRectangleRec((Rectangle){75, screenHeight / 2 - 200, 500, 100}, RED);
+                DrawText("Aperte Q para iniciar", 75 + 250 - MeasureText("Aperte Q para iniciar", 20) / 2, screenHeight / 2 - 200 + 50 - 20 / 2, 20, BLACK);
+                
+                //Controles
+                DrawRectangleRec((Rectangle){75, screenHeight / 2 , 400, 100}, RED);
+                DrawText("Aperte W para ver controles", 75 + 200 - MeasureText("Aperte W para ver controles", 20) / 2, screenHeight / 2 + 50 - 20 / 2, 20, BLACK);
+
+                //Creditos
+                DrawRectangleRec((Rectangle){75, screenHeight / 2 + 200, 400, 100}, RED);
+                DrawText("Aperte E para ver os creditos", 75 + 200 - MeasureText("Aperte E para ver os creditos", 20) / 2, screenHeight / 2 + 200 + 50 - 20 / 2, 20, BLACK);
+            }
+            if(IsKeyPressed(KEY_W) || opcoes){
+                opcoes = 1;
+                ClearBackground(GRAY);
+                DrawText("Use as setas do teclado", 80, 210, 50, WHITE);
+                DrawTextureRec(setas,(Rectangle){0, 0, 350, 350}, (Vector2){ 180, 200}, GRAY);
+
+
+                if(IsKeyPressed(KEY_B)){
+                    opcoes = 0;
+                }
+            }
+            if(IsKeyPressed(KEY_E) || creditos){
+                creditos = 1;
+                ClearBackground(SKYBLUE);
+
+                if(IsKeyPressed(KEY_B)){
+                    creditos = 0;
+                }
+            }
+            
+            
             EndDrawing();
 
-            if (IsKeyPressed(KEY_Q)){ gameMode = prevGameMode; }
+            if (IsKeyPressed(KEY_Q)){ gameMode = explorando; }
         }
 //----------------------------------------------------------------EXPLORANDO----------------------------------------------------------------
         else if (gameMode == explorando){
