@@ -8,7 +8,8 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = combate;
+    int prevGameMode = explorando;
+    int opcao = 0;
     int par = 0;
     int vez = escolherAtaqueCapivara;
     char vidaExibidaCapivara[10] = "";
@@ -19,7 +20,7 @@ int main(){
     char danoDoAtaque[10];
 
     //menu
-    Texture2D setas;
+    Texture2D setas, TecX, TecZ;
     int opcoes = 0;
     int creditos = 0;
 
@@ -77,6 +78,14 @@ int main(){
     setas = LoadTexture("./assets/setas.png");
     setas.height = 350.0f;
     setas.width = 350.0f;
+
+    TecX = LoadTexture("./assets/teclax.png");
+    TecX.height = 100.0f;
+    TecX.width = 100.0f;
+
+    TecZ = LoadTexture("./assets/teclaz.png");
+    TecZ.height = 100.0f;
+    TecZ.width = 100.0f;
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -94,8 +103,14 @@ int main(){
             // Colocar em uma função
             //DrawText("Click Me", button_0.rect.x + button_0.rect.width / 2 - MeasureText("Click Me", 20) / 2, button_0.rect.y + button_0.rect.height / 2 - 20 / 2, 20, WHITE);
 
+            if(opcoes == 0 && creditos == 0){ opcao = 0; }
+            if(IsKeyPressed(KEY_W) && creditos == 0){ opcao = 1; }
+            if(IsKeyPressed(KEY_E) && opcoes == 0){ opcao = 2; }
+
             //Entrar no jogo
-            if(opcoes == 0 && creditos == 0){
+            if(opcao == 0){
+                DrawText("Missão IBAMA: Contra-Ataque a Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque a Thalya", 20) / 2, 15, 60, LIME);
+
                 DrawRectangleRec((Rectangle){75, screenHeight / 2 - 200, 500, 100}, RED);
                 DrawText("Aperte Q para iniciar", 75 + 250 - MeasureText("Aperte Q para iniciar", 20) / 2, screenHeight / 2 - 200 + 50 - 20 / 2, 20, BLACK);
                 
@@ -107,21 +122,29 @@ int main(){
                 DrawRectangleRec((Rectangle){75, screenHeight / 2 + 200, 400, 100}, RED);
                 DrawText("Aperte E para ver os creditos", 75 + 200 - MeasureText("Aperte E para ver os creditos", 20) / 2, screenHeight / 2 + 200 + 50 - 20 / 2, 20, BLACK);
             }
-            if(IsKeyPressed(KEY_W) || opcoes){
+            if(opcao == 1){
                 opcoes = 1;
                 ClearBackground(GRAY);
-                DrawText("Use as setas do teclado", 80, 210, 50, WHITE);
+                DrawText("Use as setas do teclado para se movimentar", 75, 210, 50, WHITE);
+                //Z para interagir e X para passar dos dialogos
                 DrawTextureRec(setas,(Rectangle){0, 0, 350, 350}, (Vector2){ 180, 200}, GRAY);
+                DrawTextureRec(TecZ,(Rectangle){0, 0, 100, 100}, (Vector2){ 180, 580}, GRAY);
+                DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 430, 580}, GRAY);
 
+                DrawText("Z para interagir com objetos  \nX para passar dialogos", 100, 750, 36, WHITE);
+
+                DrawText("Pressione B para retornar ao menu", 100, 950, 55, MAROON);
 
                 if(IsKeyPressed(KEY_B)){
                     opcoes = 0;
                 }
             }
-            if(IsKeyPressed(KEY_E) || creditos){
+            if(opcao == 2){
                 creditos = 1;
                 ClearBackground(SKYBLUE);
-
+                DrawText(" Autores:\n Davi Dubeux \n Henrique Carvalho \n J.Pedro Marinho \n Mayres Mauricio Andrey \n Thalya Mayara(Detentora dos direitos da historia) \n Victor Bastos", 80, 210, 50, DARKPURPLE);
+                
+                DrawText("Pressione B para retornar ao menu", 100, 950, 55, MAROON);
                 if(IsKeyPressed(KEY_B)){
                     creditos = 0;
                 }
@@ -362,16 +385,17 @@ int main(){
                     else{ sprintf(ataqueExibido, "-"); }
                     DrawText(ataqueExibido, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
-                // DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.1*square},
-                //              (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.6*square},
-                //              (Vector2){capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.35*square},
-                //              BLACK);
-                DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
-                           0.15*square, DARKGRAY);
+                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.1*square},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.6*square},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.35*square},
+                             BLACK);
+                // DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
+                //            0.15*square, DARKGRAY);
                 sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano);
                 DrawText(danoDoAtaque, arena.ataqueInfo.x + 0.5*square, arena.ataqueInfo.y + 0.5*square, 40, BLACK);
             }
             else{
+                DrawTexture(arena.texturaFalas, arena.frame.x, arena.frame.y, RAYWHITE);
                 DrawText(rodada, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
             }
 
