@@ -8,15 +8,15 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = explorando;
+    int prevGameMode = combate;
     int par = 0;
-    int pausado = 0;
     int vez = escolherAtaqueCapivara;
     char vidaExibidaCapivara[10] = "";
     char vidaExibidaBoss[10] = "";
     char ataqueExibido[50] = "";
     int ataqueDoBoss = 0;
     char rodada[100];
+    char danoDoAtaque[10];
 
     //menu
     Texture2D setas;
@@ -138,58 +138,58 @@ int main(){
             time = GetTime();
             int salaAtual = capivara.salaAtual;
 
-            if (!pausado){
-                if (IsKeyDown(KEY_UP)) {
-                    capivara.hitbox.y -= capivara.speed * delta;
-                    updateFrame(&capivara);
-                    
-                    //costas //ainda falta animar isso
-                    //if((((int)GetTime())%2)==1){ clique = 0; }
-                    //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
-                    desenho_capivara = (square * 7);
-                    capivara.direcao = sentidoCima;
-                }
 
-                if (IsKeyDown(KEY_DOWN)) {
-                    capivara.hitbox.y += capivara.speed * delta;
-                    updateFrame(&capivara);
-
-                    //frente //ainda falta animar isso
-                    //if(((int)GetTime())%2==1){ clique = 0; }
-                    //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
-                    desenho_capivara = (square * 10);
-                    capivara.direcao = sentidoBaixo;
-                }
-
-                if (IsKeyDown(KEY_RIGHT)) {
-                    capivara.hitbox.x += capivara.speed * delta;
-                    updateFrame(&capivara);
-
-                    //direita //ainda falta animar isso
-                    //if(((int)GetTime())%2==1){ clique = 0; }
-                    //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
-                    desenho_capivara = (square * 1);
-                    capivara.direcao = sentidoDireita;
-                }
-
-                if (IsKeyDown(KEY_LEFT)) {
-                    capivara.hitbox.x -= capivara.speed * delta;
-                    updateFrame(&capivara);
-
-                    //esquerda //ainda falta animar isso
-                    //if(((int)GetTime())%2==1){ clique = 0; }
-                    //else { clique = 1; }
-                    DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
-                    desenho_capivara = (square * 4);
-                    capivara.direcao = sentidoEsquerda;
-                }
-
-                if (IsKeyDown(KEY_Z)){ capivara.interacao.interagindo = 1; }
-                else{ capivara.interacao.interagindo = 0; }
+            if (IsKeyDown(KEY_UP)) {
+                capivara.hitbox.y -= capivara.speed * delta;
+                updateFrame(&capivara);
+                
+                //costas //ainda falta animar isso
+                //if((((int)GetTime())%2)==1){ clique = 0; }
+                //else { clique = 1; }
+                DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
+                desenho_capivara = (square * 7);
+                capivara.direcao = sentidoCima;
             }
+
+            if (IsKeyDown(KEY_DOWN)) {
+                capivara.hitbox.y += capivara.speed * delta;
+                updateFrame(&capivara);
+
+                //frente //ainda falta animar isso
+                //if(((int)GetTime())%2==1){ clique = 0; }
+                //else { clique = 1; }
+                DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
+                desenho_capivara = (square * 10);
+                capivara.direcao = sentidoBaixo;
+            }
+
+            if (IsKeyDown(KEY_RIGHT)) {
+                capivara.hitbox.x += capivara.speed * delta;
+                updateFrame(&capivara);
+
+                //direita //ainda falta animar isso
+                //if(((int)GetTime())%2==1){ clique = 0; }
+                //else { clique = 1; }
+                DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
+                desenho_capivara = (square * 1);
+                capivara.direcao = sentidoDireita;
+            }
+
+            if (IsKeyDown(KEY_LEFT)) {
+                capivara.hitbox.x -= capivara.speed * delta;
+                updateFrame(&capivara);
+
+                //esquerda //ainda falta animar isso
+                //if(((int)GetTime())%2==1){ clique = 0; }
+                //else { clique = 1; }
+                DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
+                desenho_capivara = (square * 4);
+                capivara.direcao = sentidoEsquerda;
+            }
+
+            if (IsKeyDown(KEY_Z)){ capivara.interacao.interagindo = 1; }
+            else{ capivara.interacao.interagindo = 0; }
+
 
             fixCollision(&capivara, &(sala[salaAtual]));
 
@@ -248,7 +248,7 @@ int main(){
 
 
             // anima a capivara normalmente desde o último movimento
-            if (!pausado){ par = ((int)GetTime())%3; }
+            par = ((int)GetTime())%3;
             DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, RAYWHITE);
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square}, capivara.frame, WHITE);
             capivara.prevHitbox = capivara.hitbox;
@@ -256,7 +256,6 @@ int main(){
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
             if (gameMode == combate){ prevGameMode = explorando; vez = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_P)){ pausado = !pausado; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
@@ -268,7 +267,7 @@ int main(){
             sprintf(vidaExibidaBoss, "%2d/%2d", boss[bossAtual].vida, boss[bossAtual].vidaMaxima);
 
             BeginDrawing();
-            ClearBackground(RED);
+            ClearBackground(RAYWHITE);
             
             if (vez == escolherAtaqueCapivara){
                 if (IsKeyPressed(KEY_DOWN) && selecionado < 3 &&  capivara.ataque[selecionado + 1].desbloqueado){ capivara.ataqueSelecionado++; }
@@ -308,7 +307,7 @@ int main(){
             if (vez == capivaraMorreu){ sprintf(rodada, "Ah não!\nTente novamente..."); }
 
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
-            ///*
+            /*
             // arena retangulo cinza
             DrawRectangleV(arena.frame, (Vector2){arena.width, arena.height}, LIGHTGRAY);
 
@@ -340,20 +339,22 @@ int main(){
                                 capivara.ataque[i].width, capivara.ataque[i].height,
                                 (i%2 == 0) ? LIGHTGRAY : DARKGRAY);
                     
-                    DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
-                            0.375*square, ORANGE);
                 }
-                DrawRectangle(arena.usosInfo.x, arena.usosInfo.y, arena.usosInfo.width, arena.usosInfo.height, LIGHTGRAY);
+                DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
+                           0.375*square, ORANGE);
+                DrawRectangle(arena.ataqueInfo.x, arena.ataqueInfo.y, arena.ataqueInfo.width, arena.ataqueInfo.height, LIGHTGRAY);
             }
             else{
                 DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 12*square, 3*square, SKYBLUE);
                 DrawText(rodada, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
             }
+
             
-            ///*
+            */
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
 
             if (vez == escolherAtaqueCapivara){
+                DrawTexture(arena.texturaEscolherAtaque, arena.frame.x, arena.frame.y, RAYWHITE);
                 for (int i = 0; i < 4; i++){
                     if (capivara.ataque[i].desbloqueado){
                         sprintf(ataqueExibido, "%s %d/%d", capivara.ataque[i].nome, capivara.ataque[i].usos, capivara.ataque[i].usosMaximo);
@@ -361,6 +362,17 @@ int main(){
                     else{ sprintf(ataqueExibido, "-"); }
                     DrawText(ataqueExibido, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
+                // DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.1*square},
+                //              (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.6*square},
+                //              (Vector2){capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.35*square},
+                //              BLACK);
+                DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
+                           0.15*square, DARKGRAY);
+                sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano);
+                DrawText(danoDoAtaque, arena.ataqueInfo.x + 0.5*square, arena.ataqueInfo.y + 0.5*square, 40, BLACK);
+            }
+            else{
+                DrawText(rodada, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
             }
 
             EndDrawing();
@@ -427,6 +439,7 @@ int main(){
     UnloadTexture(capivara.textura);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
+    unloadArena(&arena);
     
     return 0;
 }
