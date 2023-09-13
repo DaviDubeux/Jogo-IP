@@ -20,7 +20,7 @@ int main(){
     char danoDoAtaque[10];
 
     //menu
-    Texture2D setas, TecX, TecZ;
+    Texture2D setas, wasd, TecX, TecZ, Menu;
     int opcoes = 0;
     int creditos = 0;
 
@@ -79,6 +79,10 @@ int main(){
     setas.height = 350.0f;
     setas.width = 350.0f;
 
+    wasd = LoadTexture("./assets/wasd.png");
+    wasd.height = 350.0f;
+    wasd.width = 350.0f;
+
     TecX = LoadTexture("./assets/teclax.png");
     TecX.height = 100.0f;
     TecX.width = 100.0f;
@@ -86,6 +90,12 @@ int main(){
     TecZ = LoadTexture("./assets/teclaz.png");
     TecZ.height = 100.0f;
     TecZ.width = 100.0f;
+
+    Menu = LoadTexture("./assets/Ibama.png");
+    Menu.height = screenHeight;
+    Menu.width = screenWidth;
+
+
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -100,6 +110,7 @@ int main(){
             BeginDrawing();
             ClearBackground(DARKBLUE);
             
+            
             // Colocar em uma função
             //DrawText("Click Me", button_0.rect.x + button_0.rect.width / 2 - MeasureText("Click Me", 20) / 2, button_0.rect.y + button_0.rect.height / 2 - 20 / 2, 20, WHITE);
 
@@ -109,7 +120,8 @@ int main(){
 
             //Entrar no jogo
             if(opcao == 0){
-                DrawText("Missão IBAMA: Contra-Ataque a Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque a Thalya", 20) / 2, 15, 60, LIME);
+                DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
+                DrawText("Missão IBAMA: Contra-Ataque a Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque a Thalya", 20) / 2, 15, 75, LIME);
 
                 DrawRectangleRec((Rectangle){75, screenHeight / 2 - 200, 500, 100}, RED);
                 DrawText("Aperte Q para iniciar", 75 + 250 - MeasureText("Aperte Q para iniciar", 20) / 2, screenHeight / 2 - 200 + 50 - 20 / 2, 20, BLACK);
@@ -125,11 +137,12 @@ int main(){
             if(opcao == 1){
                 opcoes = 1;
                 ClearBackground(GRAY);
-                DrawText("Use as setas do teclado para se movimentar", 75, 210, 50, WHITE);
+                DrawText("Use as setas do teclado para se movimentar  ou W A S D", 75, 210, 32, WHITE);
                 //Z para interagir e X para passar dos dialogos
+                DrawTextureRec(wasd,(Rectangle){0, 0, 350, 350}, (Vector2){ 640, 200}, GRAY);
                 DrawTextureRec(setas,(Rectangle){0, 0, 350, 350}, (Vector2){ 180, 200}, GRAY);
                 DrawTextureRec(TecZ,(Rectangle){0, 0, 100, 100}, (Vector2){ 180, 580}, GRAY);
-                DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 430, 580}, GRAY);
+                DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 500, 580}, GRAY);
 
                 DrawText("Z para interagir com objetos  \nX para passar dialogos", 100, 750, 36, WHITE);
 
@@ -162,7 +175,7 @@ int main(){
             int salaAtual = capivara.salaAtual;
 
 
-            if (IsKeyDown(KEY_UP)) {
+            if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
                 capivara.hitbox.y -= capivara.speed * delta;
                 updateFrame(&capivara);
                 
@@ -174,7 +187,7 @@ int main(){
                 capivara.direcao = sentidoCima;
             }
 
-            if (IsKeyDown(KEY_DOWN)) {
+            if (IsKeyDown(KEY_DOWN)  || IsKeyDown(KEY_S)) {
                 capivara.hitbox.y += capivara.speed * delta;
                 updateFrame(&capivara);
 
@@ -186,7 +199,7 @@ int main(){
                 capivara.direcao = sentidoBaixo;
             }
 
-            if (IsKeyDown(KEY_RIGHT)) {
+            if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
                 capivara.hitbox.x += capivara.speed * delta;
                 updateFrame(&capivara);
 
@@ -198,7 +211,7 @@ int main(){
                 capivara.direcao = sentidoDireita;
             }
 
-            if (IsKeyDown(KEY_LEFT)) {
+            if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
                 capivara.hitbox.x -= capivara.speed * delta;
                 updateFrame(&capivara);
 
@@ -221,6 +234,7 @@ int main(){
 
             BeginDrawing();
             ClearBackground(RAYWHITE);
+            DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
 
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
             /*
