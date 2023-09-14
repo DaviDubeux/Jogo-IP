@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "defines.h": "c"
     },
     "cmake.configureOnOpen": false
 }
