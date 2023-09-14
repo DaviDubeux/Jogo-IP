@@ -18,7 +18,7 @@ void loadCapivaraExplorando(Capivara *capivara, const float screenW, const float
 }
 
 void loadCapivaraCombate(Capivara *capivara, Arena *arena){
-    capivara->vida = 40;
+    capivara->vida = 5;
     capivara->vidaMaxima = 40;
     capivara->bossDerrotados = 0;
     capivara->ataqueSelecionado = 0;
@@ -28,7 +28,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 
     capivara->ataque[0].nome[0] = '\0';
     strcpy(capivara->ataque[0].nome, "Canetada do Ibama");
-    capivara->ataque[0].dano = 10; capivara->ataque[0].chanceDeCritico = 0;
+    capivara->ataque[0].dano = 10; capivara->ataque[0].chanceDeCritico = 100;
     capivara->ataque[0].usos = 20; capivara->ataque[0].usosMaximo = 20;
     capivara->ataque[0].desbloqueado = true;
     capivara->ataque[0].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.2*square};
@@ -61,26 +61,26 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 
 
 void loadBoss1(Boss *boss){
-    boss->vida = 40;
-    boss->vidaMaxima = 40;
+    boss->vida = 400;
+    boss->vidaMaxima = 400;
     boss->textura = LoadTexture("./assets/boss/sofa.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Sofá de Thalya");
     
-    boss->ataque[0].dano = 5;
+    boss->ataque[0].dano = 0;
     boss->ataque[0].nome[0] = '\0';
     strcpy(boss->ataque[0].nome, "Lorem ipsum dolor sit");
 
-    boss->ataque[1].dano = 5;
+    boss->ataque[1].dano = 0;
     boss->ataque[1].nome[1] = '\0';
     strcpy(boss->ataque[1].nome, "Lorem ipsum dolor sit");
 
-    boss->ataque[2].dano = 5;
+    boss->ataque[2].dano = 0;
     boss->ataque[2].nome[2] = '\0';
     strcpy(boss->ataque[2].nome, "Lorem ipsum dolor sit");
 
-    boss->ataque[3].dano = 5;
+    boss->ataque[3].dano = 0;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
 }

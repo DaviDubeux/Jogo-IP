@@ -13,13 +13,19 @@ enum{
 
 enum{
     escolherAtaqueCapivara,
+    ataqueCriticoCapivara,
+    mostrarCriticoCapivara,
     escolheuErrado,
     mostrarAtaqueCapivara,
     mostrarCuraCapivara,
+    mostrarCapivaraMorreu,
+
     escolherAtaqueBoss,
+    ataqueCriticoBoss,
+    mostrarCriticoBoss,
     mostrarAtaqueBoss,
     mostrarCuraBoss,
-    mostrarBossMorreu,       
+    mostrarBossMorreu   
 }Round;
 
 enum {

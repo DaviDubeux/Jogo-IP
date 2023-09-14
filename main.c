@@ -9,10 +9,11 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = combate;
+    int prevGameMode = explorando;
     int opcao = 0;
     int par = 0;
     int round = escolherAtaqueCapivara;
+    int ataqueCritico = 0;
     char vidaExibidaCapivara[10] = "";
     char vidaExibidaBoss[10] = "";
     char ataqueExibido[50] = "";
@@ -301,10 +302,10 @@ int main(){
                 if (IsKeyPressed(KEY_Z)){
                     if (capivara.ataque[selecionado].usos > 0){
                         if (capivara.ataque[selecionado].dano > 0){ // mostrarAtaqueCapivara
-                            boss[bossAtual].vida -= capivara.ataque[selecionado].dano;
-                            sprintf(scene, "%s usou %s!\n%s levou %d de dano",
-                                    capivara.nome, capivara.ataque[selecionado].nome, boss[bossAtual].nome, capivara.ataque[selecionado].dano);
-                            round = mostrarAtaqueCapivara;
+                            ataqueCritico = GetRandomValue(0, 99);
+                            ataqueCritico = (ataqueCritico < capivara.ataque[selecionado].chanceDeCritico) ? 2 : 1;
+                            boss[bossAtual].vida -= (ataqueCritico)*capivara.ataque[selecionado].dano;
+                            round = (ataqueCritico == 2) ? ataqueCriticoCapivara : mostrarAtaqueCapivara;
                         }
                         else{ // mostrarCuraCapivara
                             capivara.vida -= capivara.ataque[selecionado].dano;
@@ -321,11 +322,24 @@ int main(){
                 }
             }
 
-            if (round == escolherAtaqueCapivara && capivara.vida <= 0){ sprintf(scene, "Ah não!\nTente novamente..."); }
+            if (round == escolherAtaqueCapivara && capivara.vida <= 0){
+                sprintf(scene, "Você morreu!\nTente novamente...");
+                round = mostrarCapivaraMorreu;
+            }
+
+            if (round == ataqueCriticoCapivara){
+                sprintf(scene, "Um ataque crítico!");
+                round = mostrarCriticoCapivara;
+            }
+
+            if (round == mostrarAtaqueCapivara){
+                sprintf(scene, "%s usou %s!\n%s levou %d de dano", capivara.nome, capivara.ataque[selecionado].nome,
+                        boss[bossAtual].nome, capivara.ataque[selecionado].dano*(ataqueCritico));
+            }
 
             if (round == escolherAtaqueBoss && boss[bossAtual].vida > 0){
                 ataqueDoBoss = GetRandomValue(0, 3);
-                if (boss[bossAtual].ataque[ataqueDoBoss].dano > 0){ // mostrarAtaqueBoss
+                if (boss[bossAtual].ataque[ataqueDoBoss].dano >= 0){ // mostrarAtaqueBoss
                     capivara.vida -= boss[bossAtual].ataque[ataqueDoBoss].dano;
                     sprintf(scene, "%s usou %s!\n%s levou %d de dano", boss[bossAtual].nome, boss[bossAtual].ataque[ataqueDoBoss].nome,
                             capivara.nome, boss[bossAtual].ataque[ataqueDoBoss].dano);
@@ -426,7 +440,7 @@ int main(){
             }
             else{
                 DrawTexture(arena.texturaDescricao, arena.frame.x, arena.frame.y, RAYWHITE);
-                DrawText(scene, arena.frame.x + 0.25f*square, arena.frame.y + 7.25f*square, 40, BLACK);
+                DrawText(scene, arena.frame.x + 0.25f*square, arena.frame.y + 7.25f*square, 50, BLACK);
             }
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
                           (Vector2){arena.bossInfo.frame.x + 0.5f*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
@@ -437,8 +451,7 @@ int main(){
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); }
-            gameMode = combate;
+            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); printf("%d", gameMode); }
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }
@@ -446,12 +459,14 @@ int main(){
         else if (gameMode == gameOver){
             // Reload
             loadCapivaraExplorando(&capivara, screenWidth, screenHeight);
+            loadCapivaraCombate(&capivara, &arena);
 
-            loadBoss1(&(boss[0]));
-            loadBoss2(&(boss[1]));
-            loadBoss3(&(boss[2]));
-            loadBoss4(&(boss[3]));
+            loadBoss1(&(boss[0])); boss[0].textura.width *= 9.0f; boss[0].textura.height *= 9.0f;
+            loadBoss2(&(boss[1])); boss[1].textura.width *= 9.0f; boss[1].textura.height *= 9.0f;
+            loadBoss3(&(boss[2])); boss[2].textura.width *= 9.0f; boss[2].textura.height *= 9.0f;
+            loadBoss4(&(boss[3])); boss[3].textura.width *= 9.0f; boss[3].textura.height *= 9.0f;
 
+            /*
             for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
             loadSala1(&(sala[salaJardim]));
             // if (sala[salaJardim].obstaculo == NULL){
@@ -474,15 +489,16 @@ int main(){
                 for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
             loadSala6(&(sala[salaPeixe]));
-            // if (sala[salaPeixe].obstaculo == NULL){
-            //     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
-            // }
+            if (sala[salaPeixe].obstaculo == NULL){
+                for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            }
+            */
 
             loadArena(&arena, screenWidth, screenHeight);
-            loadCapivaraCombate(&capivara, &arena);
 
-            gameMode = menu;
-            prevGameMode = explorando;
+            gameMode = menu; prevGameMode = explorando;
+            clique = 0;
+            round = escolherAtaqueCapivara;
         }
     }
 

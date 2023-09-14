@@ -40,9 +40,14 @@ void unloadArena(Arena *arena){
 
 void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMode){
     if (*round == mostrarAtaqueCapivara){ *round = escolherAtaqueBoss; }
-    if (*round == mostrarAtaqueBoss){ *round = escolherAtaqueCapivara; }
+    if (*round == mostrarCriticoCapivara){ *round = mostrarAtaqueCapivara; }
+    if (*round == mostrarCuraCapivara){ *round = escolherAtaqueBoss; }
     if (*round == escolheuErrado){ *round = escolherAtaqueCapivara; }
-    if (*round == escolherAtaqueCapivara && capivara->vida <= 0){ *gameMode = gameOver; }
+    if (*round == mostrarCapivaraMorreu){ *gameMode = gameOver; }
+
+    if (*round == ataqueCriticoBoss){ *round = mostrarAtaqueBoss; }
+    if (*round == mostrarAtaqueBoss){ *round = escolherAtaqueCapivara; }
+    if (*round == mostrarCuraBoss){ *round = escolherAtaqueCapivara; }
     if (*round == mostrarBossMorreu){
         capivara->vida = capivara->vidaMaxima;
         capivara->bossDerrotados++;
