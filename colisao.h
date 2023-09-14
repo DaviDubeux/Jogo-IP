@@ -1,6 +1,7 @@
+#ifndef COLISAO
+#define COLISAO
 #include "C:\raylib\raylib\src\raylib.h"
-#include "personagens.h"
-#include "salas.h"
+#include "defines.h"
 
 void fixCollision(Capivara *capivara, Sala *sala){
 
@@ -123,33 +124,22 @@ int updateBossfight(Capivara *capivara, Sala *sala){
 
         if (capivara->salaAtual == salaCagado){
             bossfight = CheckCollisionRecs(sala->obstaculo[2], capivara->interacao.hitbox);
-            if (bossfight && capivara->bossDerrotados == 0){
-                
-                return combate; 
-            }
+            if (bossfight && capivara->bossDerrotados == 0){ return combate; }
         }
         else if (capivara->salaAtual == salaAranhas){
             bossfight = CheckCollisionRecs(sala->obstaculo[6], capivara->interacao.hitbox);
-            if (bossfight && capivara->bossDerrotados == 1){
-            
-                return combate; 
-            }
+            if (bossfight && capivara->bossDerrotados == 1){ return combate; }
         }
         else if (capivara->salaAtual == salaGalinha){
             bossfight = CheckCollisionRecs(sala->obstaculo[6], capivara->interacao.hitbox);
-            if (bossfight && capivara->bossDerrotados == 2){
-            
-                return combate; 
-            }
+            if (bossfight && capivara->bossDerrotados == 2){ return combate; }
         }
         else if (capivara->salaAtual == salaPeixe){
-            bossfight = 0;
-            if (bossfight && capivara->bossDerrotados == 3){
-            
-                return combate; 
-            }
+            bossfight = CheckCollisionRecs(sala->obstaculo[1], capivara->interacao.hitbox);
+            if (bossfight && capivara->bossDerrotados == 3){ return combate; }
         }
     }
 
     return explorando;
 }
+#endif

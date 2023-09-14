@@ -99,7 +99,6 @@ typedef struct{
     float width;
     float height;
     Vector2 frame;
-    Texture2D textura;
     Rectangle statsFrame;
     Vector2 nomeFrame;
     Vector2 vidaFrame;

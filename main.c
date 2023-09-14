@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "C:\raylib\raylib\src\raylib.h"
+#include "defines.h"
 #include "personagens.h"
 #include "salas.h"
 #include "colisao.h"
@@ -43,10 +44,10 @@ int main(){
 //-------------------------------------------------------------------LOADS-------------------------------------------------------------------
     loadCapivaraExplorando(&capivara, screenWidth, screenHeight);
 
-    loadBoss1(&(boss[0]));
-    loadBoss2(&(boss[1]));
-    loadBoss3(&(boss[2]));
-    loadBoss4(&(boss[3]));
+    loadBoss1(&(boss[0])); boss[0].textura.width *= 9.0f; boss[0].textura.height *= 9.0f;
+    loadBoss2(&(boss[1])); boss[1].textura.width *= 9.0f; boss[1].textura.height *= 9.0f;
+    loadBoss3(&(boss[2])); boss[2].textura.width *= 9.0f; boss[2].textura.height *= 9.0f;
+    loadBoss4(&(boss[3])); boss[3].textura.width *= 9.0f; boss[3].textura.height *= 9.0f;
 
     for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
     loadSala1(&(sala[salaJardim]));
@@ -70,34 +71,34 @@ int main(){
         for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala6(&(sala[salaPeixe]));
-    // if (sala[salaPeixe].obstaculo == NULL){
-    //     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
-    // }
+    if (sala[salaPeixe].obstaculo == NULL){
+        for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+    }
     
     loadArena(&arena, screenWidth, screenHeight);
     loadCapivaraCombate(&capivara, &arena);
     
-    setas = LoadTexture("./assets/setas.png");
+    setas = LoadTexture("./assets/cenarios/setas.png");
     setas.height = 350.0f;
     setas.width = 350.0f;
 
-    wasd = LoadTexture("./assets/wasd.png");
+    wasd = LoadTexture("./assets/cenarios/wasd.png");
     wasd.height = 350.0f;
     wasd.width = 350.0f;
 
-    TecX = LoadTexture("./assets/teclax.png");
+    TecX = LoadTexture("./assets/cenarios/teclax.png");
     TecX.height = 100.0f;
     TecX.width = 100.0f;
 
-    TecZ = LoadTexture("./assets/teclaz.png");
+    TecZ = LoadTexture("./assets/cenarios/teclaz.png");
     TecZ.height = 100.0f;
     TecZ.width = 100.0f;
 
-    Menu = LoadTexture("./assets/Ibama.png");
+    Menu = LoadTexture("./assets/cenarios/Ibama.png");
     Menu.height = screenHeight;
     Menu.width = screenWidth;
 
-
+    
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -393,20 +394,18 @@ int main(){
             if (round == escolherAtaqueCapivara && capivara.vida > 0){
                 DrawTexture(arena.texturaEscolherAtaque, arena.frame.x, arena.frame.y, RAYWHITE);
                 for (int i = 0; i < 4; i++){
-                    if (capivara.ataque[i].desbloqueado){
-                        sprintf(ataqueExibido, "%s", capivara.ataque[i].nome);
-                    }
+                    if (capivara.ataque[i].desbloqueado){ sprintf(ataqueExibido, "%s", capivara.ataque[i].nome); }
                     else{ sprintf(ataqueExibido, "-"); }
                     DrawText(ataqueExibido, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
-                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 8.0f},
-                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 52.0f},
-                             (Vector2){capivara.ataque[selecionado].frame.x - 0.4*square, capivara.ataque[selecionado].frame.y + 30.0f},
+                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75f*square, capivara.ataque[selecionado].frame.y + 8.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75f*square, capivara.ataque[selecionado].frame.y + 52.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.4f*square, capivara.ataque[selecionado].frame.y + 30.0f},
                              BLACK);
-                // DrawTriangle((Vector2){arena.ataqueInfo.x - 0.65*square, capivara.ataque[selecionado].frame.y + 8.0f},
-                //              (Vector2){arena.ataqueInfo.x - 0.65*square, capivara.ataque[selecionado].frame.y + 52.0f},
-                //              (Vector2){arena.ataqueInfo.x - 1.3*square, capivara.ataque[selecionado].frame.y + 30.0f},
-                //              BLACK);
+                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x + 6.45f*square, capivara.ataque[selecionado].frame.y + 8.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x + 6.1f*square, capivara.ataque[selecionado].frame.y + 30.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x + 6.45f*square, capivara.ataque[selecionado].frame.y + 52.0f},
+                             BLACK);
                 // DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
                 //            0.15*square, DARKGRAY);
                 if (capivara.ataque[selecionado].dano > 0 ){ sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano); }
@@ -427,12 +426,19 @@ int main(){
             }
             else{
                 DrawTexture(arena.texturaDescricao, arena.frame.x, arena.frame.y, RAYWHITE);
-                DrawText(scene, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
+                DrawText(scene, arena.frame.x + 0.25f*square, arena.frame.y + 7.25f*square, 40, BLACK);
             }
+            DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
+                          (Vector2){arena.bossInfo.frame.x + 0.5f*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
+            DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
+            DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
+            DrawText(boss[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
+            DrawText(vidaExibidaBoss, arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
 
             EndDrawing();
 
             if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); }
+            gameMode = combate;
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }
