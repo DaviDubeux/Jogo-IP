@@ -2,58 +2,9 @@
 #define SALA
 #include "C:\raylib\raylib\src\raylib.h"
 #include <stdlib.h>
-#define square 96.0f
-
-enum {
-    salaJardim,         // salaJardim = 0
-    salaHub,            // salaHub = 1
-    salaCagado,         // salaCagado = 2
-    salaAranhas,        // salaAranhas = 3
-    salaGalinha,        // salaGalinha = 4
-    salaPeixe           // salaPeixe = 5
-}NumeroDasSalas;
-
-enum {
-    cima,         // cima = 0
-    esquerda,     // esquerda = 1
-    direita,      // direita = 2
-    baixo,        // baixo = 3
-}Direcao;
-
-enum{
-    menu,        // menu = 0
-    explorando,  // explorando = 1
-    combate,     // combate = 2
-    gameOver,    // gameOver = 3
-}Mode;
+#include "defines.h"
 
 
-typedef struct{
-    bool aberta;
-    Rectangle hitbox;
-}Porta;
-
-typedef struct{
-    int saidaPara;
-    Rectangle hitbox;
-}Saida;
-
-typedef struct{
-
-    // gerais de todas as salas
-    float width;
-    float height;
-    Vector2 frame;
-    Rectangle paredes[8];
-    Porta porta[4];
-    Saida saida[4];
-
-    // específicos da sala
-    int qtdObstaculos;
-    Rectangle *obstaculo;
-    Texture2D textura;
-
-}Sala;
 
 void loadSalas(Sala *sala, const float screenW, const float screenH){ // dá load em coisas em comuns das salas
     sala->width = 12*square; // em quadrados

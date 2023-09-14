@@ -2,60 +2,7 @@
 #define CAPIVARA
 #include "C:\raylib\raylib\src\raylib.h"
 #include <string.h>
-#include "combate.h"
-#define square 96.0f
-
-enum{
-    sentidoCima = 1, // sentidoCima = 1
-    sentidoEsquerda, // sentidoEsquerda = 2
-    sentidoDireita,  // sentidoDireita = 3
-    sentidoBaixo     // sentidoBaixo = 4
-}Sentido;
-
-typedef struct{
-    bool interagindo;
-    Rectangle hitbox;
-}Interacao;
-
-typedef struct{
-    int dano;
-    int usos;
-    int usosMaximo;
-    bool desbloqueado;
-    Vector2 frame;
-    float width;
-    float height;
-    char nome[50];
-}Ataque;
-
-
-typedef struct{
-    // gamemode explorando
-    float speed;
-    int direcao;
-    int salaAtual;
-    Vector2 frame;
-    Rectangle hitbox;
-    Rectangle prevHitbox;
-    Interacao interacao;
-    Texture2D textura;
-
-    // gamemode combate
-    char nome[50];
-    int vida;
-    int vidaMaxima;
-    int bossDerrotados;
-    Ataque ataque[4];
-    int ataqueSelecionado;
-} Capivara;
-
-typedef struct{
-    char nome[50];
-    int vida;
-    int vidaMaxima;
-    Ataque ataque[4];
-    Texture2D textura;
-}Boss;
+#include "defines.h"
 
 void loadCapivaraExplorando(Capivara *capivara, const float screenW, const float screenH){
     capivara->speed = 400.0f;
@@ -79,29 +26,33 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->nome[0] = '\0';
     strcpy(capivara->nome, "Agente do ibama");
 
-    capivara->ataque[0].dano = 5;  capivara->ataque[0].usos = 4; capivara->ataque[0].usosMaximo = 4;
+    capivara->ataque[0].dano = 10; capivara->ataque[0].chanceDeCritico = 0;
+    capivara->ataque[0].usos = 20; capivara->ataque[0].usosMaximo = 4;
     capivara->ataque[0].desbloqueado = true;
     capivara->ataque[0].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.2*square};
     capivara->ataque[0].width = 6*square; capivara->ataque[0].height = 0.75*square;
     capivara->ataque[0].nome[0] = '\0';
     strcpy(capivara->ataque[0].nome, "Canetada do Ibama");
 
-    capivara->ataque[1].dano = 5;  capivara->ataque[1].usos = 10; capivara->ataque[1].usosMaximo = 10;
-    capivara->ataque[1].desbloqueado = false;
+    capivara->ataque[1].dano = 10; capivara->ataque[1].chanceDeCritico = 25;
+    capivara->ataque[1].usos = 5; capivara->ataque[1].usosMaximo = 10;
+    capivara->ataque[1].desbloqueado = true;
     capivara->ataque[1].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.85*square};
     capivara->ataque[1].width = 6*square; capivara->ataque[1].height = 0.75*square;
     capivara->ataque[1].nome[0] = '\0';
     strcpy(capivara->ataque[1].nome, "Koopa troopa");
 
-    capivara->ataque[2].dano = 5;  capivara->ataque[2].usos = 10; capivara->ataque[2].usosMaximo = 10;
-    capivara->ataque[2].desbloqueado = false;
+    capivara->ataque[2].dano = -5; capivara->ataque[2].chanceDeCritico = 0;
+    capivara->ataque[2].usos = 10; capivara->ataque[2].usosMaximo = 10;
+    capivara->ataque[2].desbloqueado = true;
     capivara->ataque[2].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 8.5*square};
     capivara->ataque[2].width = 6*square; capivara->ataque[2].height = 0.75*square;
     capivara->ataque[2].nome[0] = '\0';
     strcpy(capivara->ataque[2].nome, "Bandaid de teia");
 
-    capivara->ataque[3].dano = 5;  capivara->ataque[3].usos = 10; capivara->ataque[3].usosMaximo = 10;
-    capivara->ataque[3].desbloqueado = false;
+    capivara->ataque[3].dano = 30; capivara->ataque[3].chanceDeCritico = 0;
+    capivara->ataque[3].usos = 10; capivara->ataque[3].usosMaximo = 10;
+    capivara->ataque[3].desbloqueado = true;
     capivara->ataque[3].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 9.2*square};
     capivara->ataque[3].width = 6*square; capivara->ataque[3].height = 0.75*square;
     capivara->ataque[3].nome[0] = '\0';
@@ -109,8 +60,8 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 }
 
 void loadBoss1(Boss *boss){
-    boss->vida = 20;
-    boss->vidaMaxima = 20;
+    boss->vida = 40;
+    boss->vidaMaxima = 40;
     // boss->textura = LoadTexture("./assets/capivara.png");
 
     boss->nome[0] = '\0';

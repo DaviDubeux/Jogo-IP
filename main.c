@@ -8,24 +8,26 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = explorando;
+    int prevGameMode = combate;
     int opcao = 0;
     int par = 0;
-    int vez = escolherAtaqueCapivara;
+    int round = escolherAtaqueCapivara;
     char vidaExibidaCapivara[10] = "";
     char vidaExibidaBoss[10] = "";
     char ataqueExibido[50] = "";
     int ataqueDoBoss = 0;
-    char rodada[100];
-    char danoDoAtaque[10];
+    char scene[100] = "";
+    char danoDoAtaque[10] = "";
+    char usosDoAtaque[10] = "";
+    char chanceDeCritico[10] = "";
 
     //menu
-    Texture2D setas, TecX, TecZ;
+    Texture2D setas, wasd, TecX, TecZ, Menu;
     int opcoes = 0;
     int creditos = 0;
 
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
-    //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
+    if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
     double time = GetTime();
@@ -79,6 +81,10 @@ int main(){
     setas.height = 350.0f;
     setas.width = 350.0f;
 
+    wasd = LoadTexture("./assets/wasd.png");
+    wasd.height = 350.0f;
+    wasd.width = 350.0f;
+
     TecX = LoadTexture("./assets/teclax.png");
     TecX.height = 100.0f;
     TecX.width = 100.0f;
@@ -86,6 +92,12 @@ int main(){
     TecZ = LoadTexture("./assets/teclaz.png");
     TecZ.height = 100.0f;
     TecZ.width = 100.0f;
+
+    Menu = LoadTexture("./assets/Ibama.png");
+    Menu.height = screenHeight;
+    Menu.width = screenWidth;
+
+
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -100,6 +112,7 @@ int main(){
             BeginDrawing();
             ClearBackground(DARKBLUE);
             
+            
             // Colocar em uma função
             //DrawText("Click Me", button_0.rect.x + button_0.rect.width / 2 - MeasureText("Click Me", 20) / 2, button_0.rect.y + button_0.rect.height / 2 - 20 / 2, 20, WHITE);
 
@@ -109,7 +122,8 @@ int main(){
 
             //Entrar no jogo
             if(opcao == 0){
-                DrawText("Missão IBAMA: Contra-Ataque a Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque a Thalya", 20) / 2, 15, 60, LIME);
+                DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
+                DrawText("Missão IBAMA: Contra-Ataque a Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque a Thalya", 20) / 2, 15, 75, LIME);
 
                 DrawRectangleRec((Rectangle){75, screenHeight / 2 - 200, 500, 100}, RED);
                 DrawText("Aperte Q para iniciar", 75 + 250 - MeasureText("Aperte Q para iniciar", 20) / 2, screenHeight / 2 - 200 + 50 - 20 / 2, 20, BLACK);
@@ -125,11 +139,12 @@ int main(){
             if(opcao == 1){
                 opcoes = 1;
                 ClearBackground(GRAY);
-                DrawText("Use as setas do teclado para se movimentar", 75, 210, 50, WHITE);
+                DrawText("Use as setas do teclado para se movimentar  ou W A S D", 75, 210, 32, WHITE);
                 //Z para interagir e X para passar dos dialogos
+                DrawTextureRec(wasd,(Rectangle){0, 0, 350, 350}, (Vector2){ 640, 200}, GRAY);
                 DrawTextureRec(setas,(Rectangle){0, 0, 350, 350}, (Vector2){ 180, 200}, GRAY);
                 DrawTextureRec(TecZ,(Rectangle){0, 0, 100, 100}, (Vector2){ 180, 580}, GRAY);
-                DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 430, 580}, GRAY);
+                DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 500, 580}, GRAY);
 
                 DrawText("Z para interagir com objetos  \nX para passar dialogos", 100, 750, 36, WHITE);
 
@@ -162,49 +177,33 @@ int main(){
             int salaAtual = capivara.salaAtual;
 
 
-            if (IsKeyDown(KEY_UP)) {
+            if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
                 capivara.hitbox.y -= capivara.speed * delta;
                 updateFrame(&capivara);
-                
-                //costas //ainda falta animar isso
-                //if((((int)GetTime())%2)==1){ clique = 0; }
-                //else { clique = 1; }
                 DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 7);
                 capivara.direcao = sentidoCima;
             }
 
-            if (IsKeyDown(KEY_DOWN)) {
+            if (IsKeyDown(KEY_DOWN)  || IsKeyDown(KEY_S)) {
                 capivara.hitbox.y += capivara.speed * delta;
                 updateFrame(&capivara);
-
-                //frente //ainda falta animar isso
-                //if(((int)GetTime())%2==1){ clique = 0; }
-                //else { clique = 1; }
                 DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 10);
                 capivara.direcao = sentidoBaixo;
             }
 
-            if (IsKeyDown(KEY_RIGHT)) {
+            if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
                 capivara.hitbox.x += capivara.speed * delta;
                 updateFrame(&capivara);
-
-                //direita //ainda falta animar isso
-                //if(((int)GetTime())%2==1){ clique = 0; }
-                //else { clique = 1; }
                 DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 1);
                 capivara.direcao = sentidoDireita;
             }
 
-            if (IsKeyDown(KEY_LEFT)) {
+            if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
                 capivara.hitbox.x -= capivara.speed * delta;
                 updateFrame(&capivara);
-
-                //esquerda //ainda falta animar isso
-                //if(((int)GetTime())%2==1){ clique = 0; }
-                //else { clique = 1; }
                 DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 4);
                 capivara.direcao = sentidoEsquerda;
@@ -221,6 +220,7 @@ int main(){
 
             BeginDrawing();
             ClearBackground(RAYWHITE);
+            DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
 
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
             /*
@@ -272,13 +272,13 @@ int main(){
 
             // anima a capivara normalmente desde o último movimento
             par = ((int)GetTime())%3;
-            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, RAYWHITE);
+            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, WHITE);
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square}, capivara.frame, WHITE);
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
-            if (gameMode == combate){ prevGameMode = explorando; vez = escolherAtaqueCapivara; }
+            if (gameMode == combate){ prevGameMode = explorando; round = escolherAtaqueCapivara; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
@@ -292,42 +292,56 @@ int main(){
             BeginDrawing();
             ClearBackground(RAYWHITE);
             
-            if (vez == escolherAtaqueCapivara){
+            if (round == escolherAtaqueCapivara && capivara.vida > 0){
                 if (IsKeyPressed(KEY_DOWN) && selecionado < 3 &&  capivara.ataque[selecionado + 1].desbloqueado){ capivara.ataqueSelecionado++; }
 
                 if (IsKeyPressed(KEY_UP) && selecionado > 0 &&  capivara.ataque[selecionado - 1].desbloqueado){ capivara.ataqueSelecionado--; }
 
                 if (IsKeyPressed(KEY_Z)){
                     if (capivara.ataque[selecionado].usos > 0){
-                        boss[bossAtual].vida -= capivara.ataque[selecionado].dano;
+                        if (capivara.ataque[selecionado].dano > 0){ // mostrarAtaqueCapivara
+                            boss[bossAtual].vida -= capivara.ataque[selecionado].dano;
+                            sprintf(scene, "%s usou %s!\n%s levou %d de dano",
+                                    capivara.nome, capivara.ataque[selecionado].nome, boss[bossAtual].nome, capivara.ataque[selecionado].dano);
+                            round = mostrarAtaqueCapivara;
+                        }
+                        else{ // mostrarCuraCapivara
+                            capivara.vida -= capivara.ataque[selecionado].dano;
+                            sprintf(scene, "%s usou %s!\n%s recuperou %d de vida", capivara.nome, capivara.ataque[selecionado].nome, capivara.nome,
+                                    (-1)*capivara.ataque[selecionado].dano);
+                            round = mostrarCuraCapivara;
+                        }
                         capivara.ataque[selecionado].usos--;
-                        sprintf(rodada, "%s usou %s!\n%s levou %d de dano",
-                                capivara.nome, capivara.ataque[selecionado].nome, boss[bossAtual].nome, capivara.ataque[selecionado].dano);
-                        vez = mostrarAtaqueCapivara;
                     }
-                    else{
-                        sprintf(rodada, "você não tem mais usos para esse Ataque!");                       
-                        vez = escolheuErrado;
+                    else{ // escolheuErrado
+                        sprintf(scene, "você não tem mais usos para esse Ataque!");                       
+                        round = escolheuErrado;
                     }
                 }
             }
 
-            if (vez == escolherAtaqueBoss && boss[bossAtual].vida > 0){
+            if (round == escolherAtaqueCapivara && capivara.vida <= 0){ sprintf(scene, "Ah não!\nTente novamente..."); }
+
+            if (round == escolherAtaqueBoss && boss[bossAtual].vida > 0){
                 ataqueDoBoss = GetRandomValue(0, 3);
-                capivara.vida -= boss[bossAtual].ataque[ataqueDoBoss].dano;
-                sprintf(rodada, "%s usou %s!\n%s levou %d de dano",
-                boss[bossAtual].nome, boss[bossAtual].ataque[ataqueDoBoss].nome, capivara.nome, boss[bossAtual].ataque[ataqueDoBoss].dano);
-                vez = mostrarAtaqueBoss;
+                if (boss[bossAtual].ataque[ataqueDoBoss].dano > 0){ // mostrarAtaqueBoss
+                    capivara.vida -= boss[bossAtual].ataque[ataqueDoBoss].dano;
+                    sprintf(scene, "%s usou %s!\n%s levou %d de dano", boss[bossAtual].nome, boss[bossAtual].ataque[ataqueDoBoss].nome,
+                            capivara.nome, boss[bossAtual].ataque[ataqueDoBoss].dano);
+                    round = mostrarAtaqueBoss;
+                }
+                else{ // mostrarCuraBoss
+                    boss[bossAtual].vida -= boss[bossAtual].ataque[ataqueDoBoss].dano;
+                    sprintf(scene, "%s usou %s!\n%s recuperou %d de vida", boss[bossAtual].nome, boss[bossAtual].ataque[ataqueDoBoss].nome,
+                            boss[bossAtual].nome, (-1)*boss[bossAtual].ataque[ataqueDoBoss].dano);
+                    round = mostrarCuraBoss;                    
+                }
             }
 
-            if (vez == escolherAtaqueBoss && boss[bossAtual].vida <= 0){
-                sprintf(rodada, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome); 
-                //precisa ver quando fazer isso para depois de interagir com o animal
-                desenho_skin += 2*square;
-                vez = mostrarBossMorreu;
+            if (round == escolherAtaqueBoss && boss[bossAtual].vida <= 0){
+                sprintf(scene, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome);
+                round = mostrarBossMorreu;
             }
-
-            if (vez == capivaraMorreu){ sprintf(rodada, "Ah não!\nTente novamente..."); }
 
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
             /*
@@ -355,7 +369,7 @@ int main(){
             // box do dano
             DrawRectangle(arena.frame.x + 8*square, arena.frame.y + 7*square, 4*square, 3*square, BLUE);
 
-            if (vez == escolherAtaqueCapivara){
+            if (round == escolherAtaqueCapivara){
                 // ataques
                 for (int i = 0; i < 4; i++){
                     DrawRectangle(capivara.ataque[i].frame.x, capivara.ataque[i].frame.y,
@@ -369,49 +383,56 @@ int main(){
             }
             else{
                 DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 12*square, 3*square, SKYBLUE);
-                DrawText(rodada, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
+                DrawText(scene, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
             }
 
             
             */
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
 
-            if (vez == escolherAtaqueCapivara){
+            if (round == escolherAtaqueCapivara && capivara.vida > 0){
                 DrawTexture(arena.texturaEscolherAtaque, arena.frame.x, arena.frame.y, RAYWHITE);
                 for (int i = 0; i < 4; i++){
                     if (capivara.ataque[i].desbloqueado){
-                        sprintf(ataqueExibido, "%s %d/%d", capivara.ataque[i].nome, capivara.ataque[i].usos, capivara.ataque[i].usosMaximo);
+                        sprintf(ataqueExibido, "%s", capivara.ataque[i].nome);
                     }
                     else{ sprintf(ataqueExibido, "-"); }
                     DrawText(ataqueExibido, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
-                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.1*square},
-                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 0.6*square},
-                             (Vector2){capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.35*square},
+                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 8.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 52.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.4*square, capivara.ataque[selecionado].frame.y + 30.0f},
                              BLACK);
+                // DrawTriangle((Vector2){arena.ataqueInfo.x - 0.65*square, capivara.ataque[selecionado].frame.y + 8.0f},
+                //              (Vector2){arena.ataqueInfo.x - 0.65*square, capivara.ataque[selecionado].frame.y + 52.0f},
+                //              (Vector2){arena.ataqueInfo.x - 1.3*square, capivara.ataque[selecionado].frame.y + 30.0f},
+                //              BLACK);
                 // DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
                 //            0.15*square, DARKGRAY);
-                sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano);
-                DrawText(danoDoAtaque, arena.ataqueInfo.x + 0.5*square, arena.ataqueInfo.y + 0.5*square, 40, BLACK);
+                if (capivara.ataque[selecionado].dano > 0 ){ sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano); }
+                else{ sprintf(danoDoAtaque, "%2d de cura", (-1)*capivara.ataque[selecionado].dano); }
+                DrawText(danoDoAtaque, arena.ataqueInfo.x + arena.ataqueInfo.width/2.0f - MeasureText(danoDoAtaque, 42)/2.0f,
+                         arena.ataqueInfo.y + 0.2*square, 42, BLACK);
+
+                sprintf(usosDoAtaque, "%d/%d", capivara.ataque[selecionado].usos, capivara.ataque[selecionado].usosMaximo);
+                DrawText(usosDoAtaque, arena.ataqueInfo.x + arena.ataqueInfo.width/2.0f - MeasureText(usosDoAtaque, 42)/2.0f,
+                         arena.ataqueInfo.y + 1*square, 42, BLACK);
+
+                sprintf(chanceDeCritico, "%d%% de chance\n", capivara.ataque[selecionado].chanceDeCritico);
+                DrawText(chanceDeCritico, arena.ataqueInfo.x + arena.ataqueInfo.width/2.0f - MeasureText(chanceDeCritico, 42)/2.0f,
+                         arena.ataqueInfo.y + 1.7*square, 42, BLACK);
+                sprintf(chanceDeCritico, "de critico");
+                DrawText(chanceDeCritico, arena.ataqueInfo.x + arena.ataqueInfo.width/2.0f - MeasureText(chanceDeCritico, 42)/2.0f,
+                         arena.ataqueInfo.y + 2.1*square, 42, BLACK);
             }
             else{
-                DrawTexture(arena.texturaFalas, arena.frame.x, arena.frame.y, RAYWHITE);
-                DrawText(rodada, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
+                DrawTexture(arena.texturaDescricao, arena.frame.x, arena.frame.y, RAYWHITE);
+                DrawText(scene, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
             }
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X) && vez == mostrarAtaqueCapivara){ vez = escolherAtaqueBoss; }
-            if (IsKeyPressed(KEY_X) && vez == mostrarAtaqueBoss){ vez = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X) && vez == escolheuErrado){ vez = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X) && vez == capivaraMorreu){ gameMode = gameOver; }
-            if (IsKeyPressed(KEY_X) && vez == mostrarBossMorreu){
-                capivara.vida = capivara.vidaMaxima;
-                capivara.bossDerrotados++;
-                capivara.ataque[capivara.bossDerrotados].desbloqueado = true;
-                for (int i = 0; i < 4; i++){ capivara.ataque[i].usos = capivara.ataque[i].usosMaximo; }
-                gameMode = explorando;
-            }
+            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); }
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }

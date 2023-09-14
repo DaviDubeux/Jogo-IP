@@ -3,39 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "C:\raylib\raylib\src\raylib.h"
-#include "personagens.h"
-#define square 96.0f
-
-enum{
-    escolherAtaqueCapivara,  // escolherAtaque = 0
-    escolheuErrado,          // escolheuErrado = 1
-    mostrarAtaqueCapivara,   // mostrarAtaqueCapivara = 2
-    escolherAtaqueBoss,      // escolherAtaqueBoss = 3
-    mostrarAtaqueBoss,       // mostrarAtaqueBoss = 4
-    mostrarBossMorreu,       // mostrarBossMorreu = 5
-    capivaraMorreu           // capivaraMorreu = 6
-}Vez;
-
-typedef struct{
-    float width;
-    float height;
-    Vector2 frame;
-    Texture2D textura;
-    Rectangle statsFrame;
-    Vector2 nomeFrame;
-    Vector2 vidaFrame;
-}Info;
-
-typedef struct{
-    float width;
-    float height;
-    Vector2 frame;
-    Info capivaraInfo;
-    Info bossInfo;
-    Rectangle ataqueInfo;
-    Texture2D texturaEscolherAtaque;
-    Texture2D texturaFalas;
-}Arena;
+#include "defines.h"
 
 void loadArena(Arena *arena, const float screenW, const float screenH){
     arena->width = 12*square;
@@ -62,16 +30,32 @@ void loadArena(Arena *arena, const float screenW, const float screenH){
     arena->ataqueInfo = (Rectangle){arena->frame.x + 8.25*square, arena->frame.y + 7.25*square, 3.5*square, 2.5*square};
 
     arena->texturaEscolherAtaque = LoadTexture("./assets/arenaEscolherAtaque.png");
-    arena->texturaFalas = LoadTexture("./assets/arenaFalas.png");
+    arena->texturaDescricao = LoadTexture("./assets/arenaDescricao.png");
     arena->texturaEscolherAtaque.width = 1152.0f; arena->texturaEscolherAtaque.height = 960.0f;
-    arena->texturaFalas.width = 1152.0f; arena->texturaFalas.height = 960.0f;
+    arena->texturaDescricao.width = 1152.0f; arena->texturaDescricao.height = 960.0f;
 }
 
 void unloadArena(Arena *arena){
     UnloadTexture(arena->texturaEscolherAtaque);
-    UnloadTexture(arena->texturaFalas);
+    UnloadTexture(arena->texturaDescricao);
     UnloadTexture(arena->capivaraInfo.textura);
     UnloadTexture(arena->bossInfo.textura);
+}
+
+void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMode){
+    if (*round == mostrarAtaqueCapivara){ *round = escolherAtaqueBoss; }
+    if (*round == mostrarAtaqueBoss){ *round = escolherAtaqueCapivara; }
+    if (*round == escolheuErrado){ *round = escolherAtaqueCapivara; }
+    if (*round == escolherAtaqueCapivara && capivara->vida <= 0){ *gameMode = gameOver; }
+    if (*round == mostrarBossMorreu){
+        capivara->vida = capivara->vidaMaxima;
+            capivara->bossDerrotados++;
+            //precisa ver quando fazer isso para depois de interagir com o animal
+            *desenho_skin += 2*square;
+            capivara->ataque[capivara->bossDerrotados].desbloqueado = true;
+            for (int i = 0; i < 4; i++){ capivara->ataque[i].usos = capivara->ataque[i].usosMaximo; }
+            *gameMode = explorando;
+        }
 }
 
 #endif
