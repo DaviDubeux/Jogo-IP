@@ -34,6 +34,7 @@ void loadSalas(Sala *sala, const float screenW, const float screenH){ // dá loa
 void unloadSalas(Sala *sala){
     free(sala->obstaculo);
     UnloadTexture(sala->textura);
+    UnloadTexture(sala->placa.textura);
 }
 
 // jardim
@@ -42,12 +43,16 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
     sala1->qtdObstaculos = 0;
     sala1->obstaculo = NULL;
 
+    sala1->placa.hitbox = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 3*square, square, square};
+    sala1->placa.textura = LoadTexture("./assets/cenarios/explorando/tamanduaComPlaca.png");
+    sala1->placa.textura.width = 3*square; sala1->placa.textura.height = square;
+
     sala1->porta[cima].aberta = true;      sala1->saida[cima].saidaPara = salaHub;
     sala1->porta[esquerda].aberta = false; sala1->saida[esquerda].saidaPara = salaJardim;
     sala1->porta[direita].aberta = false;  sala1->saida[direita].saidaPara = salaJardim;
     sala1->porta[baixo].aberta = false;    sala1->saida[baixo].saidaPara = salaJardim;
 
-    sala1->textura = LoadTexture("./assets/cenarios/salaJardim.png");
+    sala1->textura = LoadTexture("./assets/cenarios/explorando/salaJardim.png");
     sala1->textura.width = 1152.0f;
     sala1->textura.height = 960.0f;
     
@@ -59,6 +64,9 @@ void loadSala2(Sala *sala2){
     sala2->obstaculo = (Rectangle *) malloc((sala2->qtdObstaculos)*sizeof(Rectangle));
     if (sala2->obstaculo == NULL){ return; }
 
+    sala2->placa.hitbox = (Rectangle){sala2->frame.x, sala2->frame.y, square, square};
+    sala2->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+
     sala2->obstaculo[0] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 1*square, 2*square, 1*square};
     sala2->obstaculo[1] = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 3*square, 1*square};
     sala2->obstaculo[2] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 8*square, 1*square, 1*square};
@@ -69,7 +77,7 @@ void loadSala2(Sala *sala2){
     sala2->porta[direita].aberta = true;  sala2->saida[direita].saidaPara = salaAranhas;
     sala2->porta[baixo].aberta = true;    sala2->saida[baixo].saidaPara = salaJardim;
 
-    sala2->textura = LoadTexture("./assets/cenarios/salaHub.png");
+    sala2->textura = LoadTexture("./assets/cenarios/explorando/salaHub.png");
     sala2->textura.width = 1152.0f;
     sala2->textura.height = 960.0f;
 }
@@ -80,6 +88,9 @@ void loadSala3(Sala *sala3){
     sala3->obstaculo = (Rectangle *) malloc((sala3->qtdObstaculos)*sizeof(Rectangle));
     if (sala3->obstaculo == NULL){ return; }
 
+    sala3->placa.hitbox = (Rectangle){sala3->frame.x, sala3->frame.y, square, square};
+    sala3->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+
     sala3->obstaculo[0] = (Rectangle){sala3->frame.x + 7*square, sala3->frame.y + 1*square, 3*square, 1*square};
     sala3->obstaculo[1] = (Rectangle){sala3->frame.x + 1*square, sala3->frame.y + 3*square, 1*square, 4*square};
     sala3->obstaculo[2] = (Rectangle){sala3->frame.x + 4*square, sala3->frame.y + 3*square, 2*square, 4*square};
@@ -89,7 +100,7 @@ void loadSala3(Sala *sala3){
     sala3->porta[esquerda].aberta = false; sala3->saida[esquerda].saidaPara = salaCagado;
     sala3->porta[direita].aberta = true;   sala3->saida[direita].saidaPara = salaHub;
     sala3->porta[baixo].aberta = false;    sala3->saida[baixo].saidaPara = salaCagado;
-    sala3->textura = LoadTexture("./assets/cenarios/salaCagado.png");
+    sala3->textura = LoadTexture("./assets/cenarios/explorando/salaCagado.png");
     sala3->textura.width = 1152.0f;
     sala3->textura.height = 960.0f;
 }
@@ -99,6 +110,9 @@ void loadSala4(Sala *sala4){
     sala4->qtdObstaculos = 8;
     sala4->obstaculo = (Rectangle *) malloc((sala4->qtdObstaculos)*sizeof(Rectangle));
     if (sala4->obstaculo == NULL){ return; }
+
+    sala4->placa.hitbox = (Rectangle){sala4->frame.x, sala4->frame.y, square, square};
+    sala4->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
 
     sala4->obstaculo[0] = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 1*square, 2*square, 1*square};
     sala4->obstaculo[1] = (Rectangle){sala4->frame.x + 6*square, sala4->frame.y + 1*square, 2*square, 1*square};
@@ -113,7 +127,7 @@ void loadSala4(Sala *sala4){
     sala4->porta[esquerda].aberta = true;  sala4->saida[esquerda].saidaPara = salaHub;
     sala4->porta[direita].aberta = false;  sala4->saida[direita].saidaPara = salaAranhas;
     sala4->porta[baixo].aberta = false;    sala4->saida[baixo].saidaPara = salaAranhas;
-    sala4->textura = LoadTexture("./assets/cenarios/salaAranhas.png");
+    sala4->textura = LoadTexture("./assets/cenarios/explorando/salaAranhas.png");
     sala4->textura.width = 1152.0f;
     sala4->textura.height = 960.0f;
 }
@@ -123,6 +137,9 @@ void loadSala5(Sala *sala5){
     sala5->qtdObstaculos = 8;
     sala5->obstaculo = (Rectangle *) malloc((sala5->qtdObstaculos)*sizeof(Rectangle));
     if (sala5->obstaculo == NULL){ return; }
+
+    sala5->placa.hitbox = (Rectangle){sala5->frame.x, sala5->frame.y, square, square};
+    sala5->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
 
     sala5->obstaculo[0] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 1*square, 4*square, 1*square};
     sala5->obstaculo[1] = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 1*square, 3*square, 1*square};
@@ -136,7 +153,7 @@ void loadSala5(Sala *sala5){
     sala5->porta[esquerda].aberta = false; sala5->saida[esquerda].saidaPara = salaGalinha;
     sala5->porta[direita].aberta = false;  sala5->saida[direita].saidaPara = salaGalinha;
     sala5->porta[baixo].aberta = true;     sala5->saida[baixo].saidaPara = salaHub;
-    sala5->textura = LoadTexture("./assets/cenarios/salaGalinha.png");
+    sala5->textura = LoadTexture("./assets/cenarios/explorando/salaGalinha.png");
     sala5->textura.width = 1152.0f;
     sala5->textura.height = 960.0f;
 }
@@ -146,6 +163,9 @@ void loadSala6(Sala *sala6){
     sala6->qtdObstaculos = 7;
     sala6->obstaculo = (Rectangle *) malloc((sala6->qtdObstaculos)*sizeof(Rectangle));
     if (sala6->obstaculo == NULL){ return; }
+
+    sala6->placa.hitbox = (Rectangle){sala6->frame.x, sala6->frame.y, square, square};
+    sala6->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
 
     sala6->obstaculo[0] = (Rectangle){sala6->frame.x + 3*square, sala6->frame.y + 1*square, 6*square, 1*square};
     sala6->obstaculo[1] = (Rectangle){sala6->frame.x + 9*square, sala6->frame.y + 1*square, 2*square, 1*square}; // aquario
@@ -159,7 +179,7 @@ void loadSala6(Sala *sala6){
     sala6->porta[esquerda].aberta = false; sala6->saida[esquerda].saidaPara = salaPeixe;
     sala6->porta[direita].aberta = false;  sala6->saida[direita].saidaPara = salaPeixe;
     sala6->porta[baixo].aberta = true;    sala6->saida[baixo].saidaPara = salaGalinha;
-    sala6->textura = LoadTexture("./assets/cenarios/salaPeixe.png");
+    sala6->textura = LoadTexture("./assets/cenarios/explorando/salaPeixe.png");
     sala6->textura.width = 1152.0f;
     sala6->textura.height = 960.0f;
 }

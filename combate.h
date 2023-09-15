@@ -27,8 +27,8 @@ void loadArena(Arena *arena, const float screenW, const float screenH){
 
     arena->ataqueInfo = (Rectangle){arena->frame.x + 8.25*square, arena->frame.y + 7.25*square, 3.5*square, 2.5*square};
 
-    arena->texturaEscolherAtaque = LoadTexture("./assets/cenarios/arenaEscolherAtaque.png");
-    arena->texturaDescricao = LoadTexture("./assets/cenarios/arenaDescricao.png");
+    arena->texturaEscolherAtaque = LoadTexture("./assets/cenarios/combate/arenaEscolherAtaque.png");
+    arena->texturaDescricao = LoadTexture("./assets/cenarios/combate/arenaDescricao.png");
     arena->texturaEscolherAtaque.width = 1152.0f; arena->texturaEscolherAtaque.height = 960.0f;
     arena->texturaDescricao.width = 1152.0f; arena->texturaDescricao.height = 960.0f;
 }

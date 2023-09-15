@@ -72,6 +72,22 @@ void fixCollision(Capivara *capivara, Sala *sala){
         }
 
     }
+
+    // placa
+    collision = CheckCollisionRecs(sala->placa.hitbox, capivara->hitbox);
+    collisionX = CheckCollisionRecs(sala->placa.hitbox, prevX);
+    collisionY = CheckCollisionRecs(sala->placa.hitbox, prevY);
+    
+    if (collision && !collisionX && collisionY){
+        capivara->hitbox.x = capivara->prevHitbox.x;
+        capivara->hitbox.x = capivara->hitbox.x;
+        updateFrame(capivara);
+    }
+    if (collision && collisionX && !collisionY){
+        capivara->hitbox.y = capivara->prevHitbox.y;
+        capivara->hitbox.y = capivara->hitbox.y;
+        updateFrame(capivara);
+    }
 }
 
 void updateRoom(Capivara *capivara, Sala *sala){
@@ -116,11 +132,17 @@ void updateRoom(Capivara *capivara, Sala *sala){
     }
 }
 
+void updatePause(Capivara *capivara, Sala *sala, bool *pausado){
+    if (capivara->interacao.interagindo){
+        *pausado = CheckCollisionRecs(sala->placa.hitbox, capivara->interacao.hitbox);
+    }
+}
+
 int updateBossfight(Capivara *capivara, Sala *sala){
 
     bool bossfight = 0;
 
-    if (capivara->interacao.interagindo == true){
+    if (capivara->interacao.interagindo){
 
         if (capivara->salaAtual == salaCagado){
             bossfight = CheckCollisionRecs(sala->obstaculo[2], capivara->interacao.hitbox);
@@ -142,4 +164,5 @@ int updateBossfight(Capivara *capivara, Sala *sala){
 
     return explorando;
 }
+
 #endif

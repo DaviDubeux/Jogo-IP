@@ -124,6 +124,11 @@ typedef struct{
 //-------------------
 
 typedef struct{
+    Texture2D textura;
+    Rectangle hitbox;
+}Placa;
+
+typedef struct{
     bool aberta;
     Rectangle hitbox;
 }Porta;
@@ -146,6 +151,7 @@ typedef struct{
     // específicos da sala
     int qtdObstaculos;
     Rectangle *obstaculo;
+    Placa placa;
     Texture2D textura;
 
 }Sala;

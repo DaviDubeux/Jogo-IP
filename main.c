@@ -10,8 +10,13 @@
 int main(){
     int gameMode = menu;
     int prevGameMode = explorando;
-    int opcao = 0;
+    bool playing = 0;
+    Sound musica = LoadSound("./assets/musica.mp3");
+    //explorando
     int par = 0;
+    bool pausado = false;
+
+    //combate
     int round = escolherAtaqueCapivara;
     int ataqueCritico = 0;
     char vidaExibidaCapivara[10] = "";
@@ -25,11 +30,15 @@ int main(){
 
     //menu
     Texture2D setas, wasd, TecX, TecZ, Menu;
+    int opcao = 0;
     int opcoes = 0;
     int creditos = 0;
 
+
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
-    if (!IsWindowFullscreen()){ ToggleFullscreen(); }
+    InitAudioDevice();
+    SetMasterVolume(1.0f);
+    //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
     double time = GetTime();
@@ -79,23 +88,23 @@ int main(){
     loadArena(&arena, screenWidth, screenHeight);
     loadCapivaraCombate(&capivara, &arena);
     
-    setas = LoadTexture("./assets/cenarios/setas.png");
+    setas = LoadTexture("./assets/cenarios/menu/setas.png");
     setas.height = 350.0f;
     setas.width = 350.0f;
 
-    wasd = LoadTexture("./assets/cenarios/wasd.png");
+    wasd = LoadTexture("./assets/cenarios/menu/wasd.png");
     wasd.height = 350.0f;
     wasd.width = 350.0f;
 
-    TecX = LoadTexture("./assets/cenarios/teclax.png");
+    TecX = LoadTexture("./assets/cenarios/menu/teclax.png");
     TecX.height = 100.0f;
     TecX.width = 100.0f;
 
-    TecZ = LoadTexture("./assets/cenarios/teclaz.png");
+    TecZ = LoadTexture("./assets/cenarios/menu/teclaz.png");
     TecZ.height = 100.0f;
     TecZ.width = 100.0f;
 
-    Menu = LoadTexture("./assets/cenarios/Ibama.png");
+    Menu = LoadTexture("./assets/cenarios/menu/Ibama.png");
     Menu.height = screenHeight;
     Menu.width = screenWidth;
 
@@ -145,7 +154,8 @@ int main(){
                 //Z para interagir e X para passar dos dialogos
                 DrawTextureRec(wasd,(Rectangle){0, 0, 350, 350}, (Vector2){ 640, 200}, GRAY);
                 DrawTextureRec(setas,(Rectangle){0, 0, 350, 350}, (Vector2){ 180, 200}, GRAY);
-                DrawTextureRec(TecZ,(Rectangle){0, 0, 100, 100}, (Vector2){ 180, 580}, GRAY);
+                DrawTextureRec(TecZ,(Rectangle){0, 0, 100, 100}, (Vector2){ 180, 580}, 
+                GRAY);
                 DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 500, 580}, GRAY);
 
                 DrawText("Z para interagir com objetos  \nX para passar dialogos", 100, 750, 36, WHITE);
@@ -166,8 +176,7 @@ int main(){
                     creditos = 0;
                 }
             }
-            
-            
+
             EndDrawing();
 
             if (IsKeyPressed(KEY_Q)){ gameMode = prevGameMode; }
@@ -179,7 +188,7 @@ int main(){
             int salaAtual = capivara.salaAtual;
 
 
-            if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
+            if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && !pausado) {
                 capivara.hitbox.y -= capivara.speed * delta;
                 updateFrame(&capivara);
                 DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
@@ -187,7 +196,7 @@ int main(){
                 capivara.direcao = sentidoCima;
             }
 
-            if (IsKeyDown(KEY_DOWN)  || IsKeyDown(KEY_S)) {
+            if ((IsKeyDown(KEY_DOWN)  || IsKeyDown(KEY_S)) && !pausado) {
                 capivara.hitbox.y += capivara.speed * delta;
                 updateFrame(&capivara);
                 DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
@@ -195,7 +204,7 @@ int main(){
                 capivara.direcao = sentidoBaixo;
             }
 
-            if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
+            if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) && !pausado) {
                 capivara.hitbox.x += capivara.speed * delta;
                 updateFrame(&capivara);
                 DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
@@ -203,7 +212,7 @@ int main(){
                 capivara.direcao = sentidoDireita;
             }
 
-            if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
+            if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) && !pausado) {
                 capivara.hitbox.x -= capivara.speed * delta;
                 updateFrame(&capivara);
                 DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
@@ -211,14 +220,12 @@ int main(){
                 capivara.direcao = sentidoEsquerda;
             }
 
-            if (IsKeyDown(KEY_Z)){ capivara.interacao.interagindo = 1; }
-            else{ capivara.interacao.interagindo = 0; }
-
+            capivara.interacao.interagindo = (IsKeyDown(KEY_Z)) ? 1 : 0;
 
             fixCollision(&capivara, &(sala[salaAtual]));
-
-            updateRoom(&capivara, &(sala[salaAtual]));
             updateInteracaoHitbox(&capivara);
+            updatePause(&capivara, &(sala[salaAtual]), &pausado);
+            updateRoom(&capivara, &(sala[salaAtual]));
 
             BeginDrawing();
             ClearBackground(RAYWHITE);
@@ -262,6 +269,16 @@ int main(){
                 }
             }
 
+            // desenha placa
+            DrawRectangle(sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y,
+                          sala[salaAtual].placa.hitbox.width, sala[salaAtual].placa.hitbox.height,
+                          (CheckCollisionRecs(sala[salaAtual].placa.hitbox, capivara.hitbox)) ? SKYBLUE : DARKBLUE);
+            if (capivara.interacao.interagindo){
+                DrawRectangle(sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y,
+                              sala[salaAtual].placa.hitbox.width, sala[salaAtual].placa.hitbox.height,
+                              (CheckCollisionRecs(sala[salaAtual].placa.hitbox, capivara.interacao.hitbox)) ? SKYBLUE : DARKBLUE);
+            }
+
             // desenha capivara
             DrawRectangle(capivara.hitbox.x, capivara.hitbox.y, capivara.hitbox.width, capivara.hitbox.height, GOLD);
 
@@ -273,14 +290,20 @@ int main(){
 
 
             // anima a capivara normalmente desde o último movimento
-            par = ((int)GetTime())%3;
-            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, WHITE);
-            DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square}, capivara.frame, WHITE);
+            if (!pausado){ par = ((int)GetTime())%3; }
+            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
+            if (sala[salaAtual].placa.hitbox.x != 0 && sala[salaAtual].placa.hitbox.y != 0){
+                DrawTextureRec(sala[salaAtual].placa.textura, (Rectangle){0, 0, square, square},
+                               (Vector2){sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y} , (pausado) ? DARKGRAY : WHITE);
+            }
+            DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
+                           capivara.frame, (pausado) ? DARKGRAY : WHITE);
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
             if (gameMode == combate){ prevGameMode = explorando; round = escolherAtaqueCapivara; }
+            if (IsKeyPressed(KEY_X)){ pausado = 0;}
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
@@ -451,7 +474,7 @@ int main(){
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); printf("%d", gameMode); }
+            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); }
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }
@@ -502,11 +525,15 @@ int main(){
         }
     }
 
+    CloseAudioDevice();
+    CloseWindow();
+
     //UNLOADS / FREES
     UnloadTexture(capivara.textura);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
     unloadArena(&arena);
+    UnloadSound(musica);
     
     return 0;
 }
