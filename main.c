@@ -11,7 +11,7 @@ int main(){
     int gameMode = menu;
     int prevGameMode = explorando;
     bool playing = 0;
-    Sound musica = LoadSound("./assets/musica.mp3");
+    
     //explorando
     int par = 0;
     bool pausado = false;
@@ -34,10 +34,11 @@ int main(){
     int opcoes = 0;
     int creditos = 0;
 
+    Music musica;
 
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     InitAudioDevice();
-    SetMasterVolume(1.0f);
+    SetMasterVolume(2.0);
     //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
@@ -108,7 +109,7 @@ int main(){
     Menu.height = screenHeight;
     Menu.width = screenWidth;
 
-    
+    musica = LoadMusicStream("./assets/musica.mp3");
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -117,6 +118,9 @@ int main(){
     //
     
     while(!WindowShouldClose()){
+        UpdateMusicStream(musica);
+        PlayMusicStream(musica);
+        SetMusicVolume(musica, 0.2);
 //-------------------------------------------------------------------MENU-------------------------------------------------------------------
         if (gameMode == menu){
             // menu
@@ -526,14 +530,15 @@ int main(){
     }
 
     CloseAudioDevice();
-    CloseWindow();
+    
 
     //UNLOADS / FREES
     UnloadTexture(capivara.textura);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
     unloadArena(&arena);
-    UnloadSound(musica);
+    UnloadMusicStream(musica);
     
+    CloseWindow();
     return 0;
 }
