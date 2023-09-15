@@ -61,8 +61,8 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 
 
 void loadBoss1(Boss *boss){
-    boss->vida = 400;
-    boss->vidaMaxima = 400;
+    boss->vida = 100;
+    boss->vidaMaxima = 100;
     boss->textura = LoadTexture("./assets/boss/sofa.png");
 
     boss->nome[0] = '\0';

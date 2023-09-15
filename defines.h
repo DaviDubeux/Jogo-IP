@@ -124,6 +124,7 @@ typedef struct{
 //-------------------
 
 typedef struct{
+    char mensagem[500];
     Texture2D textura;
     Rectangle hitbox;
 }Placa;
@@ -153,6 +154,7 @@ typedef struct{
     Rectangle *obstaculo;
     Placa placa;
     Texture2D textura;
+    Sound musica
 
 }Sala;
 

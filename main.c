@@ -138,7 +138,7 @@ int main(){
             //Entrar no jogo
             if(opcao == 0){
                 DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
-                DrawText("Missão IBAMA: Contra-Ataque a Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque a Thalya", 20) / 2, 15, 75, LIME);
+                DrawText("Missão IBAMA: Contra-Ataque à Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque à Thalya", 20) / 2, 15, 75, LIME);
 
                 DrawRectangleRec((Rectangle){75, screenHeight / 2 - 200, 500, 100}, RED);
                 DrawText("Aperte Q para iniciar", 75 + 250 - MeasureText("Aperte Q para iniciar", 20) / 2, screenHeight / 2 - 200 + 50 - 20 / 2, 20, BLACK);
@@ -166,9 +166,7 @@ int main(){
 
                 DrawText("Pressione B para retornar ao menu", 100, 950, 55, MAROON);
 
-                if(IsKeyPressed(KEY_B)){
-                    opcoes = 0;
-                }
+                if(IsKeyPressed(KEY_B)){ opcoes = 0; }
             }
             if(opcao == 2){
                 creditos = 1;
@@ -176,9 +174,7 @@ int main(){
                 DrawText(" Autores:\n Davi Dubeux \n Henrique Carvalho \n J.Pedro Marinho \n Mayres Mauricio Andrey \n Thalya Mayara(Detentora dos direitos da historia) \n Victor Bastos", 80, 210, 50, DARKPURPLE);
                 
                 DrawText("Pressione B para retornar ao menu", 100, 950, 55, MAROON);
-                if(IsKeyPressed(KEY_B)){
-                    creditos = 0;
-                }
+                if(IsKeyPressed(KEY_B)){ creditos = 0; }
             }
 
             EndDrawing();
@@ -190,6 +186,7 @@ int main(){
             double delta = GetTime() - time;
             time = GetTime();
             int salaAtual = capivara.salaAtual;
+            if (prevGameMode == combate){ pausado = 1; }
 
 
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && !pausado) {
@@ -228,7 +225,7 @@ int main(){
 
             fixCollision(&capivara, &(sala[salaAtual]));
             updateInteracaoHitbox(&capivara);
-            updatePause(&capivara, &(sala[salaAtual]), &pausado);
+            updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado);
             updateRoom(&capivara, &(sala[salaAtual]));
 
             BeginDrawing();
@@ -289,6 +286,7 @@ int main(){
             // desenha interacao
             if (capivara.interacao.interagindo){ DrawRectangle(capivara.interacao.hitbox.x, capivara.interacao.hitbox.y,
                                                  capivara.hitbox.width, capivara.hitbox.height, PINK); }
+
             */
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
 
@@ -302,6 +300,11 @@ int main(){
             }
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
+            if (pausado && prevGameMode != combate){
+                DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
+                DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square, sala[salaAtual].frame.y + 2.25*square, 30, BLACK);
+            }
+            if (prevGameMode == combate){ prevGameMode = explorando; }
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
@@ -478,7 +481,7 @@ int main(){
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode); }
+            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode, &prevGameMode); }
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }

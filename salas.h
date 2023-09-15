@@ -46,6 +46,8 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
     sala1->placa.hitbox = (Rectangle){sala1->frame.x + 7*square, sala1->frame.y + 5*square, square, square};
     sala1->placa.textura = LoadTexture("./assets/cenarios/explorando/tamanduaComPlaca.png");
     sala1->placa.textura.width = 3*square; sala1->placa.textura.height = square;
+    sala1->placa.mensagem[0] = '\0';
+    strcpy(sala1->placa.mensagem, "Olá agente, sua missão aqui é simples: siga as\npistas e resgate as 4 especies em extinção,\nmas cuidado, você não é o primeiro a ser con-\nvocado para essa missão\n\nAqui está a lista de animais para encontrar,\nresgate-os antes que seja tarde demais:\n\n*Tartaruga-de-pente\n*Aranha Caranguejeira\n*Cardeal-amarelo\n*Peixe beta");
 
     sala1->obstaculo[0] = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->obstaculo[1] = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 1*square, 1*square, 1*square};
@@ -75,6 +77,7 @@ void loadSala2(Sala *sala2){
 
     sala2->placa.hitbox = (Rectangle){sala2->frame.x, sala2->frame.y, square, square};
     sala2->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+    sala2->placa.textura.width = 3*square; sala2->placa.textura.height = square;
 
     sala2->obstaculo[0] = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 1*square, 2*square, 1*square};
     sala2->obstaculo[1] = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 3*square, 1*square};
@@ -99,6 +102,7 @@ void loadSala3(Sala *sala3){
 
     sala3->placa.hitbox = (Rectangle){sala3->frame.x, sala3->frame.y, square, square};
     sala3->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+    sala3->placa.textura.width = 3*square; sala3->placa.textura.height = square;
 
     sala3->obstaculo[0] = (Rectangle){sala3->frame.x + 7*square, sala3->frame.y + 1*square, 3*square, 1*square};
     sala3->obstaculo[1] = (Rectangle){sala3->frame.x + 1*square, sala3->frame.y + 3*square, 1*square, 4*square};
@@ -122,6 +126,7 @@ void loadSala4(Sala *sala4){
 
     sala4->placa.hitbox = (Rectangle){sala4->frame.x, sala4->frame.y, square, square};
     sala4->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+    sala4->placa.textura.width = 3*square; sala4->placa.textura.height = square;
 
     sala4->obstaculo[0] = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 1*square, 2*square, 1*square};
     sala4->obstaculo[1] = (Rectangle){sala4->frame.x + 6*square, sala4->frame.y + 1*square, 2*square, 1*square};
@@ -149,6 +154,7 @@ void loadSala5(Sala *sala5){
 
     sala5->placa.hitbox = (Rectangle){sala5->frame.x, sala5->frame.y, square, square};
     sala5->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+    sala5->placa.textura.width = 3*square; sala5->placa.textura.height = square;
 
     sala5->obstaculo[0] = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 1*square, 4*square, 1*square};
     sala5->obstaculo[1] = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 1*square, 3*square, 1*square};
@@ -175,6 +181,7 @@ void loadSala6(Sala *sala6){
 
     sala6->placa.hitbox = (Rectangle){sala6->frame.x, sala6->frame.y, square, square};
     sala6->placa.textura = LoadTexture("./assets/cenarios/explorando/placa.png");
+    sala6->placa.textura.width = 3*square; sala6->placa.textura.height = square;
 
     sala6->obstaculo[0] = (Rectangle){sala6->frame.x + 3*square, sala6->frame.y + 1*square, 6*square, 1*square};
     sala6->obstaculo[1] = (Rectangle){sala6->frame.x + 9*square, sala6->frame.y + 1*square, 2*square, 1*square}; // aquario
