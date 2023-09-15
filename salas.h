@@ -66,6 +66,8 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
     sala1->textura = LoadTexture("./assets/cenarios/explorando/salaJardim.png");
     sala1->textura.width = 1152.0f;
     sala1->textura.height = 960.0f;
+
+    sala1->musica = LoadMusicStream("./assets/musicas/MusicaJardim.mp3");
     
 }
 
@@ -92,6 +94,8 @@ void loadSala2(Sala *sala2){
     sala2->textura = LoadTexture("./assets/cenarios/explorando/salaHub.png");
     sala2->textura.width = 1152.0f;
     sala2->textura.height = 960.0f;
+
+    sala2->musica = LoadMusicStream("./assets/musicas/musicaCasa.mp3");
 }
 
 // cagado
@@ -116,6 +120,8 @@ void loadSala3(Sala *sala3){
     sala3->textura = LoadTexture("./assets/cenarios/explorando/salaCagado.png");
     sala3->textura.width = 1152.0f;
     sala3->textura.height = 960.0f;
+
+    sala3->musica = LoadMusicStream("./assets/musicas/musicaCasa.mp3");
 }
 
 // aranhas
@@ -144,6 +150,8 @@ void loadSala4(Sala *sala4){
     sala4->textura = LoadTexture("./assets/cenarios/explorando/salaAranhas.png");
     sala4->textura.width = 1152.0f;
     sala4->textura.height = 960.0f;
+
+    sala4->musica = LoadMusicStream("./assets/musicas/musicaCasa.mp3");
 }
 
 // galinha
@@ -171,6 +179,8 @@ void loadSala5(Sala *sala5){
     sala5->textura = LoadTexture("./assets/cenarios/explorando/salaGalinha.png");
     sala5->textura.width = 1152.0f;
     sala5->textura.height = 960.0f;
+
+    sala5->musica = LoadMusicStream("./assets/musicas/musicaCasa.mp3");
 }
 
 // peixe
@@ -198,6 +208,8 @@ void loadSala6(Sala *sala6){
     sala6->textura = LoadTexture("./assets/cenarios/explorando/salaPeixe.png");
     sala6->textura.width = 1152.0f;
     sala6->textura.height = 960.0f;
+
+    sala6->musica = LoadMusicStream("./assets/musicas/musicaCasa.mp3");
 }
 
 #endif

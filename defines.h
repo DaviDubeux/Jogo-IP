@@ -154,7 +154,7 @@ typedef struct{
     Rectangle *obstaculo;
     Placa placa;
     Texture2D textura;
-    Sound musica
+    Music musica;
 
 }Sala;
 

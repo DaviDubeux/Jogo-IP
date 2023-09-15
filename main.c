@@ -109,7 +109,10 @@ int main(){
     Menu.height = screenHeight;
     Menu.width = screenWidth;
 
-    musica = LoadMusicStream("./assets/musica.mp3");
+    Texture2D lendoPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
+    lendoPlaca.width = 8*square; lendoPlaca.height = 6*square;
+
+    musica = LoadMusicStream("./assets/musicas/musica.mp3");
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -118,11 +121,14 @@ int main(){
     //
     
     while(!WindowShouldClose()){
-        UpdateMusicStream(musica);
-        PlayMusicStream(musica);
-        SetMusicVolume(musica, 0.2);
+        //UpdateMusicStream(musica);
+        //PlayMusicStream(musica);
+        //SetMusicVolume(musica, 0.2);
 //-------------------------------------------------------------------MENU-------------------------------------------------------------------
         if (gameMode == menu){
+            UpdateMusicStream(musica);
+            PlayMusicStream(musica);
+            SetMusicVolume(musica, 0.2);
             // menu
             BeginDrawing();
             ClearBackground(DARKBLUE);
@@ -187,6 +193,11 @@ int main(){
             time = GetTime();
             int salaAtual = capivara.salaAtual;
             if (prevGameMode == combate){ pausado = 1; }
+
+            if (capivara.salaAtual == salaJardim){ UpdateMusicStream(sala[salaJardim].musica); }
+            else{ UpdateMusicStream(sala[salaHub].musica); }
+            PlayMusicStream(sala[salaAtual].musica);
+            SetMusicVolume(sala[salaAtual].musica, 1.0f);
 
 
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && !pausado) {
@@ -301,8 +312,9 @@ int main(){
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
             if (pausado && prevGameMode != combate){
-                DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
-                DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square, sala[salaAtual].frame.y + 2.25*square, 30, BLACK);
+                //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
+                DrawTexture(lendoPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
+                DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square, sala[salaAtual].frame.y + 2.25*square, 30, YELLOW);
             }
             if (prevGameMode == combate){ prevGameMode = explorando; }
             capivara.prevHitbox = capivara.hitbox;
