@@ -39,13 +39,22 @@ void unloadSalas(Sala *sala){
 
 // jardim
 void loadSala1(Sala *sala1){ // específicos da sala 1
+    sala1->qtdObstaculos = 8;
+    sala1->obstaculo = (Rectangle *) malloc((sala1->qtdObstaculos)*sizeof(Rectangle));
+    if (sala1->obstaculo == NULL){ return; }
 
-    sala1->qtdObstaculos = 0;
-    sala1->obstaculo = NULL;
-
-    sala1->placa.hitbox = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 3*square, square, square};
+    sala1->placa.hitbox = (Rectangle){sala1->frame.x + 7*square, sala1->frame.y + 5*square, square, square};
     sala1->placa.textura = LoadTexture("./assets/cenarios/explorando/tamanduaComPlaca.png");
     sala1->placa.textura.width = 3*square; sala1->placa.textura.height = square;
+
+    sala1->obstaculo[0] = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 1*square, 1*square, 1*square};
+    sala1->obstaculo[1] = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 1*square, 1*square, 1*square};
+    sala1->obstaculo[2] = (Rectangle){sala1->frame.x + 10*square, sala1->frame.y + 1*square, 1*square, 1*square};
+    sala1->obstaculo[3] = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 4*square, 1*square, 1*square};
+    sala1->obstaculo[4] = (Rectangle){sala1->frame.x + 9*square, sala1->frame.y + 4*square, 1*square, 1*square};
+    sala1->obstaculo[5] = (Rectangle){sala1->frame.x + 2*square, sala1->frame.y + 7*square, 1*square, 1*square};
+    sala1->obstaculo[6] = (Rectangle){sala1->frame.x + 6*square, sala1->frame.y + 7*square, 1*square, 1*square};
+    sala1->obstaculo[7] = (Rectangle){sala1->frame.x + 9*square, sala1->frame.y + 8*square, 1*square, 1*square};
 
     sala1->porta[cima].aberta = true;      sala1->saida[cima].saidaPara = salaHub;
     sala1->porta[esquerda].aberta = false; sala1->saida[esquerda].saidaPara = salaJardim;

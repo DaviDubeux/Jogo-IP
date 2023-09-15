@@ -38,7 +38,7 @@ int main(){
 
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     InitAudioDevice();
-    SetMasterVolume(2.0);
+    SetMasterVolume(5.0);
     //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
@@ -62,9 +62,9 @@ int main(){
 
     for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
     loadSala1(&(sala[salaJardim]));
-    // if (sala[salaJardim].obstaculo == NULL){
-    //     for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
-    // }
+    if (sala[salaJardim].obstaculo == NULL){
+        for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+    }
     loadSala2(&(sala[salaHub]));
     if (sala[salaHub].obstaculo == NULL){
         for (int i = 0; i < 2; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
@@ -496,9 +496,9 @@ int main(){
             /*
             for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
             loadSala1(&(sala[salaJardim]));
-            // if (sala[salaJardim].obstaculo == NULL){
-            //     for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
-            // }
+            if (sala[salaJardim].obstaculo == NULL){
+                for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
+            }
             loadSala2(&(sala[salaHub]));
             if (sala[salaHub].obstaculo == NULL){
                 for (int i = 0; i < 2; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
