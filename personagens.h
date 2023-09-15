@@ -14,7 +14,7 @@ void loadCapivaraExplorando(Capivara *capivara, const float screenW, const float
     capivara->prevHitbox = capivara->hitbox;
     capivara->interacao.hitbox = (Rectangle) {capivara->hitbox.x, capivara->hitbox.y, square - 8.0f, square - 8.0f};
     capivara->interacao.interagindo = 0;
-    capivara->textura = LoadTexture("./assets/capivara.png");
+    capivara->textura = LoadTexture("./assets/animais/capivara.png");
 }
 
 void loadCapivaraCombate(Capivara *capivara, Arena *arena){
@@ -22,7 +22,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->vidaMaxima = 40;
     capivara->bossDerrotados = 0;
     capivara->ataqueSelecionado = 0;
-    capivara->texturaCombate = LoadTexture("./assets/animais/capivaraCombate.png");
+    capivara->texturaCombate = LoadTexture("./assets/animais/CombateCapivara.png");
 
     capivara->nome[0] = '\0';
     strcpy(capivara->nome, "Agente do ibama");
@@ -63,7 +63,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 void loadBoss1(Boss *boss){
     boss->vida = 40;
     boss->vidaMaxima = 40;
-    // boss->textura = LoadTexture("./assets/capivara.png");
+     boss->textura = LoadTexture("./assets/boss/sofa.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Sofá de Thalya");
@@ -88,7 +88,7 @@ void loadBoss1(Boss *boss){
 void loadBoss2(Boss *boss){
     boss->vida = 20;
     boss->vidaMaxima = 20;
-    // boss->textura = LoadTexture("./assets/capivara.png");
+    boss->textura = LoadTexture("./assets/boss/tiaDeThalya.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Tia de Thalya");
@@ -113,7 +113,7 @@ void loadBoss2(Boss *boss){
 void loadBoss3(Boss *boss){
     boss->vida = 20;
     boss->vidaMaxima = 20;
-    // boss->textura = LoadTexture("./assets/capivara.png");
+    boss->textura = LoadTexture("./assets/boss/avoDeThalya.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Vó de Thalya");
@@ -138,10 +138,10 @@ void loadBoss3(Boss *boss){
 void loadBoss4(Boss *boss){
     boss->vida = 20;
     boss->vidaMaxima = 20;
-    // boss->textura = LoadTexture("./assets/capivara.png");
+    boss->textura = LoadTexture("./assets/boss/thalya.png");
 
     boss->nome[0] = '\0';
-    strcpy(boss->nome, "Vó de Thalya");
+    strcpy(boss->nome, "Thalya");
     
     boss->ataque[0].dano = 5;
     boss->ataque[0].nome[0] = '\0';
