@@ -70,17 +70,17 @@ void loadBoss1(Boss *boss){
     
     boss->ataque[0].dano = 5;
     boss->ataque[0].nome[0] = '\0';
-    strcpy(boss->ataque[0].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[0].nome, "Travesseiradas");
 
-    boss->ataque[1].dano = 5;
+    boss->ataque[1].dano = 10;
     boss->ataque[1].nome[1] = '\0';
-    strcpy(boss->ataque[1].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[1].nome, "Esmagar");
 
     boss->ataque[2].dano = 5;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[2].nome, "Arranhar");
 
-    boss->ataque[3].dano = 5;
+    boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
 }
@@ -95,19 +95,19 @@ void loadBoss2(Boss *boss){
     
     boss->ataque[0].dano = 5;
     boss->ataque[0].nome[0] = '\0';
-    strcpy(boss->ataque[0].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[0].nome, "Vassourada");
 
-    boss->ataque[1].dano = 5;
+    boss->ataque[1].dano = 10;
     boss->ataque[1].nome[1] = '\0';
-    strcpy(boss->ataque[1].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[1].nome, "Chinelada");
 
     boss->ataque[2].dano = 5;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[2].nome, "Voadora");
 
-    boss->ataque[3].dano = 5;
+    boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[3].nome, "Resmungo");
 }
 
 void loadBoss3(Boss *boss){
@@ -120,17 +120,17 @@ void loadBoss3(Boss *boss){
     
     boss->ataque[0].dano = 5;
     boss->ataque[0].nome[0] = '\0';
-    strcpy(boss->ataque[0].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[0].nome, "Bengalada");
 
-    boss->ataque[1].dano = 5;
+    boss->ataque[1].dano = 10;
     boss->ataque[1].nome[1] = '\0';
-    strcpy(boss->ataque[1].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[1].nome, "Facada");
 
     boss->ataque[2].dano = 5;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[2].nome, "Água Quente");
 
-    boss->ataque[3].dano = 5;
+    boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
 }
@@ -145,17 +145,17 @@ void loadBoss4(Boss *boss){
     
     boss->ataque[0].dano = 5;
     boss->ataque[0].nome[0] = '\0';
-    strcpy(boss->ataque[0].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[0].nome, "Raio Laser");
 
-    boss->ataque[1].dano = 5;
+    boss->ataque[1].dano = 10;
     boss->ataque[1].nome[1] = '\0';
-    strcpy(boss->ataque[1].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[1].nome, "Batida de Cabelo");
 
     boss->ataque[2].dano = 5;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[2].nome, "Pisada");
 
-    boss->ataque[3].dano = 5;
+    boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
 }
