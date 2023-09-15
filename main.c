@@ -486,6 +486,8 @@ int main(){
             }
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
                           (Vector2){arena.bossInfo.frame.x + 0.5f*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
+            DrawTextureRec(capivara.texturaCombate, (Rectangle){0,0, 3*square, 3*square},
+                            (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y}, RAYWHITE);
             DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
             DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
             DrawText(boss[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
@@ -553,6 +555,7 @@ int main(){
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
     unloadArena(&arena);
     UnloadMusicStream(musica);
+    UnloadTexture(capivara.texturaCombate);
     
     CloseWindow();
     return 0;

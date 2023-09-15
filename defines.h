@@ -87,6 +87,7 @@ typedef struct{
     int bossDerrotados;
     Ataque ataque[4];
     int ataqueSelecionado;
+    Texture2D texturaCombate;
 } Capivara;
 
 //-------------------
