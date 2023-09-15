@@ -10,11 +10,11 @@
 int main(){
     int gameMode = menu;
     int prevGameMode = explorando;
-    bool playing = 0;
     
     //explorando
     int par = 0;
     bool pausado = false;
+    bool lendoPlaca = false;
 
     //combate
     int round = escolherAtaqueCapivara;
@@ -109,8 +109,8 @@ int main(){
     Menu.height = screenHeight;
     Menu.width = screenWidth;
 
-    Texture2D lendoPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
-    lendoPlaca.width = 8*square; lendoPlaca.height = 6*square;
+    Texture2D texturaPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
+    texturaPlaca.width = 8*square; texturaPlaca.height = 6*square;
 
     musica = LoadMusicStream("./assets/musicas/musica.mp3");
     
@@ -121,9 +121,6 @@ int main(){
     //
     
     while(!WindowShouldClose()){
-        //UpdateMusicStream(musica);
-        //PlayMusicStream(musica);
-        //SetMusicVolume(musica, 0.2);
 //-------------------------------------------------------------------MENU-------------------------------------------------------------------
         if (gameMode == menu){
             UpdateMusicStream(musica);
@@ -192,7 +189,6 @@ int main(){
             double delta = GetTime() - time;
             time = GetTime();
             int salaAtual = capivara.salaAtual;
-            if (prevGameMode == combate){ pausado = 1; }
 
             if (capivara.salaAtual == salaJardim){ UpdateMusicStream(sala[salaJardim].musica); }
             else{ UpdateMusicStream(sala[salaHub].musica); }
@@ -236,7 +232,7 @@ int main(){
 
             fixCollision(&capivara, &(sala[salaAtual]));
             updateInteracaoHitbox(&capivara);
-            updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado);
+            updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado, &lendoPlaca);
             updateRoom(&capivara, &(sala[salaAtual]));
 
             BeginDrawing();
@@ -305,15 +301,15 @@ int main(){
             // anima a capivara normalmente desde o último movimento
             if (!pausado){ par = ((int)GetTime())%3; }
             DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
-            if (sala[salaAtual].placa.hitbox.x != 0 && sala[salaAtual].placa.hitbox.y != 0){
+            if (sala[salaAtual].placa.hitbox.x != sala[salaAtual].frame.x && sala[salaAtual].placa.hitbox.y != sala[salaAtual].frame.y){
                 DrawTextureRec(sala[salaAtual].placa.textura, (Rectangle){0, 0, square, square},
                                (Vector2){sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y} , (pausado) ? DARKGRAY : WHITE);
             }
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
-            if (pausado && prevGameMode != combate){
+            if (lendoPlaca){
                 //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
-                DrawTexture(lendoPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
+                DrawTexture(texturaPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
                 DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square, sala[salaAtual].frame.y + 2.25*square, 30, YELLOW);
             }
             if (prevGameMode == combate){ prevGameMode = explorando; }
@@ -322,7 +318,7 @@ int main(){
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
             if (gameMode == combate){ prevGameMode = explorando; round = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X)){ pausado = 0;}
+            if (IsKeyPressed(KEY_X)){ pausado = 0; lendoPlaca = 0; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
@@ -462,8 +458,6 @@ int main(){
                              (Vector2){capivara.ataque[selecionado].frame.x + 6.1f*square, capivara.ataque[selecionado].frame.y + 30.0f},
                              (Vector2){capivara.ataque[selecionado].frame.x + 6.45f*square, capivara.ataque[selecionado].frame.y + 52.0f},
                              BLACK);
-                // DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
-                //            0.15*square, DARKGRAY);
                 if (capivara.ataque[selecionado].dano > 0 ){ sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano); }
                 else{ sprintf(danoDoAtaque, "%2d de cura", (-1)*capivara.ataque[selecionado].dano); }
                 DrawText(danoDoAtaque, arena.ataqueInfo.x + arena.ataqueInfo.width/2.0f - MeasureText(danoDoAtaque, 42)/2.0f,
@@ -486,8 +480,8 @@ int main(){
             }
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
                           (Vector2){arena.bossInfo.frame.x + 0.5f*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
-            DrawTextureRec(capivara.texturaCombate, (Rectangle){0,0, square, square},
-                            (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y}, RAYWHITE);
+            DrawTextureRec(capivara.texturaCombate, (Rectangle){0,0, 3*square, 3*square},
+                          (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y}, RAYWHITE);
             DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
             DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
             DrawText(boss[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
@@ -495,7 +489,7 @@ int main(){
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode, &prevGameMode); }
+            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode, &pausado); }
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }

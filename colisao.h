@@ -132,9 +132,10 @@ void updateRoom(Capivara *capivara, Sala *sala){
     }
 }
 
-void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado){
+void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca){
     if (capivara->interacao.interagindo){
         *pausado = CheckCollisionRecs(sala->placa.hitbox, capivara->interacao.hitbox);
+        *lendoPlaca = *pausado;
     }
 }
 

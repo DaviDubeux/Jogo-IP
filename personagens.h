@@ -23,6 +23,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->bossDerrotados = 0;
     capivara->ataqueSelecionado = 0;
     capivara->texturaCombate = LoadTexture("./assets/animais/CombateCapivara.png");
+    capivara->texturaCombate.width *= 3.0f; capivara->texturaCombate.height *= 3.0f;
 
     capivara->nome[0] = '\0';
     strcpy(capivara->nome, "Agente do ibama");
@@ -70,7 +71,7 @@ void loadBoss1(Boss *boss){
     
     boss->ataque[0].dano = 5;
     boss->ataque[0].nome[0] = '\0';
-    strcpy(boss->ataque[0].nome, "Travesseiradas");
+    strcpy(boss->ataque[0].nome, "Canhão de almofada");
 
     boss->ataque[1].dano = 10;
     boss->ataque[1].nome[1] = '\0';

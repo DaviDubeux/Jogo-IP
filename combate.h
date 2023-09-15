@@ -38,7 +38,7 @@ void unloadArena(Arena *arena){
     UnloadTexture(arena->texturaDescricao);
 }
 
-void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMode, int *prevGameMode){
+void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMode, bool *pausado){
     if (*round == mostrarAtaqueCapivara){ *round = escolherAtaqueBoss; }
     if (*round == mostrarCriticoCapivara){ *round = mostrarAtaqueCapivara; }
     if (*round == mostrarCuraCapivara){ *round = escolherAtaqueBoss; }
@@ -56,7 +56,7 @@ void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMod
         capivara->ataque[capivara->bossDerrotados].desbloqueado = true;
         for (int i = 0; i < 4; i++){ capivara->ataque[i].usos = capivara->ataque[i].usosMaximo; }
         *round = escolherAtaqueCapivara;
-        *gameMode = explorando; *prevGameMode = combate;
+        *gameMode = explorando; *pausado = 1;
     }
 }
 
