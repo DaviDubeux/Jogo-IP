@@ -35,6 +35,7 @@ int main(){
     int creditos = 0;
 
     Music musica;
+    Music musicaCombate;
 
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     InitAudioDevice();
@@ -113,6 +114,7 @@ int main(){
     texturaPlaca.width = 8*square; texturaPlaca.height = 6*square;
 
     musica = LoadMusicStream("./assets/musicas/musica.mp3");
+    musicaCombate = LoadMusicStream("./assets/musicas/musicaCombate.mp3");
     
     // ANIMATION
         int desenho_capivara = square, 
@@ -125,7 +127,7 @@ int main(){
         if (gameMode == menu){
             UpdateMusicStream(musica);
             PlayMusicStream(musica);
-            SetMusicVolume(musica, 0.2);
+            SetMusicVolume(musica, 1.2);
             // menu
             BeginDrawing();
             ClearBackground(DARKBLUE);
@@ -323,6 +325,9 @@ int main(){
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
         else if (gameMode == combate){
+            UpdateMusicStream(musicaCombate);
+            PlayMusicStream(musicaCombate);
+            SetMusicVolume(musicaCombate, 0.2);
             int selecionado = capivara.ataqueSelecionado;
             int bossAtual = capivara.bossDerrotados;
 
