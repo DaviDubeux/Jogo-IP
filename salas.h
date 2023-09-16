@@ -47,7 +47,7 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
     sala1->placa.textura = LoadTexture("./assets/cenarios/explorando/tamanduaComPlaca.png");
     sala1->placa.textura.width = 3*square; sala1->placa.textura.height = square;
     sala1->placa.mensagem[0] = '\0';
-    strcpy(sala1->placa.mensagem, "Olá agente, sua missão aqui é simples: siga as\npistas e resgate as 4 especies em extinção,\nmas cuidado, você não é o primeiro a ser con-\nvocado para essa missão\n\nAqui está a lista de animais para encontrar,\nresgate-os antes que seja tarde demais:\n\n*Tartaruga-de-pente\n*Aranha Caranguejeira\n*Cardeal-amarelo\n*Peixe beta");
+    strcpy(sala1->placa.mensagem, "Olá agente, sua missão aqui é simples: siga as\n pegadas no chão e resgate as 4 especies em \n extinção, mas cuidado, você não é o primeiro a ser\nconvocado para essa missão, muito cuidado!\n\nAqui está a lista de animais para encontrar,\nresgate-os, NESSA ORDEM,\n antes que seja tarde demais:\n\n*Tartaruga-de-pente\n*Aranha Caranguejeira\n*Cardeal-amarelo\n*Peixe beta\n Boa sorte\nDica: Cuidado com o sofá");
 
     sala1->obstaculo[0] = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->obstaculo[1] = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 1*square, 1*square, 1*square};

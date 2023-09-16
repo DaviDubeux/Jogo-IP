@@ -85,6 +85,7 @@ void loadBoss1(Boss *boss){
     boss->ataque[3].dano = 5;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Braçada");
+    
 }
 
 void loadBoss2(Boss *boss){

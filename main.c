@@ -318,7 +318,7 @@ int main(){
             if (lendoPlaca){
                 //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
                 DrawTexture(texturaPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
-                DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square, sala[salaAtual].frame.y + 2.25*square, 30, YELLOW);
+                DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, GOLD);
             }
             if (prevGameMode == combate){ prevGameMode = explorando; }
             capivara.prevHitbox = capivara.hitbox;
@@ -331,6 +331,7 @@ int main(){
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
         else if (gameMode == combate){
+            
             UpdateMusicStream(musicaCombate);
             PlayMusicStream(musicaCombate);
             SetMusicVolume(musicaCombate, 0.2);
