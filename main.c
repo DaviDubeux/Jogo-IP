@@ -9,7 +9,7 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = combate;
+    int prevGameMode = explorando;
     
     //explorando
     int par = 0;
@@ -50,7 +50,6 @@ int main(){
 
     Capivara capivara;
     Boss boss[4];
-    Animal animal[4];
     Sala sala[6];
     Arena arena;
 
@@ -61,11 +60,6 @@ int main(){
     loadBoss2(&(boss[1])); boss[1].textura.width *= 9.0f; boss[1].textura.height *= 9.0f;
     loadBoss3(&(boss[2])); boss[2].textura.width *= 9.0f; boss[2].textura.height *= 9.0f;
     loadBoss4(&(boss[3])); boss[3].textura.width *= 9.0f; boss[3].textura.height *= 9.0f;
-
-    loadAnimal1(&(animal[0])); animal[0].textura.width *= 3.0f; animal[0].textura.height *= 3.0f;
-    loadAnimal2(&(animal[1])); animal[1].textura.width *= 3.0f; animal[1].textura.height *= 3.0f;
-    loadAnimal3(&(animal[2])); animal[2].textura.width *= 3.0f; animal[2].textura.height *= 3.0f;
-    loadAnimal4(&(animal[3])); animal[3].textura.width *= 3.0f; animal[3].textura.height *= 3.0f;
 
     for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
     loadSala1(&(sala[salaJardim]));
@@ -124,8 +118,8 @@ int main(){
     
     // ANIMATION
         int desenho_capivara = square, 
-            desenho_skin = 0, //se quiser mudar a skin soma 2*square
-            desenho_skin_combate = 0; //se quiser mudar a skin soma 3||4*square
+            desenho_skin = 0; //se quiser mudar a skin soma 2*square
+        int clique = 0; 
     //
     
     while(!WindowShouldClose()){
@@ -207,7 +201,7 @@ int main(){
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && !pausado) {
                 capivara.hitbox.y -= capivara.speed * delta;
                 updateFrame(&capivara);
-                DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin, square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) {(square*7), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 7);
                 capivara.direcao = sentidoCima;
             }
@@ -215,7 +209,7 @@ int main(){
             if ((IsKeyDown(KEY_DOWN)  || IsKeyDown(KEY_S)) && !pausado) {
                 capivara.hitbox.y += capivara.speed * delta;
                 updateFrame(&capivara);
-                DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin, square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) { (square*10), desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 10);
                 capivara.direcao = sentidoBaixo;
             }
@@ -223,7 +217,7 @@ int main(){
             if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) && !pausado) {
                 capivara.hitbox.x += capivara.speed * delta;
                 updateFrame(&capivara);
-                DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin, square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) { square, desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 1);
                 capivara.direcao = sentidoDireita;
             }
@@ -231,7 +225,7 @@ int main(){
             if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) && !pausado) {
                 capivara.hitbox.x -= capivara.speed * delta;
                 updateFrame(&capivara);
-                DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin, square, square}, capivara.frame, WHITE);
+                DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin + (square * clique), square, square}, capivara.frame, WHITE);
                 desenho_capivara = (square * 4);
                 capivara.direcao = sentidoEsquerda;
             }
@@ -307,7 +301,7 @@ int main(){
 
 
             // anima a capivara normalmente desde o último movimento
-            if (!pausado) { par = ((int)GetTime())%3; }
+            if (!pausado){ par = ((int)GetTime())%3; }
             DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
             if (sala[salaAtual].placa.hitbox.x != sala[salaAtual].frame.x && sala[salaAtual].placa.hitbox.y != sala[salaAtual].frame.y){
                 DrawTextureRec(sala[salaAtual].placa.textura, (Rectangle){0, 0, square, square},
@@ -334,10 +328,8 @@ int main(){
             UpdateMusicStream(musicaCombate);
             PlayMusicStream(musicaCombate);
             SetMusicVolume(musicaCombate, 0.2);
-            
             int selecionado = capivara.ataqueSelecionado;
             int bossAtual = capivara.bossDerrotados;
-            int animalAtual = capivara.animaisResgatados;
 
             sprintf(vidaExibidaCapivara, "%2d/%2d", capivara.vida, capivara.vidaMaxima);
             sprintf(vidaExibidaBoss, "%2d/%2d", boss[bossAtual].vida, boss[bossAtual].vidaMaxima);
@@ -495,14 +487,9 @@ int main(){
                 DrawText(scene, arena.frame.x + 0.25*square, arena.frame.y + 7.25*square, 50, BLACK);
                 DrawText("aperte x para passar", arena.frame.x + 5.75*square, arena.frame.y + 9.25*square, 50, BLACK);
             }
-
-            //desenho do animal
-            DrawTextureRec(animal[animalAtual].textura, (Rectangle){0, 0, square, square}, 
-
-                          (Vector2){arena.animalInfo.frame.x, arena.animalInfo.frame.y}, RAYWHITE);
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
                           (Vector2){arena.bossInfo.frame.x + 0.5*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
-            DrawTextureRec(capivara.texturaCombate, (Rectangle){0, desenho_skin_combate, 3.5*square, 3*square},
+            DrawTextureRec(capivara.texturaCombate, (Rectangle){0,0, 3*square, 3*square},
                           (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y}, RAYWHITE);
             DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
             DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
@@ -511,7 +498,7 @@ int main(){
 
             EndDrawing();
 
-            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &desenho_skin_combate, &gameMode, &pausado); }
+            if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &gameMode, &pausado); }
 
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }
@@ -557,6 +544,7 @@ int main(){
             gameMode = menu; prevGameMode = explorando;
             par = 0;
             pausado = false; lendoPlaca = false;
+            clique = 0;
             round = escolherAtaqueCapivara;
         }
     }
@@ -564,7 +552,6 @@ int main(){
     //UNLOADS / FREES
     UnloadTexture(capivara.textura);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
-    for (int i = 0; i < 4; i++){ UnloadTexture(animal[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
     unloadArena(&arena);
     UnloadMusicStream(musica);
