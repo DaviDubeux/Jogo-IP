@@ -18,12 +18,18 @@ void loadArena(Arena *arena, const float screenW, const float screenH){
     arena->capivaraInfo.vidaFrame = (Vector2){arena->frame.x + 8*square, arena->frame.y + 6.2*square};
 
 
-    arena->bossInfo.frame = (Vector2){arena->frame.x + 7*square, arena->frame.y + 1*square};
+    arena->bossInfo.frame = (Vector2){arena->frame.x + 7.1*square, arena->frame.y + 1.2*square};
     arena->bossInfo.width = 4*square;
     arena->bossInfo.height = 3*square;
     arena->bossInfo.statsFrame = (Rectangle){arena->frame.x + 2*square, arena->frame.y + 1*square, 5*square, 2*square};
     arena->bossInfo.nomeFrame = (Vector2){arena->frame.x + 2.5*square, arena->frame.y + 1.5*square};
     arena->bossInfo.vidaFrame = (Vector2){arena->frame.x + 5*square, arena->frame.y + 2.2*square};
+
+    arena->animalInfo.frame = (Vector2){arena->frame.x + 10*square, arena->frame.y + 2.7*square};
+    arena->animalInfo.width = 3*square;
+    arena->animalInfo.height = 3*square;
+    arena->animalInfo.statsFrame = (Rectangle){arena->frame.x + square, arena->frame.y + square, square, square};
+    arena->animalInfo.nomeFrame = (Vector2){arena->frame.x + square, arena->frame.y + square};
 
     arena->ataqueInfo = (Rectangle){arena->frame.x + 8.25*square, arena->frame.y + 7.25*square, 3.5*square, 2.5*square};
 
@@ -38,7 +44,7 @@ void unloadArena(Arena *arena){
     UnloadTexture(arena->texturaDescricao);
 }
 
-void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMode, bool *pausado){
+void updateRound(int *round, Capivara *capivara, int* desenho_skin, int* desenho_skin_combate, int *gameMode, bool *pausado){
     if (*round == mostrarAtaqueCapivara){ *round = escolherAtaqueBoss; }
     if (*round == mostrarCriticoCapivara){ *round = mostrarAtaqueCapivara; }
     if (*round == mostrarCuraCapivara){ *round = escolherAtaqueBoss; }
@@ -51,8 +57,10 @@ void updateRound(int *round, Capivara *capivara, int* desenho_skin, int *gameMod
     if (*round == mostrarBossMorreu){
         capivara->vida = capivara->vidaMaxima;
         capivara->bossDerrotados++;
+        capivara->animaisResgatados++;
         //precisa ver quando fazer isso para depois de interagir com o animal
         *desenho_skin += 2*square;
+        *desenho_skin_combate += 3*square;
         capivara->ataque[capivara->bossDerrotados].desbloqueado = true;
         for (int i = 0; i < 4; i++){ capivara->ataque[i].usos = capivara->ataque[i].usosMaximo; }
         *round = escolherAtaqueCapivara;

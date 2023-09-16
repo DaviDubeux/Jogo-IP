@@ -85,6 +85,7 @@ typedef struct{
     int vida;
     int vidaMaxima;
     int bossDerrotados;
+    int animaisResgatados;
     Ataque ataque[4];
     int ataqueSelecionado;
     Texture2D texturaCombate;
@@ -103,6 +104,16 @@ typedef struct{
 //-------------------
 
 typedef struct{
+    char nome[50];
+    char objeto[50];
+    char mensagem[100];
+    Texture2D textura;
+} Animal;
+
+
+//-------------------
+
+typedef struct{
     float width;
     float height;
     Vector2 frame;
@@ -117,6 +128,7 @@ typedef struct{
     Vector2 frame;
     Info capivaraInfo;
     Info bossInfo;
+    Info animalInfo;
     Rectangle ataqueInfo;
     Texture2D texturaEscolherAtaque;
     Texture2D texturaDescricao;

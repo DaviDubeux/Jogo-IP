@@ -1,5 +1,5 @@
-#ifndef CAPIVARA
-#define CAPIVARA
+#ifndef PERSONAGENS
+#define PERSONAGENS
 #include "C:\raylib\raylib\src\raylib.h"
 #include <string.h>
 #include "defines.h"
@@ -21,6 +21,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->vida = 40;
     capivara->vidaMaxima = 40;
     capivara->bossDerrotados = 0;
+    capivara->animaisResgatados =0;
     capivara->ataqueSelecionado = 0;
     capivara->texturaCombate = LoadTexture("./assets/animais/CombateCapivara.png");
     capivara->texturaCombate.width *= 3.0f; capivara->texturaCombate.height *= 3.0f;
@@ -64,7 +65,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 void loadBoss1(Boss *boss){
     boss->vida = 40;
     boss->vidaMaxima = 40;
-     boss->textura = LoadTexture("./assets/boss/sofa.png");
+    boss->textura = LoadTexture("./assets/boss/sofa.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Sofá de Thalya");
@@ -73,7 +74,7 @@ void loadBoss1(Boss *boss){
     boss->ataque[0].nome[0] = '\0';
     strcpy(boss->ataque[0].nome, "Canhão de almofada");
 
-    boss->ataque[1].dano = 10;
+    boss->ataque[1].dano = 5;
     boss->ataque[1].nome[1] = '\0';
     strcpy(boss->ataque[1].nome, "Esmagar");
 
@@ -81,7 +82,7 @@ void loadBoss1(Boss *boss){
     boss->ataque[2].nome[2] = '\0';
     strcpy(boss->ataque[2].nome, "Nuvem de ácaro");
 
-    boss->ataque[3].dano = 15;
+    boss->ataque[3].dano = 5;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Braçada");
 }
@@ -108,7 +109,7 @@ void loadBoss2(Boss *boss){
 
     boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Resmungo");
+    strcpy(boss->ataque[3].nome, "Sermão");
 }
 
 void loadBoss3(Boss *boss){
@@ -154,13 +155,70 @@ void loadBoss4(Boss *boss){
 
     boss->ataque[2].dano = 5;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Pisada");
+    strcpy(boss->ataque[2].nome, "Come Peixe");
 
     boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[3].nome, "Lançar livros");
 }
 
+//------------------------------
+void loadAnimal1(Animal *animal){
+    animal->nome[0] = '\0';
+    strcpy(animal->nome, "Cagado");
+
+    animal->objeto[0] = '\0';
+    strcpy(animal->objeto, "Escudo");
+
+    animal->mensagem[0] = '\0';
+    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+
+    animal->textura = LoadTexture("./assets/animais/cagado.png");
+
+}
+
+void loadAnimal2(Animal *animal){
+    animal->nome[0] = '\0';
+    strcpy(animal->nome, "Aranha");
+
+    animal->objeto[0] = '\0';
+    strcpy(animal->objeto, "Bandaid");
+
+    animal->mensagem[0] = '\0';
+    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+
+    animal->textura = LoadTexture("./assets/animais/aranha.png");
+
+}
+
+void loadAnimal3(Animal *animal){
+    animal->nome[0] = '\0';
+    strcpy(animal->nome, "Galinha");
+
+    animal->objeto[0] = '\0';
+    strcpy(animal->objeto, "Mochila com asas");
+
+    animal->mensagem[0] = '\0';
+    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+
+    animal->textura = LoadTexture("./assets/animais/galinha.png");
+
+}
+
+void loadAnimal4(Animal *animal){
+    animal->nome[0] = '\0';
+    strcpy(animal->nome, "Peixe");
+
+    animal->objeto[0] = '\0';
+    strcpy(animal->objeto, "Coroa");
+
+    animal->mensagem[0] = '\0';
+    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+
+    animal->textura = LoadTexture("./assets/animais/peixe.png");
+
+}
+//------------------------------
 
 void updateHitbox(Capivara *capivara){
     capivara->hitbox.x = capivara->frame.x + 4.0f;
