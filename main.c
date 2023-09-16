@@ -360,7 +360,8 @@ int main(){
                 }
             }
 
-            if (round == escolherAtaqueCapivara && capivara.vida <= 0){
+            if (capivara.vida < 0){ capivara.vida = 0; }
+            if (round == escolherAtaqueCapivara && capivara.vida == 0){
                 sprintf(scene, "Você morreu!\nTente novamente...");
                 round = mostrarCapivaraMorreu;
             }
@@ -391,7 +392,8 @@ int main(){
                 }
             }
 
-            if (round == escolherAtaqueBoss && boss[bossAtual].vida <= 0){
+            if (boss[bossAtual].vida < 0){ boss[bossAtual].vida = 0; }
+            if (round == escolherAtaqueBoss && boss[bossAtual].vida == 0){
                 sprintf(scene, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome);
                 round = mostrarBossMorreu;
             }
@@ -450,13 +452,13 @@ int main(){
                     else{ sprintf(ataqueExibido, "-"); }
                     DrawText(ataqueExibido, capivara.ataque[i].frame.x, capivara.ataque[i].frame.y + 0.1875*square, 30, BLACK);
                 }
-                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75f*square, capivara.ataque[selecionado].frame.y + 8.0f},
-                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75f*square, capivara.ataque[selecionado].frame.y + 52.0f},
-                             (Vector2){capivara.ataque[selecionado].frame.x - 0.4f*square, capivara.ataque[selecionado].frame.y + 30.0f},
+                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 8.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.75*square, capivara.ataque[selecionado].frame.y + 52.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x - 0.4*square, capivara.ataque[selecionado].frame.y + 30.0f},
                              BLACK);
-                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x + 6.45f*square, capivara.ataque[selecionado].frame.y + 8.0f},
-                             (Vector2){capivara.ataque[selecionado].frame.x + 6.1f*square, capivara.ataque[selecionado].frame.y + 30.0f},
-                             (Vector2){capivara.ataque[selecionado].frame.x + 6.45f*square, capivara.ataque[selecionado].frame.y + 52.0f},
+                DrawTriangle((Vector2){capivara.ataque[selecionado].frame.x + 6.6*square, capivara.ataque[selecionado].frame.y + 8.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x + 6.25*square, capivara.ataque[selecionado].frame.y + 30.0f},
+                             (Vector2){capivara.ataque[selecionado].frame.x + 6.6*square, capivara.ataque[selecionado].frame.y + 52.0f},
                              BLACK);
                 if (capivara.ataque[selecionado].dano > 0 ){ sprintf(danoDoAtaque, "%2d de dano", capivara.ataque[selecionado].dano); }
                 else{ sprintf(danoDoAtaque, "%2d de cura", (-1)*capivara.ataque[selecionado].dano); }
@@ -473,13 +475,15 @@ int main(){
                 sprintf(chanceDeCritico, "de critico");
                 DrawText(chanceDeCritico, arena.ataqueInfo.x + arena.ataqueInfo.width/2.0f - MeasureText(chanceDeCritico, 42)/2.0f,
                          arena.ataqueInfo.y + 2.1*square, 42, BLACK);
+                DrawText("Aperte z para escolher o ataque", arena.frame.x + 0.25*square, arena.frame.y + 0.25*square, 20, DARKBROWN);
             }
             else{
                 DrawTexture(arena.texturaDescricao, arena.frame.x, arena.frame.y, RAYWHITE);
-                DrawText(scene, arena.frame.x + 0.25f*square, arena.frame.y + 7.25f*square, 50, BLACK);
+                DrawText(scene, arena.frame.x + 0.25*square, arena.frame.y + 7.25*square, 50, BLACK);
+                DrawText("aperte x para passar", arena.frame.x + 5.75*square, arena.frame.y + 9.25*square, 50, BLACK);
             }
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
-                          (Vector2){arena.bossInfo.frame.x + 0.5f*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
+                          (Vector2){arena.bossInfo.frame.x + 0.5*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
             DrawTextureRec(capivara.texturaCombate, (Rectangle){0,0, 3*square, 3*square},
                           (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y}, RAYWHITE);
             DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
@@ -532,16 +536,13 @@ int main(){
             }
             */
 
-            loadArena(&arena, screenWidth, screenHeight);
-
             gameMode = menu; prevGameMode = explorando;
+            par = 0;
+            pausado = false; lendoPlaca = false;
             clique = 0;
             round = escolherAtaqueCapivara;
         }
     }
-
-    CloseAudioDevice();
-    
 
     //UNLOADS / FREES
     UnloadTexture(capivara.textura);
@@ -551,6 +552,7 @@ int main(){
     UnloadMusicStream(musica);
     UnloadTexture(capivara.texturaCombate);
     
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }

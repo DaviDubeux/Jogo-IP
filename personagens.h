@@ -79,11 +79,11 @@ void loadBoss1(Boss *boss){
 
     boss->ataque[2].dano = 5;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Arranhar");
+    strcpy(boss->ataque[2].nome, "Nuvem de ácaro");
 
     boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[3].nome, "Braçada");
 }
 
 void loadBoss2(Boss *boss){
@@ -133,7 +133,7 @@ void loadBoss3(Boss *boss){
 
     boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Lorem ipsum dolor sit");
+    strcpy(boss->ataque[3].nome, "Agulhas de tricô");
 }
 
 void loadBoss4(Boss *boss){
