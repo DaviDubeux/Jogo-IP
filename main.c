@@ -399,7 +399,7 @@ int main(){
 
             if (round == escolherAtaqueBoss && boss[bossAtual].vida > 0){
                 ataqueDoBoss = GetRandomValue(0, 3);
-                if (boss[bossAtual].ataque[ataqueDoBoss].dano >= 0){ // mostrarAtaqueBoss
+                if (boss[bossAtual].ataque[ataqueDoBoss].dano > 0){ // mostrarAtaqueBoss
                     capivara.vida -= boss[bossAtual].ataque[ataqueDoBoss].dano;
                     sprintf(scene, "%s usou %s!\n%s levou %d de dano", boss[bossAtual].nome, boss[bossAtual].ataque[ataqueDoBoss].nome,
                             capivara.nome, boss[bossAtual].ataque[ataqueDoBoss].dano);
@@ -520,7 +520,6 @@ int main(){
 
             //desenho do animal
             DrawTextureRec(animal[animalAtual].textura, (Rectangle){0, 0, square, square}, 
-
                           (Vector2){arena.animalInfo.frame.x, arena.animalInfo.frame.y}, RAYWHITE);
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
                           (Vector2){arena.bossInfo.frame.x + 0.5*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
@@ -585,7 +584,7 @@ int main(){
 
     //UNLOADS // FREES
     UnloadTexture(capivara.textura);
-    UnloadTexture( item.textura);
+    UnloadTexture(item.textura);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 4; i++){ UnloadTexture(animal[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
