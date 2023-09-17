@@ -119,11 +119,11 @@ void updateRoom(Capivara *capivara, Sala *sala){
 
 void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca, bool *lendo){
     if (capivara->interacao.interagindo){
-        for(int i=0; i<sala->qtdObjetos; i++){
+        for (int i = 0; i < sala->qtdObjetos && !(*lendo); i++){
             *pausado = CheckCollisionRecs(sala->objeto[i].hitbox, capivara->interacao.hitbox);
             *lendo = *pausado;
         }
-        if(capivara->salaAtual == salaJardim){
+        if (capivara->salaAtual == salaJardim){
             *lendoPlaca = CheckCollisionRecs(sala->objeto[7].hitbox, capivara->interacao.hitbox);
         }
     }
@@ -136,7 +136,7 @@ int updateBossfight(Capivara *capivara, Sala *sala){
     if (capivara->interacao.interagindo){
 
         if (capivara->salaAtual == salaCagado){
-            bossfight = CheckCollisionRecs(sala->objeto[3].hitbox, capivara->interacao.hitbox);
+            bossfight = CheckCollisionRecs(sala->objeto[2].hitbox, capivara->interacao.hitbox);
             if (bossfight && capivara->bossDerrotados == 0){ return combate; }
         }
         else if (capivara->salaAtual == salaAranhas){

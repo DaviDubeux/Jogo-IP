@@ -16,7 +16,7 @@ int main(){
     bool pausado = false;
     bool lendoPlaca = false;
     bool lendo = false;
-    int EsseObjeto;
+    int interagindoCom;
 
     //combate
     int round = escolherAtaqueCapivara;
@@ -255,7 +255,7 @@ int main(){
             DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
 
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
-            /*
+            ///*
             DrawRectangleV(sala[salaAtual].frame, (Vector2){sala[salaAtual].width, sala[salaAtual].height}, LIGHTGRAY);
 
             // desenha as paredes
@@ -280,26 +280,16 @@ int main(){
                             (CheckCollisionRecs(sala[salaAtual].saida[i].hitbox, capivara.hitbox)) ? GREEN : LIME);
             }
 
-            // desenha obstaculos
-            for (int i = 0; i < sala[salaAtual].qtdObstaculos; i++){
-                DrawRectangle(sala[salaAtual].obstaculo[i].x, sala[salaAtual].obstaculo[i].y,
-                            sala[salaAtual].obstaculo[i].width, sala[salaAtual].obstaculo[i].height,
-                            (CheckCollisionRecs(sala[salaAtual].obstaculo[i], capivara.hitbox)) ? SKYBLUE : DARKBLUE);
+            // desenha objetos
+            for (int i = 0; i < sala[salaAtual].qtdObjetos; i++){
+                DrawRectangle(sala[salaAtual].objeto[i].hitbox.x, sala[salaAtual].objeto[i].hitbox.y,
+                            sala[salaAtual].objeto[i].hitbox.width, sala[salaAtual].objeto[i].hitbox.height,
+                            (CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.hitbox)) ? SKYBLUE : DARKBLUE);
                 if (capivara.interacao.interagindo){
-                    DrawRectangle(sala[salaAtual].obstaculo[i].x, sala[salaAtual].obstaculo[i].y,
-                                  sala[salaAtual].obstaculo[i].width, sala[salaAtual].obstaculo[i].height,
-                                  (CheckCollisionRecs(sala[salaAtual].obstaculo[i], capivara.interacao.hitbox)) ? SKYBLUE : DARKBLUE);
+                    DrawRectangle(sala[salaAtual].objeto[i].hitbox.x, sala[salaAtual].objeto[i].hitbox.y,
+                                  sala[salaAtual].objeto[i].hitbox.width, sala[salaAtual].objeto[i].hitbox.height,
+                                  (CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.interacao.hitbox)) ? SKYBLUE : DARKBLUE);
                 }
-            }
-
-            // desenha placa
-            DrawRectangle(sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y,
-                          sala[salaAtual].placa.hitbox.width, sala[salaAtual].placa.hitbox.height,
-                          (CheckCollisionRecs(sala[salaAtual].placa.hitbox, capivara.hitbox)) ? SKYBLUE : DARKBLUE);
-            if (capivara.interacao.interagindo){
-                DrawRectangle(sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y,
-                              sala[salaAtual].placa.hitbox.width, sala[salaAtual].placa.hitbox.height,
-                              (CheckCollisionRecs(sala[salaAtual].placa.hitbox, capivara.interacao.hitbox)) ? SKYBLUE : DARKBLUE);
             }
 
             // desenha capivara
@@ -309,37 +299,41 @@ int main(){
             if (capivara.interacao.interagindo){ DrawRectangle(capivara.interacao.hitbox.x, capivara.interacao.hitbox.y,
                                                  capivara.hitbox.width, capivara.hitbox.height, PINK); }
 
-            */
+            //*/
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
 
 
             // anima a capivara normalmente desde o último movimento
             if (!pausado) { par = ((int)GetTime())%3; }
-            DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
+            //DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
 
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
-            if (lendo && lendoPlaca){
-                for(int i=0; i<sala[salaAtual].qtdObjetos; i++){
+            if (lendo){
+                for (int i = 0; i < sala[salaAtual].qtdObjetos && interagindoCom == -1; i++){
                     if(CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.interacao.hitbox)){
-                        EsseObjeto = i;
+                        interagindoCom = i;
                     }
                 }
-                //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
-                DrawTexture(texturaPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
-                DrawText(sala[salaAtual].objeto[EsseObjeto].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, GOLD);
+                if (lendoPlaca){
+                    //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
+                    DrawTexture(texturaPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
+                    DrawText(sala[salaAtual].objeto[interagindoCom].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, GOLD);
+                }
+                else if (!lendoPlaca) {
+                    DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, 8*square, 2*square, RAYWHITE);
+                    //DrawTexture(texturaLendo, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, RAYWHITE);
+                    DrawText(sala[salaAtual].objeto[interagindoCom].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 7.25*square, 60, BLACK);
+                }
             }
-            else if (lendo && !lendoPlaca) {
-                //DrawTexture(texturaLendo, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, RAYWHITE);
-                DrawText(sala[salaAtual].objeto[7].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, BLACK);
-            }
+            interagindoCom = -1;
             if (prevGameMode == combate){ prevGameMode = explorando; }
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
             if (gameMode == combate){ prevGameMode = explorando; round = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X)){ pausado = 0; lendoPlaca = 0; }
+            if (IsKeyPressed(KEY_X)){ pausado = 0; lendoPlaca = 0; lendo = 0; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------

@@ -45,16 +45,22 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
 
     sala1->objeto[0].hitbox = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->objeto[0].mensagem[0] = '\0';
+
     sala1->objeto[1].hitbox = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->objeto[1].mensagem[0] = '\0';
+
     sala1->objeto[2].hitbox = (Rectangle){sala1->frame.x + 9*square, sala1->frame.y + 8*square, 1*square, 1*square};
     sala1->objeto[2].mensagem[0] = '\0';
+
     sala1->objeto[3].hitbox = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 4*square, 1*square, 1*square};
     sala1->objeto[3].mensagem[0] = '\0';
+
     sala1->objeto[4].hitbox = (Rectangle){sala1->frame.x + 9*square, sala1->frame.y + 4*square, 1*square, 1*square};
     sala1->objeto[4].mensagem[0] = '\0';
+
     sala1->objeto[5].hitbox = (Rectangle){sala1->frame.x + 2*square, sala1->frame.y + 7*square, 1*square, 1*square};
     sala1->objeto[5].mensagem[0] = '\0';
+
     sala1->objeto[6].hitbox = (Rectangle){sala1->frame.x + 6*square, sala1->frame.y + 7*square, 1*square, 1*square};
     sala1->objeto[6].mensagem[0] = '\0';
 
@@ -64,7 +70,7 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
 
     sala1->objeto[8].hitbox = (Rectangle){sala1->frame.x + 10*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->objeto[8].mensagem[0] = '\0';
-    strcpy(sala1->objeto[8].mensagem, "   RIP\nPeixe Afogado");
+    strcpy(sala1->objeto[8].mensagem, "            RIP\n      Peixe Afogado");
 
     sala1->porta[cima].aberta = true;      sala1->saida[cima].saidaPara = salaHub;
     sala1->porta[esquerda].aberta = false; sala1->saida[esquerda].saidaPara = salaJardim;
@@ -121,9 +127,9 @@ void loadSala3(Sala *sala3){
     //sala3->objeto[0].textura.width = 3*square; sala3->(objeto[0]).textura.height = square;
     sala3->objeto[1].hitbox = (Rectangle){sala3->frame.x + 1*square, sala3->frame.y + 3*square, 1*square, 4*square};
     sala3->objeto[1].mensagem[0] = '\0';
-    sala3->objeto[2].hitbox = (Rectangle){sala3->frame.x + 4*square, sala3->frame.y + 3*square, 2*square, 4*square};
+    sala3->objeto[2].hitbox = (Rectangle){sala3->frame.x + 4*square, sala3->frame.y + 3*square, 2*square, 4*square}; // sofá
     sala3->objeto[2].mensagem[0] = '\0';
-    sala3->objeto[3].hitbox = (Rectangle){sala3->frame.x + 2*square, sala3->frame.y + 4*square, 2*square, 2*square}; // sofá
+    sala3->objeto[3].hitbox = (Rectangle){sala3->frame.x + 2*square, sala3->frame.y + 4*square, 2*square, 2*square};
     sala3->objeto[3].mensagem[0] = '\0';
     sala3->objeto[4].hitbox = (Rectangle){sala3->frame.x, sala3->frame.y, square, square};
     sala3->objeto[4].mensagem[0] = '\0';
