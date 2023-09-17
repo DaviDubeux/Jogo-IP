@@ -14,6 +14,8 @@ void loadCapivaraExplorando(Capivara *capivara, const float screenW, const float
     capivara->prevHitbox = capivara->hitbox;
     capivara->interacao.hitbox = (Rectangle) {capivara->hitbox.x, capivara->hitbox.y, square - 8.0f, square - 8.0f};
     capivara->interacao.interagindo = 0;
+    //capivara->interacao1.hitbox = (Rectangle) {capivara->hitbox.x, capivara->hitbox.y, square - 8.0f, square - 8.0f};
+    //capivara->interacao1.interagindo = 0;
     capivara->textura = LoadTexture("./assets/animais/capivara.png");
 }
 
@@ -135,7 +137,7 @@ void loadBoss3(Boss *boss){
 
     boss->ataque[3].dano = 15;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Agulhas de tricô");
+    strcpy(boss->ataque[3].nome, "Tricotada Mortal");
 }
 
 void loadBoss4(Boss *boss){
@@ -164,59 +166,69 @@ void loadBoss4(Boss *boss){
 }
 
 //------------------------------
+
+void loadItem(Itens *item){
+    item->textura = LoadTexture("./assets/animais/objetos_96.png");
+}
+
 void loadAnimal1(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Cagado");
 
-    animal->objeto[0] = '\0';
-    strcpy(animal->objeto, "Escudo");
+    animal->item->nome[0] = '\0';
+    strcpy(animal->item->nome, "Escudo");
 
     animal->mensagem[0] = '\0';
     strcpy(animal->mensagem, "Lorem ipsum dolor sit");
 
     animal->textura = LoadTexture("./assets/animais/cagado.png");
-
+    animal->frame.x = 9*square; 
+    animal->frame.y = 3*square;
 }
 
 void loadAnimal2(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Aranha");
 
-    animal->objeto[0] = '\0';
-    strcpy(animal->objeto, "Bandaid");
+    animal->item->nome[0] = '\0';
+    strcpy(animal->item->nome, "Bandaid");
 
     animal->mensagem[0] = '\0';
     strcpy(animal->mensagem, "Lorem ipsum dolor sit");
 
     animal->textura = LoadTexture("./assets/animais/aranha.png");
-
+    animal->frame.x = 1*square; 
+    animal->frame.y = 3*square;
 }
 
 void loadAnimal3(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Galinha");
 
-    animal->objeto[0] = '\0';
-    strcpy(animal->objeto, "Mochila com asas");
+    animal->item->nome[0] = '\0';
+    strcpy(animal->item->nome, "Mochila com asas");
 
     animal->mensagem[0] = '\0';
     strcpy(animal->mensagem, "Lorem ipsum dolor sit");
 
     animal->textura = LoadTexture("./assets/animais/galinha.png");
-
+    animal->frame.x = 7*square; 
+    animal->frame.y = 8*square;
 }
 
 void loadAnimal4(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Peixe");
 
-    animal->objeto[0] = '\0';
-    strcpy(animal->objeto, "Coroa");
+    animal->item->nome[0] = '\0';
+    strcpy(animal->item->nome, "Coroa");
 
     animal->mensagem[0] = '\0';
     strcpy(animal->mensagem, "Lorem ipsum dolor sit");
 
     animal->textura = LoadTexture("./assets/animais/peixe.png");
+    animal->frame.x = 7*square; 
+    animal->frame.y = 8*square;
 
 }
 //------------------------------
@@ -252,5 +264,27 @@ void updateInteracaoHitbox(Capivara *capivara){
 
 }
 
+/*
+void updateInteracao1Hitbox(Capivara *capivara){
+    
+    if (capivara->direcao == sentidoCima){
+        capivara->interacao1.hitbox.y = capivara->hitbox.y - square - 2.0f;
+        capivara->interacao1.hitbox.x = capivara->hitbox.x;
+    }
+    else if (capivara->direcao == sentidoBaixo){
+        capivara->interacao1.hitbox.y = capivara->hitbox.y + square + 2.0f;
+        capivara->interacao1.hitbox.x = capivara->hitbox.x;
+    }
+    else if (capivara->direcao == sentidoEsquerda){
+        capivara->interacao1.hitbox.y = capivara->hitbox.y;
+        capivara->interacao1.hitbox.x = capivara->hitbox.x - square - 2.0f;
+    }
+    else if (capivara->direcao == sentidoDireita){
+        capivara->interacao1.hitbox.y = capivara->hitbox.y;
+        capivara->interacao1.hitbox.x = capivara->hitbox.x + square + 2.0f;
+    }
+
+}
+*/
 
 #endif

@@ -9,12 +9,14 @@
 
 int main(){
     int gameMode = menu;
-    int prevGameMode = combate;
+    int prevGameMode = explorando;
     
     //explorando
     int par = 0;
     bool pausado = false;
     bool lendoPlaca = false;
+    bool lendo = false;
+    int EsseObjeto;
 
     //combate
     int round = escolherAtaqueCapivara;
@@ -50,6 +52,7 @@ int main(){
 
     Capivara capivara;
     Boss boss[4];
+    Itens item;
     Animal animal[4];
     Sala sala[6];
     Arena arena;
@@ -62,6 +65,8 @@ int main(){
     loadBoss3(&(boss[2])); boss[2].textura.width *= 9.0f; boss[2].textura.height *= 9.0f;
     loadBoss4(&(boss[3])); boss[3].textura.width *= 9.0f; boss[3].textura.height *= 9.0f;
 
+    loadItem(&item); item.textura.width *= 3.0f; item.textura.height *= 3.0f;
+
     loadAnimal1(&(animal[0])); animal[0].textura.width *= 3.0f; animal[0].textura.height *= 3.0f;
     loadAnimal2(&(animal[1])); animal[1].textura.width *= 3.0f; animal[1].textura.height *= 3.0f;
     loadAnimal3(&(animal[2])); animal[2].textura.width *= 3.0f; animal[2].textura.height *= 3.0f;
@@ -69,27 +74,27 @@ int main(){
 
     for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
     loadSala1(&(sala[salaJardim]));
-    if (sala[salaJardim].obstaculo == NULL){
+    if (sala[salaJardim].objeto == NULL){
         for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala2(&(sala[salaHub]));
-    if (sala[salaHub].obstaculo == NULL){
+    if (sala[salaHub].objeto == NULL){
         for (int i = 0; i < 2; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala3(&(sala[salaCagado]));
-    if (sala[salaCagado].obstaculo == NULL){
+    if (sala[salaCagado].objeto == NULL){
         for (int i = 0; i < 3; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala4(&(sala[salaAranhas]));
-    if (sala[salaAranhas].obstaculo == NULL){
+    if (sala[salaAranhas].objeto == NULL){
         for (int i = 0; i < 4; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala5(&(sala[salaGalinha]));
-    if (sala[salaGalinha].obstaculo == NULL){
+    if (sala[salaGalinha].objeto == NULL){
         for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     loadSala6(&(sala[salaPeixe]));
-    if (sala[salaPeixe].obstaculo == NULL){
+    if (sala[salaPeixe].objeto == NULL){
         for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
     }
     
@@ -126,6 +131,7 @@ int main(){
         int desenho_capivara = square, 
             desenho_skin = 0, //se quiser mudar a skin soma 2*square
             desenho_skin_combate = 0; //se quiser mudar a skin soma 3||4*square
+        float Timer = 0.0f;
     //
     
     while(!WindowShouldClose()){
@@ -175,16 +181,16 @@ int main(){
 
                 DrawText("Z para interagir com objetos  \nX para passar dialogos", 100, 750, 36, WHITE);
 
-                DrawText("Pressione B para retornar ao menu", 100, 950, 55, MAROON);
+                DrawText("Pressione B para retornar ao menu", 100, 950, 45, MAROON);
 
                 if(IsKeyPressed(KEY_B)){ opcoes = 0; }
             }
             if(opcao == 2){
                 creditos = 1;
                 ClearBackground(SKYBLUE);
-                DrawText(" Autores:\n Davi Dubeux \n Henrique Carvalho \n J.Pedro Marinho \n Mayres Mauricio Andrey \n Thalya Mayara(Detentora dos direitos da historia) \n Victor Bastos", 80, 210, 50, DARKPURPLE);
+                DrawText(" Autores:\n Davi Dubeux \n Henrique Carvalho \n J.Pedro Marinho \n Mayres M. Andrey \n Thalya Mayara \n \t(Detentora dos direitos da historia) \n Victor Bastos", 80, 210, 50, DARKPURPLE);
                 
-                DrawText("Pressione B para retornar ao menu", 100, 950, 55, MAROON);
+                DrawText("Pressione B para retornar ao menu", 100, 950, 45, MAROON);
                 if(IsKeyPressed(KEY_B)){ creditos = 0; }
             }
 
@@ -237,10 +243,11 @@ int main(){
             }
 
             capivara.interacao.interagindo = (IsKeyDown(KEY_Z)) ? 1 : 0;
+            //capivara.interacao1.interagindo = (IsKeyDown(KEY_Z)) ? 1 : 0;
 
             fixCollision(&capivara, &(sala[salaAtual]));
             updateInteracaoHitbox(&capivara);
-            updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado, &lendoPlaca);
+            updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado, &lendoPlaca, &lendo);
             updateRoom(&capivara, &(sala[salaAtual]));
 
             BeginDrawing();
@@ -309,16 +316,22 @@ int main(){
             // anima a capivara normalmente desde o último movimento
             if (!pausado) { par = ((int)GetTime())%3; }
             DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
-            if (sala[salaAtual].placa.hitbox.x != sala[salaAtual].frame.x && sala[salaAtual].placa.hitbox.y != sala[salaAtual].frame.y){
-                DrawTextureRec(sala[salaAtual].placa.textura, (Rectangle){0, 0, square, square},
-                               (Vector2){sala[salaAtual].placa.hitbox.x, sala[salaAtual].placa.hitbox.y} , (pausado) ? DARKGRAY : WHITE);
-            }
+
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
-            if (lendoPlaca){
+            if (lendo && lendoPlaca){
+                for(int i=0; i<sala[salaAtual].qtdObjetos; i++){
+                    if(CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.interacao.hitbox)){
+                        EsseObjeto = i;
+                    }
+                }
                 //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, 8*square, 6*square, RAYWHITE);
                 DrawTexture(texturaPlaca, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 2*square, RAYWHITE);
-                DrawText(sala[salaAtual].placa.mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, GOLD);
+                DrawText(sala[salaAtual].objeto[EsseObjeto].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, GOLD);
+            }
+            else if (lendo && !lendoPlaca) {
+                //DrawTexture(texturaLendo, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, RAYWHITE);
+                DrawText(sala[salaAtual].objeto[7].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, BLACK);
             }
             if (prevGameMode == combate){ prevGameMode = explorando; }
             capivara.prevHitbox = capivara.hitbox;
@@ -410,6 +423,20 @@ int main(){
             if (round == escolherAtaqueBoss && boss[bossAtual].vida == 0){
                 sprintf(scene, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome);
                 round = mostrarBossMorreu;
+                /*
+                if(capivara.animaisResgatados == 1){
+                    cenasAnimal1(&Timer, &capivara, &(animal[animalAtual]), &(boss[bossAtual]), &(sala[capivara.salaAtual]), &objeto);
+                }
+                if(capivara.animaisResgatados == 2){
+                    cenasAnimal2(&Timer, &capivara, &(animal[animalAtual]), &(boss[bossAtual]), &(sala[capivara.salaAtual]), &objeto);
+                }
+                if(capivara.animaisResgatados == 3){
+                    cenasAnimal3(&Timer, &capivara, &(animal[animalAtual]), &(boss[bossAtual]), &(sala[capivara.salaAtual]), &objeto);
+                }
+                if(capivara.animaisResgatados == 4){
+                    cenasAnimal4(&Timer, &capivara, &(animal[animalAtual]), &(boss[bossAtual]), &(sala[capivara.salaAtual]), &objeto);
+                }*/
+
             }
 
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
@@ -562,8 +589,9 @@ int main(){
         }
     }
 
-    //UNLOADS / FREES
+    //UNLOADS // FREES
     UnloadTexture(capivara.textura);
+    UnloadTexture( item.textura);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 4; i++){ UnloadTexture(animal[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }

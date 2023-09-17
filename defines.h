@@ -78,6 +78,7 @@ typedef struct{
     Rectangle hitbox;
     Rectangle prevHitbox;
     Interacao interacao;
+    //Interacao interacao1;
     Texture2D textura;
 
     // gamemode combate
@@ -102,11 +103,17 @@ typedef struct{
 }Boss;
 
 //-------------------
+typedef struct {
+    char nome[50];
+    Vector2 frame;
+    Texture2D textura;
+} Itens;
 
 typedef struct{
     char nome[50];
-    char objeto[50];
     char mensagem[100];
+    Vector2 frame;
+    Itens item[50];
     Texture2D textura;
 } Animal;
 
@@ -138,9 +145,8 @@ typedef struct{
 
 typedef struct{
     char mensagem[500];
-    Texture2D textura;
     Rectangle hitbox;
-}Placa;
+}Objeto;
 
 typedef struct{
     bool aberta;
@@ -163,9 +169,8 @@ typedef struct{
     Saida saida[4];
 
     // específicos da sala
-    int qtdObstaculos;
-    Rectangle *obstaculo;
-    Placa placa;
+    int qtdObjetos;
+    Objeto *objeto;
     Texture2D textura;
     Music musica;
 

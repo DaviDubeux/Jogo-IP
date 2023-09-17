@@ -53,12 +53,12 @@ void fixCollision(Capivara *capivara, Sala *sala){
         }
     }
 
-    // obstaculos
-    for (int i = 0; i < sala->qtdObstaculos; i++){
+    // objetos
+    for (int i = 0; i < sala->qtdObjetos; i++){
 
-        collision = CheckCollisionRecs(sala->obstaculo[i], capivara->hitbox);
-        collisionX = CheckCollisionRecs(sala->obstaculo[i], prevX);
-        collisionY = CheckCollisionRecs(sala->obstaculo[i], prevY);
+        collision = CheckCollisionRecs(sala->objeto[i].hitbox, capivara->hitbox);
+        collisionX = CheckCollisionRecs(sala->objeto[i].hitbox, prevX);
+        collisionY = CheckCollisionRecs(sala->objeto[i].hitbox, prevY);
         
         if (collision && !collisionX && collisionY){
             capivara->hitbox.x = capivara->prevHitbox.x;
@@ -73,21 +73,6 @@ void fixCollision(Capivara *capivara, Sala *sala){
 
     }
 
-    // placa
-    collision = CheckCollisionRecs(sala->placa.hitbox, capivara->hitbox);
-    collisionX = CheckCollisionRecs(sala->placa.hitbox, prevX);
-    collisionY = CheckCollisionRecs(sala->placa.hitbox, prevY);
-    
-    if (collision && !collisionX && collisionY){
-        capivara->hitbox.x = capivara->prevHitbox.x;
-        capivara->hitbox.x = capivara->hitbox.x;
-        updateFrame(capivara);
-    }
-    if (collision && collisionX && !collisionY){
-        capivara->hitbox.y = capivara->prevHitbox.y;
-        capivara->hitbox.y = capivara->hitbox.y;
-        updateFrame(capivara);
-    }
 }
 
 void updateRoom(Capivara *capivara, Sala *sala){
@@ -132,10 +117,15 @@ void updateRoom(Capivara *capivara, Sala *sala){
     }
 }
 
-void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca){
+void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca, bool *lendo){
     if (capivara->interacao.interagindo){
-        *pausado = CheckCollisionRecs(sala->placa.hitbox, capivara->interacao.hitbox);
-        *lendoPlaca = *pausado;
+        for(int i=0; i<sala->qtdObjetos; i++){
+            *pausado = CheckCollisionRecs(sala->objeto[i].hitbox, capivara->interacao.hitbox);
+            *lendo = *pausado;
+        }
+        if(capivara->salaAtual == salaJardim){
+            *lendoPlaca = CheckCollisionRecs(sala->objeto[7].hitbox, capivara->interacao.hitbox);
+        }
     }
 }
 
@@ -146,19 +136,19 @@ int updateBossfight(Capivara *capivara, Sala *sala){
     if (capivara->interacao.interagindo){
 
         if (capivara->salaAtual == salaCagado){
-            bossfight = CheckCollisionRecs(sala->obstaculo[2], capivara->interacao.hitbox);
+            bossfight = CheckCollisionRecs(sala->objeto[3].hitbox, capivara->interacao.hitbox);
             if (bossfight && capivara->bossDerrotados == 0){ return combate; }
         }
         else if (capivara->salaAtual == salaAranhas){
-            bossfight = CheckCollisionRecs(sala->obstaculo[6], capivara->interacao.hitbox);
+            bossfight = CheckCollisionRecs(sala->objeto[6].hitbox, capivara->interacao.hitbox);
             if (bossfight && capivara->bossDerrotados == 1){ return combate; }
         }
         else if (capivara->salaAtual == salaGalinha){
-            bossfight = CheckCollisionRecs(sala->obstaculo[6], capivara->interacao.hitbox);
+            bossfight = CheckCollisionRecs(sala->objeto[6].hitbox, capivara->interacao.hitbox);
             if (bossfight && capivara->bossDerrotados == 2){ return combate; }
         }
         else if (capivara->salaAtual == salaPeixe){
-            bossfight = CheckCollisionRecs(sala->obstaculo[1], capivara->interacao.hitbox);
+            bossfight = CheckCollisionRecs(sala->objeto[1].hitbox, capivara->interacao.hitbox);
             if (bossfight && capivara->bossDerrotados == 3){ return combate; }
         }
     }

@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "defines.h": "c"
+        "defines.h": "c",
+        "personagens.h": "c"
     },
     "cmake.configureOnOpen": false
 }
