@@ -31,7 +31,7 @@ int main(){
     char chanceDeCritico[10] = "";
 
     //menu
-    Texture2D setas, wasd, TecX, TecZ, Menu;
+    Texture2D Controles, Creditos, Menu, Fundo;
     int opcao = 0;
     int opcoes = 0;
     int creditos = 0;
@@ -101,25 +101,22 @@ int main(){
     loadArena(&arena, screenWidth, screenHeight);
     loadCapivaraCombate(&capivara, &arena);
     
-    setas = LoadTexture("./assets/cenarios/menu/setas.png");
-    setas.height = 350.0f;
-    setas.width = 350.0f;
+    Controles = LoadTexture("./assets/cenarios/menu/tutorial.png");
+    Controles.height = screenHeight;
+    Controles.width = screenWidth;
 
-    wasd = LoadTexture("./assets/cenarios/menu/wasd.png");
-    wasd.height = 350.0f;
-    wasd.width = 350.0f;
-
-    TecX = LoadTexture("./assets/cenarios/menu/teclax.png");
-    TecX.height = 100.0f;
-    TecX.width = 100.0f;
-
-    TecZ = LoadTexture("./assets/cenarios/menu/teclaz.png");
-    TecZ.height = 100.0f;
-    TecZ.width = 100.0f;
-
-    Menu = LoadTexture("./assets/cenarios/menu/Ibama.png");
+    Menu = LoadTexture("./assets/cenarios/menu/Menu.png");
     Menu.height = screenHeight;
     Menu.width = screenWidth;
+
+    Creditos = LoadTexture("./assets/cenarios/menu/creditos.png");
+    Creditos.height = screenHeight;
+    Creditos.width = screenWidth;
+
+    Fundo = LoadTexture("./assets/cenarios/menu/ibamaFundo.png");
+    Fundo.height = screenHeight;
+    Fundo.width = screenWidth;
+
 
     Texture2D texturaPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
     texturaPlaca.width = 8*square; texturaPlaca.height = 6*square;
@@ -154,43 +151,18 @@ int main(){
 
             //Entrar no jogo
             if(opcao == 0){
-                DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
-                DrawText("Missão IBAMA: Contra-Ataque à Thalya", screenHeight / 2 - MeasureText("Missão IBAMA: Contra-Ataque à Thalya", 20) / 2, 15, 75, LIME);
-
-                DrawRectangleRec((Rectangle){75, screenHeight / 2 - 200, 500, 100}, RED);
-                DrawText("Aperte Q para iniciar", 75 + 250 - MeasureText("Aperte Q para iniciar", 20) / 2, screenHeight / 2 - 200 + 50 - 20 / 2, 20, BLACK);
+                DrawTextureRec(Menu,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE);
                 
-                //Controles
-                DrawRectangleRec((Rectangle){75, screenHeight / 2 , 400, 100}, RED);
-                DrawText("Aperte W para ver controles", 75 + 200 - MeasureText("Aperte W para ver controles", 20) / 2, screenHeight / 2 + 50 - 20 / 2, 20, BLACK);
-
-                //Creditos
-                DrawRectangleRec((Rectangle){75, screenHeight / 2 + 200, 400, 100}, RED);
-                DrawText("Aperte E para ver os creditos", 75 + 200 - MeasureText("Aperte E para ver os creditos", 20) / 2, screenHeight / 2 + 200 + 50 - 20 / 2, 20, BLACK);
             }
             if(opcao == 1){
                 opcoes = 1;
-                ClearBackground(GRAY);
-                DrawText("Use as setas do teclado para se movimentar  ou W A S D", 75, 210, 32, WHITE);
-                //Z para interagir e X para passar dos dialogos
-                DrawTextureRec(wasd,(Rectangle){0, 0, 350, 350}, (Vector2){ 640, 200}, GRAY);
-                DrawTextureRec(setas,(Rectangle){0, 0, 350, 350}, (Vector2){ 180, 200}, GRAY);
-                DrawTextureRec(TecZ,(Rectangle){0, 0, 100, 100}, (Vector2){ 180, 580}, 
-                GRAY);
-                DrawTextureRec(TecX,(Rectangle){0, 0, 100, 100}, (Vector2){ 500, 580}, GRAY);
-
-                DrawText("Z para interagir com objetos  \nX para passar dialogos", 100, 750, 36, WHITE);
-
-                DrawText("Pressione B para retornar ao menu", 100, 950, 45, MAROON);
+                DrawTextureRec(Controles,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){ 0, 0}, RAYWHITE);
 
                 if(IsKeyPressed(KEY_B)){ opcoes = 0; }
             }
             if(opcao == 2){
                 creditos = 1;
-                ClearBackground(SKYBLUE);
-                DrawText(" Autores:\n Davi Dubeux \n Henrique Carvalho \n J.Pedro Marinho \n Mayres M. Andrey \n Thalya Mayara \n \t(Detentora dos direitos da historia) \n Victor Bastos", 80, 210, 50, DARKPURPLE);
-                
-                DrawText("Pressione B para retornar ao menu", 100, 950, 45, MAROON);
+                DrawTextureRec(Creditos,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){ 0, 0}, RAYWHITE);
                 if(IsKeyPressed(KEY_B)){ creditos = 0; }
             }
 
@@ -252,7 +224,7 @@ int main(){
 
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            DrawTextureRec(Menu,(Rectangle){0, 0, 1920, 1080}, (Vector2){0, 0}, RAYWHITE);
+            DrawTextureRec(Fundo,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE);
 
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
             ///*
@@ -342,7 +314,7 @@ int main(){
             UpdateMusicStream(musicaCombate);
             PlayMusicStream(musicaCombate);
             SetMusicVolume(musicaCombate, 0.2);
-            
+
             int selecionado = capivara.ataqueSelecionado;
             int bossAtual = capivara.bossDerrotados;
             int animalAtual = capivara.animaisResgatados;
@@ -351,7 +323,7 @@ int main(){
             sprintf(vidaExibidaBoss, "%2d/%2d", boss[bossAtual].vida, boss[bossAtual].vidaMaxima);
 
             BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground(WHITE);
             
             if (round == escolherAtaqueCapivara && capivara.vida > 0){
                 if (IsKeyPressed(KEY_DOWN) && selecionado < 3 &&  capivara.ataque[selecionado + 1].desbloqueado){ capivara.ataqueSelecionado++; }
@@ -373,6 +345,7 @@ int main(){
                             round = mostrarCuraCapivara;
                         }
                         capivara.ataque[selecionado].usos--;
+                    
                     }
                     else{ // escolheuErrado
                         sprintf(scene, "você não tem mais usos para esse Ataque!");                       

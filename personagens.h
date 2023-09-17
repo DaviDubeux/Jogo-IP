@@ -20,10 +20,10 @@ void loadCapivaraExplorando(Capivara *capivara, const float screenW, const float
 }
 
 void loadCapivaraCombate(Capivara *capivara, Arena *arena){
-    capivara->vida = 40;
-    capivara->vidaMaxima = 40;
+    capivara->vida = 300;
+    capivara->vidaMaxima = 300;
     capivara->bossDerrotados = 0;
-    capivara->animaisResgatados =0;
+    capivara->animaisResgatados = 0;
     capivara->ataqueSelecionado = 0;
     capivara->texturaCombate = LoadTexture("./assets/animais/CombateCapivara.png");
     capivara->texturaCombate.width *= 3.0f; capivara->texturaCombate.height *= 3.0f;
@@ -31,31 +31,31 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->nome[0] = '\0';
     strcpy(capivara->nome, "Agente do ibama");
 
-    capivara->ataque[0].dano = 10; capivara->ataque[0].chanceDeCritico = 0;
-    capivara->ataque[0].usos = 20; capivara->ataque[0].usosMaximo = 4;
+    capivara->ataque[0].dano = 40; capivara->ataque[0].chanceDeCritico = 0;
+    capivara->ataque[0].usos = 20; capivara->ataque[0].usosMaximo = 20;
     capivara->ataque[0].desbloqueado = true;
     capivara->ataque[0].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.2*square};
     capivara->ataque[0].width = 6*square; capivara->ataque[0].height = 0.75*square;
     capivara->ataque[0].nome[0] = '\0';
     strcpy(capivara->ataque[0].nome, "Canetada do Ibama");
 
-    capivara->ataque[1].dano = 10; capivara->ataque[1].chanceDeCritico = 25;
-    capivara->ataque[1].usos = 5; capivara->ataque[1].usosMaximo = 10;
+    capivara->ataque[1].dano = 35; capivara->ataque[1].chanceDeCritico = 25;
+    capivara->ataque[1].usos = 15; capivara->ataque[1].usosMaximo = 15;
     capivara->ataque[1].desbloqueado = true;
     capivara->ataque[1].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.85*square};
     capivara->ataque[1].width = 6*square; capivara->ataque[1].height = 0.75*square;
     capivara->ataque[1].nome[0] = '\0';
     strcpy(capivara->ataque[1].nome, "Koopa troopa");
 
-    capivara->ataque[2].dano = -5; capivara->ataque[2].chanceDeCritico = 0;
-    capivara->ataque[2].usos = 10; capivara->ataque[2].usosMaximo = 10;
+    capivara->ataque[2].dano = -65; capivara->ataque[2].chanceDeCritico = 0;
+    capivara->ataque[2].usos = 15; capivara->ataque[2].usosMaximo = 15;
     capivara->ataque[2].desbloqueado = true;
     capivara->ataque[2].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 8.5*square};
     capivara->ataque[2].width = 6*square; capivara->ataque[2].height = 0.75*square;
     capivara->ataque[2].nome[0] = '\0';
     strcpy(capivara->ataque[2].nome, "Bandaid de teia");
 
-    capivara->ataque[3].dano = 30; capivara->ataque[3].chanceDeCritico = 0;
+    capivara->ataque[3].dano = 45; capivara->ataque[3].chanceDeCritico = 40;
     capivara->ataque[3].usos = 10; capivara->ataque[3].usosMaximo = 10;
     capivara->ataque[3].desbloqueado = true;
     capivara->ataque[3].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 9.2*square};
@@ -65,104 +65,104 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
 }
 
 void loadBoss1(Boss *boss){
-    boss->vida = 40;
-    boss->vidaMaxima = 40;
+    boss->vida = 220;
+    boss->vidaMaxima = 220;
     boss->textura = LoadTexture("./assets/boss/sofa.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Sofá de Thalya");
     
-    boss->ataque[0].dano = 5;
+    boss->ataque[0].dano = 45;
     boss->ataque[0].nome[0] = '\0';
     strcpy(boss->ataque[0].nome, "Canhão de almofada");
 
-    boss->ataque[1].dano = 5;
+    boss->ataque[1].dano = 40;
     boss->ataque[1].nome[1] = '\0';
     strcpy(boss->ataque[1].nome, "Esmagar");
 
-    boss->ataque[2].dano = 5;
+    boss->ataque[2].dano = 30; boss->ataque[2].chanceDeCritico = 20;
     boss->ataque[2].nome[2] = '\0';
     strcpy(boss->ataque[2].nome, "Nuvem de ácaro");
 
-    boss->ataque[3].dano = 5;
+    boss->ataque[3].dano = 35;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Braçada");
     
 }
 
 void loadBoss2(Boss *boss){
-    boss->vida = 20;
-    boss->vidaMaxima = 20;
+    boss->vida = 340;
+    boss->vidaMaxima = 340;
     boss->textura = LoadTexture("./assets/boss/tiaDeThalya.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Tia de Thalya");
     
-    boss->ataque[0].dano = 5;
+    boss->ataque[0].dano = 30;
     boss->ataque[0].nome[0] = '\0';
     strcpy(boss->ataque[0].nome, "Vassourada");
 
-    boss->ataque[1].dano = 10;
+    boss->ataque[1].dano = 40; boss->ataque[1].chanceDeCritico = 20;
     boss->ataque[1].nome[1] = '\0';
-    strcpy(boss->ataque[1].nome, "Chinelada");
+    strcpy(boss->ataque[1].nome, "Havaianas Certeira");
 
-    boss->ataque[2].dano = 5;
+    boss->ataque[2].dano = 35;
     boss->ataque[2].nome[2] = '\0';
     strcpy(boss->ataque[2].nome, "Voadora");
 
-    boss->ataque[3].dano = 15;
+    boss->ataque[3].dano = -30;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Sermão");
 }
 
 void loadBoss3(Boss *boss){
-    boss->vida = 20;
-    boss->vidaMaxima = 20;
+    boss->vida = 520;
+    boss->vidaMaxima = 520;
     boss->textura = LoadTexture("./assets/boss/avoDeThalya.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Vó de Thalya");
     
-    boss->ataque[0].dano = 5;
+    boss->ataque[0].dano = 30;
     boss->ataque[0].nome[0] = '\0';
     strcpy(boss->ataque[0].nome, "Bengalada");
 
-    boss->ataque[1].dano = 10;
+    boss->ataque[1].dano = 40; boss->ataque->chanceDeCritico = 20;
     boss->ataque[1].nome[1] = '\0';
     strcpy(boss->ataque[1].nome, "Facada");
 
-    boss->ataque[2].dano = 5;
+    boss->ataque[2].dano = -20;
     boss->ataque[2].nome[2] = '\0';
-    strcpy(boss->ataque[2].nome, "Água Quente");
+    strcpy(boss->ataque[2].nome, "Artrite Fatal");
 
-    boss->ataque[3].dano = 15;
+    boss->ataque[3].dano = 45;
     boss->ataque[3].nome[3] = '\0';
     strcpy(boss->ataque[3].nome, "Tricotada Mortal");
 }
 
 void loadBoss4(Boss *boss){
-    boss->vida = 20;
-    boss->vidaMaxima = 20;
+    boss->vida = 700;
+    boss->vidaMaxima = 700;
     boss->textura = LoadTexture("./assets/boss/thalya.png");
 
     boss->nome[0] = '\0';
     strcpy(boss->nome, "Thalya");
     
-    boss->ataque[0].dano = 5;
+    boss->ataque[0].dano = 25;
     boss->ataque[0].nome[0] = '\0';
-    strcpy(boss->ataque[0].nome, "Raio Laser");
+    strcpy(boss->ataque[0].nome, "Malloc");
 
-    boss->ataque[1].dano = 10;
+    boss->ataque[1].dano = 45; boss->ataque[1].chanceDeCritico = 33;
     boss->ataque[1].nome[1] = '\0';
     strcpy(boss->ataque[1].nome, "Batida de Cabelo");
 
-    boss->ataque[2].dano = 5;
+    boss->ataque[2].dano = -80;
     boss->ataque[2].nome[2] = '\0';
     strcpy(boss->ataque[2].nome, "Come Peixe");
 
-    boss->ataque[3].dano = 15;
+    boss->ataque[3].dano = 35;
     boss->ataque[3].nome[3] = '\0';
-    strcpy(boss->ataque[3].nome, "Lançar livros");
+    strcpy(boss->ataque[3].nome, "Chat GPT");
 }
 
 //------------------------------
