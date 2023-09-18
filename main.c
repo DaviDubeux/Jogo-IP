@@ -4,7 +4,7 @@
 #include "defines.h"
 #include "personagens.h"
 #include "salas.h"
-#include "colisao.h"
+#include "explorando.h"
 #include "combate.h"
 
 int main(){
@@ -17,6 +17,7 @@ int main(){
     bool lendoPlaca = false;
     bool lendo = false;
     int interagindoCom;
+    //Texture2D chaves = LoadTexture("./assets/cenarios/explorando/chaves_64.png");
 
     //combate
     int round = escolherAtaqueCapivara;
@@ -124,6 +125,8 @@ int main(){
 
     Texture2D texturaPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
     texturaPlaca.width = 8*square; texturaPlaca.height = 6*square;
+    Texture2D texturaLendo = LoadTexture("./assets/cenarios/explorando/lendo.png");
+    texturaLendo.width *= 3; texturaLendo.height *= 3;
 
     musica = LoadMusicStream("./assets/musicas/musica.mp3");
     musicaCombate = LoadMusicStream("./assets/musicas/musicaCombate.mp3");
@@ -220,7 +223,7 @@ int main(){
             //tem algo de errado
             else if(!lendo){
                 //desenho da cena com os animais
-                if(capivara.animaisResgatados == 0){
+                if(capivara.bossDerrotados == 0){
                     DrawTexture(sala[salaCagado].textura, sala[salaCagado].frame.x, sala[salaCagado].frame.y, DARKGRAY);
                     DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE);
                     DrawTextureRec(animal[cagado].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
@@ -249,7 +252,7 @@ int main(){
 
                 }
 
-                if(capivara.animaisResgatados == 1){
+                if(capivara.bossDerrotados == 1){
                     DrawTexture(sala[salaAranhas].textura, sala[salaAranhas].frame.x, sala[salaAranhas].frame.y, DARKGRAY);
                     DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE); 
                     DrawTextureRec(animal[aranha].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
@@ -278,7 +281,7 @@ int main(){
                     
                 }
 
-                if(capivara.animaisResgatados == 2){
+                if(capivara.bossDerrotados == 2){
                     DrawTexture(sala[salaGalinha].textura, sala[salaGalinha].frame.x, sala[salaGalinha].frame.y, DARKGRAY);
                     DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE);
                     DrawTextureRec(animal[galinha].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
@@ -307,7 +310,7 @@ int main(){
                     
                 }
 
-                if(capivara.animaisResgatados == 3){
+                if(capivara.bossDerrotados == 3){
                     DrawTexture(sala[salaPeixe].textura, sala[salaPeixe].frame.x, sala[salaPeixe].frame.y, DARKGRAY);
                     DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE);
                     DrawTextureRec(animal[peixe].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
@@ -359,6 +362,7 @@ int main(){
             updateInteracaoHitbox(&capivara);
             updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado, &lendoPlaca, &lendo);
             updateRoom(&capivara, &(sala[salaAtual]));
+            updatePorta(&capivara, &sala[capivara.salaAtual]);
             //tem algo de errado
             if(IsKeyPressed(KEY_X) && pausado && !lendo){ updateDialogo(&cena); }
 
@@ -418,7 +422,12 @@ int main(){
             // anima a capivara normalmente desde o último movimento
             if (!pausado) { par = ((int)GetTime())%3; }
             DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
-
+            for (int i = 0; i < 4; i++){
+                if (sala[salaAtual].porta[i].temTextura && !(sala[salaAtual].porta[i].aberta)){
+                    DrawTexture(sala[salaAtual].porta[i].textura, sala[salaAtual].porta[i].hitbox.x, sala[salaAtual].porta[i].hitbox.y, RAYWHITE);
+                }
+            }
+            //if (capivara.temChave){ DrawTextureRec(chaves, (Rectangle){64.0f*capivara.chaves, 0, 54.0f, 64.0f}, sala[salaAtual].frame, RAYWHITE); }
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
             if (lendo){
@@ -433,9 +442,9 @@ int main(){
                     DrawText(sala[salaAtual].objeto[interagindoCom].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 2.25*square, 25, GOLD);
                 }
                 else if (!lendoPlaca) {
-                    DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, 8*square, 2*square, RAYWHITE);
-                    //DrawTexture(texturaLendo, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, RAYWHITE);
-                    DrawText(sala[salaAtual].objeto[interagindoCom].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 7.25*square, 50, BLACK);
+                    //DrawRectangle(sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, 8*square, 2*square, RAYWHITE);
+                    DrawTexture(texturaLendo, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, RAYWHITE);
+                    DrawText(sala[salaAtual].objeto[interagindoCom].mensagem, sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 7.375*square, 50, BLACK);
                 }
             }
             interagindoCom = -1;
@@ -443,7 +452,7 @@ int main(){
             capivara.prevHitbox = capivara.hitbox;
             EndDrawing();
 
-            gameMode = updateBossfight(&capivara, &(sala[salaAtual]));
+            gameMode = updateBossfight(&capivara, &(sala[salaAtual]), &musicaCombate);
             if (gameMode == combate){ prevGameMode = explorando; round = escolherAtaqueCapivara; }
             if (IsKeyPressed(KEY_X)){ pausado = 0; lendoPlaca = 0; lendo = 0; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
@@ -457,7 +466,7 @@ int main(){
 
             int selecionado = capivara.ataqueSelecionado;
             int bossAtual = capivara.bossDerrotados;
-            int animalAtual = capivara.animaisResgatados;
+            int animalAtual = capivara.bossDerrotados;
 
             sprintf(vidaExibidaCapivara, "%2d/%2d", capivara.vida, capivara.vidaMaxima);
             sprintf(vidaExibidaBoss, "%2d/%2d", boss[bossAtual].vida, boss[bossAtual].vidaMaxima);
@@ -649,44 +658,44 @@ int main(){
             loadBoss3(&(boss[2])); boss[2].textura.width *= 9.0f; boss[2].textura.height *= 9.0f;
             loadBoss4(&(boss[3])); boss[3].textura.width *= 9.0f; boss[3].textura.height *= 9.0f;
 
-            /*
             for (int i = 0; i < 6; i++){ loadSalas(&(sala[i]), screenWidth, screenHeight); }
             loadSala1(&(sala[salaJardim]));
-            if (sala[salaJardim].obstaculo == NULL){
+            if (sala[salaJardim].objeto == NULL){
                 for (int i = 0; i < 1; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
             loadSala2(&(sala[salaHub]));
-            if (sala[salaHub].obstaculo == NULL){
+            if (sala[salaHub].objeto == NULL){
                 for (int i = 0; i < 2; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
             loadSala3(&(sala[salaCagado]));
-            if (sala[salaCagado].obstaculo == NULL){
+            if (sala[salaCagado].objeto == NULL){
                 for (int i = 0; i < 3; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
             loadSala4(&(sala[salaAranhas]));
-            if (sala[salaAranhas].obstaculo == NULL){
+            if (sala[salaAranhas].objeto == NULL){
                 for (int i = 0; i < 4; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
             loadSala5(&(sala[salaGalinha]));
-            if (sala[salaGalinha].obstaculo == NULL){
+            if (sala[salaGalinha].objeto == NULL){
                 for (int i = 0; i < 5; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
             loadSala6(&(sala[salaPeixe]));
-            if (sala[salaPeixe].obstaculo == NULL){
+            if (sala[salaPeixe].objeto == NULL){
                 for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
-            */
 
             gameMode = menu; prevGameMode = explorando;
             par = 0;
-            pausado = false; lendoPlaca = false;
+            pausado = false; lendo = false; lendoPlaca = false;
             round = escolherAtaqueCapivara;
+            desenho_skin = 0; desenho_skin_combate = 0;
         }
     }
 
     //UNLOADS // FREES
     UnloadTexture(capivara.textura);
-    UnloadTexture( item.textura);
+    UnloadTexture(item.textura);
+    //UnloadTexture(chaves);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 4; i++){ UnloadTexture(animal[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }

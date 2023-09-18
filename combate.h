@@ -57,7 +57,7 @@ void updateRound(int *round, Capivara *capivara, int* desenho_skin, int* desenho
     if (*round == mostrarBossMorreu){
         capivara->vida = capivara->vidaMaxima;
         capivara->bossDerrotados++;
-        capivara->animaisResgatados++;
+        capivara->chaves++; capivara->temChave = true;
         //precisa ver quando fazer isso para depois de interagir com o animal
         *desenho_skin += 2*square;
         *desenho_skin_combate += 3*square;
@@ -68,14 +68,5 @@ void updateRound(int *round, Capivara *capivara, int* desenho_skin, int* desenho
     }
 }
 
-
-void updateDialogo(int *cena){
-    if(*cena == introducao) { *cena = agradecimento; }
-    if(*cena == agradecimento) { *cena = itemDado; }
-    if(*cena == itemDado) { *cena = itemMostrado; }
-    if(*cena == itemMostrado) { *cena = cenaTerminou; }
-    if(*cena == cenaTerminou) { *cena = -1; }
-
-}
 
 #endif

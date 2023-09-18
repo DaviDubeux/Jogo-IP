@@ -90,11 +90,12 @@ typedef struct{
     float speed;
     int direcao;
     int salaAtual;
+    bool temChave;
+    int chaves;
     Vector2 frame;
     Rectangle hitbox;
     Rectangle prevHitbox;
     Interacao interacao;
-    //Interacao interacao1;
     Texture2D textura;
 
     // gamemode combate
@@ -102,7 +103,6 @@ typedef struct{
     int vida;
     int vidaMaxima;
     int bossDerrotados;
-    int animaisResgatados;
     Ataque ataque[4];
     int ataqueSelecionado;
     Texture2D texturaCombate;
@@ -170,6 +170,8 @@ typedef struct{
 typedef struct{
     bool aberta;
     Rectangle hitbox;
+    bool temTextura;
+    Texture2D textura;
 }Porta;
 
 typedef struct{
