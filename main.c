@@ -17,7 +17,7 @@ int main(){
     bool lendoPlaca = false;
     bool lendo = false;
     int interagindoCom;
-    //Texture2D chaves = LoadTexture("./assets/cenarios/explorando/chaves_64.png");
+    Texture2D chaves;
 
     //combate
     int round = escolherAtaqueCapivara;
@@ -122,6 +122,8 @@ int main(){
     Fundo.height = screenHeight;
     Fundo.width = screenWidth;
 
+    chaves = LoadTexture("./assets/cenarios/explorando/chaves_64.png");
+    chaves.width = 64.0f; chaves.height = 256.0f;
 
     Texture2D texturaPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
     texturaPlaca.width = 8*square; texturaPlaca.height = 6*square;
@@ -181,6 +183,7 @@ int main(){
             double delta = GetTime() - time;
             time = GetTime();
             int salaAtual = capivara.salaAtual;
+            int numeroDaChave = capivara.chaves - 1;
 
             if (capivara.salaAtual == salaJardim){ UpdateMusicStream(sala[salaJardim].musica); }
             else{ UpdateMusicStream(sala[salaHub].musica); }
@@ -427,7 +430,10 @@ int main(){
                     DrawTexture(sala[salaAtual].porta[i].textura, sala[salaAtual].porta[i].hitbox.x, sala[salaAtual].porta[i].hitbox.y, RAYWHITE);
                 }
             }
-            //if (capivara.temChave){ DrawTextureRec(chaves, (Rectangle){64.0f*capivara.chaves, 0, 54.0f, 64.0f}, sala[salaAtual].frame, RAYWHITE); }
+            if (capivara.temChave){
+                DrawTextureRec(chaves, (Rectangle){0.0f, 64.0f*numeroDaChave, 64.0f, 64.0f},
+                               (Vector2){sala[salaJardim].frame.x + 16.0f, sala[salaJardim].frame.y + 16.0f}, RAYWHITE);
+            }
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
             if (lendo){
@@ -466,7 +472,7 @@ int main(){
 
             int selecionado = capivara.ataqueSelecionado;
             int bossAtual = capivara.bossDerrotados;
-            int animalAtual = capivara.bossDerrotados;
+            int animalAtual = bossAtual;
 
             sprintf(vidaExibidaCapivara, "%2d/%2d", capivara.vida, capivara.vidaMaxima);
             sprintf(vidaExibidaBoss, "%2d/%2d", boss[bossAtual].vida, boss[bossAtual].vidaMaxima);
@@ -646,8 +652,6 @@ int main(){
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }
 //-----------------------------------------------------------------GAMEOVER-----------------------------------------------------------------
-        //esse modo não está reiniciando tudo mesmo e lida como se ele tivesse conseguido vencer o último boss (que fez ele morrer)
-        //pelo menos quando joguei, com thalya aconteceu isso
         else if (gameMode == gameOver){
             // Reload
             loadCapivaraExplorando(&capivara, screenWidth, screenHeight);
@@ -695,7 +699,7 @@ int main(){
     //UNLOADS // FREES
     UnloadTexture(capivara.textura);
     UnloadTexture(item.textura);
-    //UnloadTexture(chaves);
+    UnloadTexture(chaves);
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 4; i++){ UnloadTexture(animal[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
