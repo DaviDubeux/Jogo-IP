@@ -68,4 +68,14 @@ void updateRound(int *round, Capivara *capivara, int* desenho_skin, int* desenho
     }
 }
 
+
+void updateDialogo(int *cena){
+    if(*cena == introducao) { *cena = agradecimento; }
+    if(*cena == agradecimento) { *cena = itemDado; }
+    if(*cena == itemDado) { *cena = itemMostrado; }
+    if(*cena == itemMostrado) { *cena = cenaTerminou; }
+    if(*cena == cenaTerminou) { *cena = -1; }
+
+}
+
 #endif

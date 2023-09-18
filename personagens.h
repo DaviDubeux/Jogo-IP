@@ -178,8 +178,17 @@ void loadAnimal1(Animal *animal){
     animal->item->nome[0] = '\0';
     strcpy(animal->item->nome, "Escudo");
 
-    animal->mensagem[0] = '\0';
-    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+    animal->intro[0] = '\0';
+    strcpy(animal->intro, "Sou o Cagado que ainda está vivo nessa casa");
+
+    animal->arigato[0] = '\0';
+    strcpy(animal->arigato, "Um outro foi negligênciado e esquecido aqui também");
+
+    animal->itemNovo[0] = '\0';
+    strcpy(animal->itemNovo, "Tudo o que sobrou foi esse casco, acho que ele pode te ajudar mais do que eu");
+
+    animal->fim[0] = '\0';
+    strcpy(animal->fim, "Agora você tem um escudo");
 
     animal->textura = LoadTexture("./assets/animais/cagado.png");
     animal->frame.x = 9*square; 
@@ -193,8 +202,18 @@ void loadAnimal2(Animal *animal){
     animal->item->nome[0] = '\0';
     strcpy(animal->item->nome, "Bandaid");
 
-    animal->mensagem[0] = '\0';
-    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+    animal->intro[0] = '\0';
+    strcpy(animal->intro, "Sou uma das aranhas desse lugar");
+
+    animal->arigato[0] = '\0';
+    strcpy(animal->arigato, "Essa louca me confundiu com lixo, que absurdo!");
+
+    animal->itemNovo[0] = '\0';
+    strcpy(animal->itemNovo, "Como agradecimento, tenho esse bandaid de teia que fiz");
+    
+    animal->fim[0] = '\0';
+    strcpy(animal->fim, "Agora você consegue se curar durante as batalhas");
+
 
     animal->textura = LoadTexture("./assets/animais/aranha.png");
     animal->frame.x = 1*square; 
@@ -208,8 +227,18 @@ void loadAnimal3(Animal *animal){
     animal->item->nome[0] = '\0';
     strcpy(animal->item->nome, "Mochila com asas");
 
-    animal->mensagem[0] = '\0';
-    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+    animal->intro[0] = '\0';
+    strcpy(animal->intro, "Sou uma das aves daqui");
+
+    animal->arigato[0] = '\0';
+    strcpy(animal->arigato, "As outras não tiveram tanta sorte quanto eu...");
+
+    animal->itemNovo[0] = '\0';
+    strcpy(animal->itemNovo, "Para te agradecer, posso me transformar numa mochila com asas");
+    
+    animal->fim[0] = '\0';
+    strcpy(animal->fim, "Agora você consegue planar e tem mais um ataque no arsenal");
+
 
     animal->textura = LoadTexture("./assets/animais/galinha.png");
     animal->frame.x = 7*square; 
@@ -223,8 +252,18 @@ void loadAnimal4(Animal *animal){
     animal->item->nome[0] = '\0';
     strcpy(animal->item->nome, "Coroa");
 
-    animal->mensagem[0] = '\0';
-    strcpy(animal->mensagem, "Lorem ipsum dolor sit");
+    animal->intro[0] = '\0';
+    strcpy(animal->intro, "Sou um peixe dourado");
+
+    animal->arigato[0] = '\0';
+    strcpy(animal->arigato, "Ía ser comido vivo porque ela me confundiu com uma laranja");
+
+    animal->itemNovo[0] = '\0';
+    strcpy(animal->itemNovo, "Eu tenho um presente daqui do meu aquário");
+    
+    animal->fim[0] = '\0';
+    strcpy(animal->fim, "Você coseguiu salvar os animais da casa de Thalya");
+
 
     animal->textura = LoadTexture("./assets/animais/peixe.png");
     animal->frame.x = 7*square; 
@@ -264,27 +303,6 @@ void updateInteracaoHitbox(Capivara *capivara){
 
 }
 
-/*
-void updateInteracao1Hitbox(Capivara *capivara){
-    
-    if (capivara->direcao == sentidoCima){
-        capivara->interacao1.hitbox.y = capivara->hitbox.y - square - 2.0f;
-        capivara->interacao1.hitbox.x = capivara->hitbox.x;
-    }
-    else if (capivara->direcao == sentidoBaixo){
-        capivara->interacao1.hitbox.y = capivara->hitbox.y + square + 2.0f;
-        capivara->interacao1.hitbox.x = capivara->hitbox.x;
-    }
-    else if (capivara->direcao == sentidoEsquerda){
-        capivara->interacao1.hitbox.y = capivara->hitbox.y;
-        capivara->interacao1.hitbox.x = capivara->hitbox.x - square - 2.0f;
-    }
-    else if (capivara->direcao == sentidoDireita){
-        capivara->interacao1.hitbox.y = capivara->hitbox.y;
-        capivara->interacao1.hitbox.x = capivara->hitbox.x + square + 2.0f;
-    }
 
-}
-*/
 
 #endif

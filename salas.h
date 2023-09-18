@@ -2,6 +2,7 @@
 #define SALA
 #include "C:\raylib\raylib\src\raylib.h"
 #include <stdlib.h>
+#include <string.h>
 #include "defines.h"
 
 
@@ -45,24 +46,31 @@ void loadSala1(Sala *sala1){ // específicos da sala 1
 
     sala1->objeto[0].hitbox = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->objeto[0].mensagem[0] = '\0';
+    strcpy(sala1->objeto[0].mensagem, "Pedra");
 
     sala1->objeto[1].hitbox = (Rectangle){sala1->frame.x + 8*square, sala1->frame.y + 1*square, 1*square, 1*square};
     sala1->objeto[1].mensagem[0] = '\0';
+    strcpy(sala1->objeto[1].mensagem, "Mais uma Pedra");
 
     sala1->objeto[2].hitbox = (Rectangle){sala1->frame.x + 9*square, sala1->frame.y + 8*square, 1*square, 1*square};
     sala1->objeto[2].mensagem[0] = '\0';
+    strcpy(sala1->objeto[2].mensagem, "É, eu não subo nela");
 
     sala1->objeto[3].hitbox = (Rectangle){sala1->frame.x + 3*square, sala1->frame.y + 4*square, 1*square, 1*square};
     sala1->objeto[3].mensagem[0] = '\0';
+    strcpy(sala1->objeto[3].mensagem, "Outra Pedra");
 
     sala1->objeto[4].hitbox = (Rectangle){sala1->frame.x + 9*square, sala1->frame.y + 4*square, 1*square, 1*square};
     sala1->objeto[4].mensagem[0] = '\0';
+    strcpy(sala1->objeto[4].mensagem, "Mais uma outra\nPedra");
 
     sala1->objeto[5].hitbox = (Rectangle){sala1->frame.x + 2*square, sala1->frame.y + 7*square, 1*square, 1*square};
     sala1->objeto[5].mensagem[0] = '\0';
+    strcpy(sala1->objeto[5].mensagem, "Tem uma flor\naqui do lado");
 
     sala1->objeto[6].hitbox = (Rectangle){sala1->frame.x + 6*square, sala1->frame.y + 7*square, 1*square, 1*square};
     sala1->objeto[6].mensagem[0] = '\0';
+    strcpy(sala1->objeto[6].mensagem, "Pedras né...");
 
     sala1->objeto[7].hitbox = (Rectangle){sala1->frame.x + 7*square, sala1->frame.y + 5*square, square, square};
     sala1->objeto[7].mensagem[0] = '\0';
@@ -93,14 +101,25 @@ void loadSala2(Sala *sala2){
 
     sala2->objeto[0].hitbox = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 1*square, 2*square, 1*square};
     sala2->objeto[0].mensagem[0] = '\0';
+    strcpy(sala2->objeto[0].mensagem, "Um sofá suspeito");
+
     sala2->objeto[1].hitbox = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 3*square, 1*square};
     sala2->objeto[1].mensagem[0] = '\0';
+    strcpy(sala2->objeto[1].mensagem, "Plantas vivas");
+
     sala2->objeto[2].hitbox = (Rectangle){sala2->frame.x + 2*square, sala2->frame.y + 8*square, 1*square, 1*square};
     sala2->objeto[2].mensagem[0] = '\0';
+    strcpy(sala2->objeto[2].mensagem, "Indícios que um cachorro\nfugiu dessa casa");
+
     sala2->objeto[3].hitbox = (Rectangle){sala2->frame.x + 7*square, sala2->frame.y + 8*square, 3*square, 1*square};
     sala2->objeto[3].mensagem[0] = '\0';
+    strcpy(sala2->objeto[3].mensagem, "Livros aqui");
+
     sala2->objeto[4].hitbox = (Rectangle){sala2->frame.x, sala2->frame.y, square, square};
     sala2->objeto[4].mensagem[0] = '\0';
+    strcpy(sala2->objeto[4].mensagem, "bug");
+
+    //uma chave no meio da sala
 
     sala2->porta[cima].aberta = true;     sala2->saida[cima].saidaPara = salaGalinha;
     sala2->porta[esquerda].aberta = true; sala2->saida[esquerda].saidaPara = salaCagado;
@@ -123,16 +142,24 @@ void loadSala3(Sala *sala3){
 
     sala3->objeto[0].hitbox = (Rectangle){sala3->frame.x + 7*square, sala3->frame.y + 1*square, 3*square, 1*square};
     sala3->objeto[0].mensagem[0] = '\0';
-    //sala3->objeto[0].textura = LoadTexture("./assets/cenarios/explorando/placa.png");
-    //sala3->objeto[0].textura.width = 3*square; sala3->(objeto[0]).textura.height = square;
+    strcpy(sala3->objeto[0].mensagem, "Por que tantas pedras?");
+
     sala3->objeto[1].hitbox = (Rectangle){sala3->frame.x + 1*square, sala3->frame.y + 3*square, 1*square, 4*square};
     sala3->objeto[1].mensagem[0] = '\0';
+    strcpy(sala3->objeto[1].mensagem, "Nada para vasculhar aqui");
+
     sala3->objeto[2].hitbox = (Rectangle){sala3->frame.x + 4*square, sala3->frame.y + 3*square, 2*square, 4*square}; // sofá
     sala3->objeto[2].mensagem[0] = '\0';
+    strcpy(sala3->objeto[2].mensagem, "Já derrotei esse sofá");
+
     sala3->objeto[3].hitbox = (Rectangle){sala3->frame.x + 2*square, sala3->frame.y + 4*square, 2*square, 2*square};
     sala3->objeto[3].mensagem[0] = '\0';
+    strcpy(sala3->objeto[3].mensagem, "Uma mesa");
+
     sala3->objeto[4].hitbox = (Rectangle){sala3->frame.x, sala3->frame.y, square, square};
     sala3->objeto[4].mensagem[0] = '\0';
+    strcpy(sala3->objeto[4].mensagem, "bug");
+
 
     sala3->porta[cima].aberta = false;     sala3->saida[cima].saidaPara = salaCagado;
     sala3->porta[esquerda].aberta = false; sala3->saida[esquerda].saidaPara = salaCagado;
@@ -153,24 +180,40 @@ void loadSala4(Sala *sala4){
 
     sala4->objeto[0].hitbox = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 1*square, 2*square, 1*square};
     sala4->objeto[0].mensagem[0] = '\0';
-    //sala4->(objeto[0]).textura = LoadTexture("./assets/cenarios/explorando/placa.png");
-    //sala4->(objeto[0]).textura.width = 3*square; sala4->(objeto[0]).textura.height = square;
+    strcpy(sala4->objeto[0].mensagem, "Elas foram torturadas?");
+
     sala4->objeto[1].hitbox = (Rectangle){sala4->frame.x + 6*square, sala4->frame.y + 1*square, 2*square, 1*square};
     sala4->objeto[1].mensagem[0] = '\0';
+    strcpy(sala4->objeto[1].mensagem, "Nada encontrado");
+
     sala4->objeto[2].hitbox = (Rectangle){sala4->frame.x + 6*square, sala4->frame.y + 3*square, 2*square, 3*square};
     sala4->objeto[2].mensagem[0] = '\0';
+    strcpy(sala4->objeto[2].mensagem, "Uma camisa de time");
+
     sala4->objeto[3].hitbox = (Rectangle){sala4->frame.x + 10*square, sala4->frame.y + 3*square, 1*square, 2*square};
     sala4->objeto[3].mensagem[0] = '\0';
+    strcpy(sala4->objeto[3].mensagem, "Eu não quero tomar banho");
+
     sala4->objeto[4].hitbox = (Rectangle){sala4->frame.x + 10*square, sala4->frame.y + 6*square, 1*square, 1*square};
     sala4->objeto[4].mensagem[0] = '\0';
+    strcpy(sala4->objeto[4].mensagem, "Roupas");
+
     sala4->objeto[5].hitbox = (Rectangle){sala4->frame.x + 9*square, sala4->frame.y + 7*square, 2*square, 2*square};
     sala4->objeto[5].mensagem[0] = '\0';
+    strcpy(sala4->objeto[5].mensagem, "Máquina de Lavar");
+
     sala4->objeto[6].hitbox = (Rectangle){sala4->frame.x + 2*square, sala4->frame.y + 8*square, 1*square, 1*square}; // lixeira
     sala4->objeto[6].mensagem[0] = '\0';
+    strcpy(sala4->objeto[6].mensagem, "Já salvei a aranha daqui");
+
     sala4->objeto[7].hitbox = (Rectangle){sala4->frame.x + 3*square, sala4->frame.y + 8*square, 1*square, 1*square};
     sala4->objeto[7].mensagem[0] = '\0';
+    strcpy(sala4->objeto[7].mensagem, "Nada para vasculhar aqui");
+
     sala4->objeto[8].hitbox = (Rectangle){sala4->frame.x, sala4->frame.y, square, square};
     sala4->objeto[8].mensagem[0] = '\0';
+    strcpy(sala4->objeto[8].mensagem, "buggy");
+
 
     sala4->porta[cima].aberta = false;     sala4->saida[cima].saidaPara = salaAranhas;
     sala4->porta[esquerda].aberta = true;  sala4->saida[esquerda].saidaPara = salaHub;
@@ -194,22 +237,40 @@ void loadSala5(Sala *sala5){
 
     sala5->objeto[0].hitbox = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 1*square, 4*square, 1*square};
     sala5->objeto[0].mensagem[0] = '\0';
+    strcpy(sala5->objeto[0].mensagem, "Louça Suja");
+
     sala5->objeto[1].hitbox = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 1*square, 3*square, 1*square};
     sala5->objeto[1].mensagem[0] = '\0';
+    strcpy(sala5->objeto[1].mensagem, "Restos de Comida");
+
     sala5->objeto[2].hitbox = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 2*square, 1*square, 5*square};
     sala5->objeto[2].mensagem[0] = '\0';
+    strcpy(sala5->objeto[2].mensagem, "Panelas");
+
     sala5->objeto[3].hitbox = (Rectangle){sala5->frame.x + 3*square, sala5->frame.y + 3*square, 2*square, 2*square};
     sala5->objeto[3].mensagem[0] = '\0';
+    strcpy(sala5->objeto[3].mensagem, "Quem fez isso?");
+
     //sala5->objeto[4].hitbox = (Rectangle){ , , , , } //ver a posicao do objeto ou tirar
     //sala5->objeto[4].mensagem[0] = '\0';
+    //strcpy(sala5->objeto[4].mensagem, "Dum");
+
     sala5->objeto[5].hitbox = (Rectangle){sala5->frame.x + 7*square, sala5->frame.y + 4*square, 2*square, 3*square};
     sala5->objeto[5].mensagem[0] = '\0';
+    strcpy(sala5->objeto[5].mensagem, "Isso vai para o meu relatório");
+
     sala5->objeto[6].hitbox = (Rectangle){sala5->frame.x + 1*square, sala5->frame.y + 7*square, 1*square, 1*square}; // forno
     sala5->objeto[6].mensagem[0] = '\0';
+    strcpy(sala5->objeto[6].mensagem, "Já tirei a Galinha daí");
+
     sala5->objeto[7].hitbox = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 8*square, 2*square, 1*square};
     sala5->objeto[7].mensagem[0] = '\0';
+    strcpy(sala5->objeto[7].mensagem, "Outra mesa");
+
     sala5->objeto[8].hitbox = (Rectangle){sala5->frame.x, sala5->frame.y, square, square};
     sala5->objeto[8].mensagem[0] = '\0';
+    strcpy(sala5->objeto[8].mensagem, "Encontrou um bug, parabéns");
+
 
     sala5->porta[cima].aberta = true;      sala5->saida[cima].saidaPara = salaPeixe;
     sala5->porta[esquerda].aberta = false; sala5->saida[esquerda].saidaPara = salaGalinha;
@@ -231,22 +292,36 @@ void loadSala6(Sala *sala6){
 
     sala6->objeto[0].hitbox = (Rectangle){sala6->frame.x + 3*square, sala6->frame.y + 1*square, 6*square, 1*square};
     sala6->objeto[0].mensagem[0] = '\0';
-    //sala6->(objeto[0]).textura = LoadTexture("./assets/cenarios/explorando/placa.png");
-    //sala6->(objeto[0]).textura.width = 3*square; sala6->(objeto[0]).textura.height = square;
+    strcpy(sala6->objeto[0].mensagem, "Roupas");
+
     sala6->objeto[1].hitbox = (Rectangle){sala6->frame.x + 9*square, sala6->frame.y + 1*square, 2*square, 1*square}; // aquario
     sala6->objeto[1].mensagem[0] = '\0';
+    strcpy(sala6->objeto[1].mensagem, "Já salvei o peixe de ser comido vivo");
+
     sala6->objeto[2].hitbox = (Rectangle){sala6->frame.x + 7*square, sala6->frame.y + 2*square, 2*square, 3*square};
     sala6->objeto[2].mensagem[0] = '\0';
+    strcpy(sala6->objeto[2].mensagem, "Uma cama");
+
     sala6->objeto[3].hitbox = (Rectangle){sala6->frame.x + 1*square, sala6->frame.y + 3*square, 1*square, 3*square};
     sala6->objeto[3].mensagem[0] = '\0';
+    strcpy(sala6->objeto[3].mensagem, "Será que chego lá voando?");
+
     sala6->objeto[4].hitbox = (Rectangle){sala6->frame.x + 2*square, sala6->frame.y + 4*square, 1*square, 1*square};
     sala6->objeto[4].mensagem[0] = '\0';
+    strcpy(sala6->objeto[4].mensagem, "Anotando para o relatório");
+
     sala6->objeto[5].hitbox = (Rectangle){sala6->frame.x + 10*square, sala6->frame.y + 5*square, 1*square, 3*square};
     sala6->objeto[5].mensagem[0] = '\0';
+    strcpy(sala6->objeto[5].mensagem, "Trabalhando...");
+
     sala6->objeto[6].hitbox = (Rectangle){sala6->frame.x + 2*square, sala6->frame.y + 8*square, 3*square, 1*square};
     sala6->objeto[6].mensagem[0] = '\0';
+    strcpy(sala6->objeto[6].mensagem, "O que diacho é isso?");
+
     sala6->objeto[7].hitbox = (Rectangle){sala6->frame.x, sala6->frame.y, square, square};
     sala6->objeto[7].mensagem[0] = '\0';
+    strcpy(sala6->objeto[7].mensagem, "Outro bug");
+
 
     sala6->porta[cima].aberta = false;     sala6->saida[cima].saidaPara = salaPeixe;
     sala6->porta[esquerda].aberta = false; sala6->saida[esquerda].saidaPara = salaPeixe;
@@ -260,56 +335,6 @@ void loadSala6(Sala *sala6){
 }
 
 
-//cenas
-void cenasBoss(Capivara *capivara, Animal *animal, Boss *boss, Sala *sala){
-
-    
-
-}
-
-
-//resgate 
-/*
-void cenasAnimal1(float *Timer, Capivara *capivara, Animal *animal, Boss *boss, Sala *sala, Itens *item){
-    DrawTextureRec(sala->textura, (Rectangle) {sala->frame.x, sala->frame.y, 12*square, 10*square}, sala->frame, RAYWHITE);
-
-    DrawTextureRec(capivara->textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector){ capivara->frame.x, capivara->frame.y}, WHITE);
-
-    DrawTextureRec(animal->textura, (Rectangle) { 0, square/3, square/3, square/3}, animal->frame, WHITE);
-
-    EndDrawing();
-}
-
-void cenasAnimal2(float *Timer, Capivara *capivara, Animal *animal, Boss *boss, Sala *sala, Itens *item){
-    DrawTextureRec(sala->textura, (Rectangle) {sala->frame.x, sala->frame.y, 12*square, 10*square}, sala->frame, RAYWHITE);
-
-    DrawTextureRec(capivara->textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector){ capivara->frame.x, capivara->frame.y}, WHITE);
-
-    DrawTextureRec(animal->textura, (Rectangle) { 0, square/3, square/3, square/3}, animal->frame, WHITE);
-
-    EndDrawing();
-}
-
-void cenasAnimal3(float *Timer, Capivara *capivara, Animal *animal, Boss *boss, Sala *sala, Itens *item){
-    DrawTextureRec(sala->textura, (Rectangle) {sala->frame.x, sala->frame.y, 12*square, 10*square}, sala->frame, RAYWHITE);
-
-    DrawTextureRec(capivara->textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector){ capivara->frame.x, capivara->frame.y}, WHITE);
-
-    DrawTextureRec(animal->textura, (Rectangle) { 0, square/3, square/3, square/3}, animal->frame, WHITE);
-
-    EndDrawing();
-}
-
-void cenasAnimal4(float *Timer, Capivara *capivara, Animal *animal, Boss *boss, Sala *sala, Itens *item){
-    DrawTextureRec(sala->textura, (Rectangle) {sala->frame.x, sala->frame.y, 12*square, 10*square}, sala->frame, RAYWHITE);
-
-    DrawTextureRec(capivara->textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector){ capivara->frame.x, capivara->frame.y}, WHITE);
-
-    DrawTextureRec(animal->textura, (Rectangle) { 0, square/3, square/3, square/3}, animal->frame, WHITE);
-
-    EndDrawing();
-}
-*/
 
 
 #endif

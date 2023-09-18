@@ -51,6 +51,22 @@ enum{
     gameOver,    // gameOver = 3
 }Mode;
 
+enum{
+    introducao,
+    agradecimento,
+
+    itemDado,
+    itemMostrado,
+    cenaTerminou,
+} Cenas;
+
+enum{
+    cagado,
+    aranha,
+    galinha,
+    peixe,
+} Animais;
+
 //----- ---------------------------------------------------------STRUCTS------------------------------------------------------------------
 typedef struct{
     bool interagindo;
@@ -111,7 +127,10 @@ typedef struct {
 
 typedef struct{
     char nome[50];
-    char mensagem[100];
+    char intro[100];
+    char arigato[100];
+    char itemNovo[100];
+    char fim[100];
     Vector2 frame;
     Itens item[50];
     Texture2D textura;
