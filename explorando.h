@@ -99,7 +99,7 @@ void fixCollision(Capivara *capivara, Sala *sala){
 }
 
 void updatePorta(Capivara *capivara, Sala *sala){
-    if (capivara->interacao.interagindo){
+    if (capivara->interacao.interagindo && capivara->temChave){
         if (capivara->chaves == 0 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[esquerda].hitbox, capivara->interacao.hitbox)){
             sala->porta[esquerda].aberta = true; capivara->temChave = false;
         }
@@ -162,7 +162,7 @@ void updateLendo(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca
         }
         if (capivara->salaAtual == salaJardim){
             *lendoPlaca = CheckCollisionRecs(sala->objeto[7].hitbox, capivara->interacao.hitbox);
-            if (capivara->chaves == 0){
+            if (capivara->chaves == 0 && (*lendoPlaca)){
                 capivara->temChave = true;
             }
         }

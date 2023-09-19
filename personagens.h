@@ -38,7 +38,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->ataque[0].nome[0] = '\0';
     strcpy(capivara->ataque[0].nome, "Canetada do Ibama");
 
-    capivara->ataque[1].dano = 45; capivara->ataque[1].chanceDeCritico = 25;
+    capivara->ataque[1].dano = 35; capivara->ataque[1].chanceDeCritico = 33;
     capivara->ataque[1].usos = 15; capivara->ataque[1].usosMaximo = 15;
     capivara->ataque[1].desbloqueado = false;
     capivara->ataque[1].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.85*square};
