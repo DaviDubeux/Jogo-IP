@@ -8,19 +8,22 @@
 #include "combate.h"
 
 int main(){
+    //menu
     int gameMode = menu;
     int prevGameMode = explorando;
     
     //explorando
     int par = 0;
+    bool ganhou = false;
     bool pausado = false;
     bool lendoPlaca = false;
     bool lendo = false;
     int interagindoCom;
-    Texture2D chaves;
+    Texture2D chaveCagado, chaveAranhas, chaveGalinha, chavePeixe;
 
     //combate
     int round = escolherAtaqueCapivara;
+    bool semAtaques = false;
     int ataqueCritico = 0;
     char vidaExibidaCapivara[10] = "";
     char vidaExibidaBoss[10] = "";
@@ -30,24 +33,22 @@ int main(){
     char danoDoAtaque[10] = "";
     char usosDoAtaque[10] = "";
     char chanceDeCritico[10] = "";
+    Texture2D objetos[4];
 
     //menu
     Texture2D Controles, Creditos, Menu, Fundo;
-    int opcao = 0;
-    int opcoes = 0;
+    int tela = 0;
+    int controles = 0;
     int creditos = 0;
 
-    //cena
-    int cena = introducao;
-    float Timer = 0.0f;
-
+    //musica
     Music musica;
     Music musicaCombate;
 
     InitWindow(1920, 1080, "Missão IBAMA: Contra-Ataque a Thalya");
     InitAudioDevice();
     SetMasterVolume(5.0);
-    //if (!IsWindowFullscreen()){ ToggleFullscreen(); }
+    if (!IsWindowFullscreen()){ ToggleFullscreen(); }
     SetTargetFPS(60);
 
     double time = GetTime();
@@ -57,7 +58,6 @@ int main(){
 
     Capivara capivara;
     Boss boss[4];
-    Itens item;
     Animal animal[4];
     Sala sala[6];
     Arena arena;
@@ -69,8 +69,6 @@ int main(){
     loadBoss2(&(boss[1])); boss[1].textura.width *= 9.0f; boss[1].textura.height *= 9.0f;
     loadBoss3(&(boss[2])); boss[2].textura.width *= 9.0f; boss[2].textura.height *= 9.0f;
     loadBoss4(&(boss[3])); boss[3].textura.width *= 9.0f; boss[3].textura.height *= 9.0f;
-
-    loadItem(&item); item.textura.width *= 3.0f; item.textura.height *= 3.0f;
 
     loadAnimal1(&(animal[0])); animal[0].textura.width *= 3.0f; animal[0].textura.height *= 3.0f;
     loadAnimal2(&(animal[1])); animal[1].textura.width *= 3.0f; animal[1].textura.height *= 3.0f;
@@ -122,8 +120,19 @@ int main(){
     Fundo.height = screenHeight;
     Fundo.width = screenWidth;
 
-    chaves = LoadTexture("./assets/cenarios/explorando/chaves_64.png");
-    chaves.width = 64.0f; chaves.height = 256.0f;
+    chaveCagado = LoadTexture("./assets/cenarios/explorando/chaveCagado.png");
+    chaveAranhas = LoadTexture("./assets/cenarios/explorando/chaveAranhas.png");
+    chaveGalinha = LoadTexture("./assets/cenarios/explorando/chaveGalinha.png");
+    chavePeixe = LoadTexture("./assets/cenarios/explorando/chavePeixe.png");
+
+    objetos[0] = LoadTexture("./assets/cut_scenes/escudo.png");
+    objetos[0].width *= 4; objetos[0].height *= 4;    
+    objetos[1] = LoadTexture("./assets/cut_scenes/bandaid.png");
+    objetos[1].width *= 4; objetos[1].height *= 4;    
+    objetos[2] = LoadTexture("./assets/cut_scenes/mochila.png");
+    objetos[2].width *= 4; objetos[2].height *= 4;    
+    objetos[3] = LoadTexture("./assets/cut_scenes/coroa.png");
+    objetos[3].width *= 4; objetos[3].height *= 4;    
 
     Texture2D texturaPlaca = LoadTexture("./assets/cenarios/explorando/lendoPlaca.png");
     texturaPlaca.width = 8*square; texturaPlaca.height = 6*square;
@@ -134,9 +143,9 @@ int main(){
     musicaCombate = LoadMusicStream("./assets/musicas/musicaCombate.mp3");
     
     // ANIMATION
-        int desenho_capivara = square, 
-            desenho_skin = 0, //se quiser mudar a skin soma 2*square
-            desenho_skin_combate = 0; //se quiser mudar a skin soma 3||4*square
+    int desenho_capivara = square, 
+        desenho_skin = 0, //se quiser mudar a skin soma 2*square
+        desenho_skin_combate = 0; //se quiser mudar a skin soma 3||4*square
     //
     
     while(!WindowShouldClose()){
@@ -145,30 +154,24 @@ int main(){
             UpdateMusicStream(musica);
             PlayMusicStream(musica);
             SetMusicVolume(musica, 1.2);
-            // menu
+            
             BeginDrawing();
             ClearBackground(DARKBLUE);
-            
-            
-            // Colocar em uma função
-            //DrawText("Click Me", button_0.rect.x + button_0.rect.width / 2 - MeasureText("Click Me", 20) / 2, button_0.rect.y + button_0.rect.height / 2 - 20 / 2, 20, WHITE);
 
-            if(opcoes == 0 && creditos == 0){ opcao = 0; }
-            if(IsKeyPressed(KEY_W) && creditos == 0){ opcao = 1; }
-            if(IsKeyPressed(KEY_E) && opcoes == 0){ opcao = 2; }
+            if(controles == 0 && creditos == 0){ tela = 0; }
+            if(IsKeyPressed(KEY_W) && creditos == 0){ tela = 1; }
+            if(IsKeyPressed(KEY_E) && controles == 0){ tela = 2; }
 
             //Entrar no jogo
-            if(opcao == 0){
+            if(tela == 0){ //tela inicial
                 DrawTextureRec(Menu,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE);
-                
             }
-            if(opcao == 1){
-                opcoes = 1;
+            if(tela == 1){ //tela de controles 
+                controles = 1;
                 DrawTextureRec(Controles,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){ 0, 0}, RAYWHITE);
-
-                if(IsKeyPressed(KEY_B)){ opcoes = 0; }
+                if(IsKeyPressed(KEY_B)){ controles = 0; }
             }
-            if(opcao == 2){
+            if(tela == 2){ //tela de créditos
                 creditos = 1;
                 DrawTextureRec(Creditos,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){ 0, 0}, RAYWHITE);
                 if(IsKeyPressed(KEY_B)){ creditos = 0; }
@@ -180,16 +183,20 @@ int main(){
         }
 //----------------------------------------------------------------EXPLORANDO----------------------------------------------------------------
         else if (gameMode == explorando){
+            //pra mover o player
             double delta = GetTime() - time;
             time = GetTime();
-            int salaAtual = capivara.salaAtual;
-            int numeroDaChave = capivara.chaves - 1;
 
-            if (capivara.salaAtual == salaJardim){ UpdateMusicStream(sala[salaJardim].musica); }
+            int salaAtual = capivara.salaAtual;
+
+            //por a música do jardim
+            if (salaAtual == salaJardim){ UpdateMusicStream(sala[salaJardim].musica); }
+            //por a música dos quartos
             else{ UpdateMusicStream(sala[salaHub].musica); }
             PlayMusicStream(sala[salaAtual].musica);
             SetMusicVolume(sala[salaAtual].musica, 1.0f);
 
+            //move o player se não estiver pausado
             if(!pausado){
                 if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))) {
                     capivara.hitbox.y -= capivara.speed * delta;
@@ -216,162 +223,27 @@ int main(){
                 }
 
                 if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))) {
-                capivara.hitbox.x -= capivara.speed * delta;
-                updateFrame(&capivara);
-                DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin, square, square}, capivara.frame, WHITE);
-                desenho_capivara = (square * 4);
-                capivara.direcao = sentidoEsquerda;
+                    capivara.hitbox.x -= capivara.speed * delta;
+                    updateFrame(&capivara);
+                    DrawTextureRec(capivara.textura, (Rectangle) {(square*4) , desenho_skin, square, square}, capivara.frame, WHITE);
+                    desenho_capivara = (square * 4);
+                    capivara.direcao = sentidoEsquerda;
+                }
             }
-            }
-            //tem algo de errado
-            else if(!lendo){
-                //desenho da cena com os animais
-                if(capivara.bossDerrotados == 0){
-                    DrawTexture(sala[salaCagado].textura, sala[salaCagado].frame.x, sala[salaCagado].frame.y, DARKGRAY);
-                    DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE);
-                    DrawTextureRec(animal[cagado].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
-                    DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-
-                    if(cena == introducao){
-                        DrawText(animal[cagado].intro, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == agradecimento){
-                        DrawText(animal[cagado].arigato, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemDado){
-                        DrawText(animal[cagado].itemNovo, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemMostrado){
-                        DrawTexture(sala[salaCagado].textura, sala->frame.x, sala[salaCagado].frame.y, DARKGRAY);
-                        DrawTextureRec(capivara.textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, GRAY);
-                        DrawTextureRec(animal[cagado].textura, (Rectangle) { 0, square/3, square, square}, animal[cagado].frame, GRAY);
-                        DrawTextureRec(item.textura, (Rectangle) { 0, 0, square, square}, item.frame, RAYWHITE);
-                        DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-                        DrawText(animal[cagado].item->nome, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == cenaTerminou){
-                        DrawText(animal[cagado].fim, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-
-                }
-
-                if(capivara.bossDerrotados == 1){
-                    DrawTexture(sala[salaAranhas].textura, sala[salaAranhas].frame.x, sala[salaAranhas].frame.y, DARKGRAY);
-                    DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE); 
-                    DrawTextureRec(animal[aranha].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
-                    DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-                    
-                    if(cena == introducao){
-                        DrawText(animal[aranha].intro, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == agradecimento){
-                        DrawText(animal[aranha].arigato, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemDado){
-                        DrawText(animal[aranha].itemNovo, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemMostrado){
-                        DrawTexture(sala[salaAranhas].textura, sala->frame.x, sala[salaAranhas].frame.y, DARKGRAY);
-                        DrawTextureRec(capivara.textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, GRAY);
-                        DrawTextureRec(animal[aranha].textura, (Rectangle) { 0, square/3, square, square}, animal[aranha].frame, GRAY);
-                        DrawTextureRec(item.textura, (Rectangle) { 0, 0, square, square}, item.frame, RAYWHITE);
-                        DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-                        DrawText(animal[aranha].item->nome, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == cenaTerminou){
-                        DrawText(animal[aranha].fim, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    
-                }
-
-                if(capivara.bossDerrotados == 2){
-                    DrawTexture(sala[salaGalinha].textura, sala[salaGalinha].frame.x, sala[salaGalinha].frame.y, DARKGRAY);
-                    DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE);
-                    DrawTextureRec(animal[galinha].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
-                    DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-
-                    if(cena == introducao){
-                        DrawText(animal[galinha].intro, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == agradecimento){
-                        DrawText(animal[galinha].arigato, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemDado){
-                        DrawText(animal[galinha].itemNovo, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemMostrado){
-                        DrawTexture(sala[salaGalinha].textura, sala->frame.x, sala[salaGalinha].frame.y, DARKGRAY);
-                        DrawTextureRec(capivara.textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, GRAY);
-                        DrawTextureRec(animal[galinha].textura, (Rectangle) { 0, square/3, square, square}, animal[galinha].frame, GRAY);
-                        DrawTextureRec(item.textura, (Rectangle) { 0, 0, square, square}, item.frame, RAYWHITE);
-                        DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-                        DrawText(animal[galinha].item->nome, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == cenaTerminou){
-                        DrawText(animal[galinha].fim, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    
-                }
-
-                if(capivara.bossDerrotados == 3){
-                    DrawTexture(sala[salaPeixe].textura, sala[salaPeixe].frame.x, sala[salaPeixe].frame.y, DARKGRAY);
-                    DrawTextureRec(capivara.textura, (Rectangle) { square*(((int)(Timer))%2), desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, RAYWHITE);
-                    DrawTextureRec(animal[peixe].textura, (Rectangle) { square*(((int)(Timer))%2), square/3, square, square}, animal->frame, RAYWHITE);
-                    DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-
-                    if(cena == introducao){
-                        DrawText(animal[peixe].intro, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == agradecimento){
-                        DrawText(animal[peixe].arigato, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemDado){
-                        DrawText(animal[peixe].itemNovo, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == itemMostrado){
-                        DrawTexture(sala[salaPeixe].textura, sala->frame.x, sala[salaPeixe].frame.y, DARKGRAY);
-                        DrawTextureRec(capivara.textura, (Rectangle) { 0, desenho_skin, square, square}, (Vector2){ capivara.frame.x, capivara.frame.y}, GRAY);
-                        DrawTextureRec(animal[peixe].textura, (Rectangle) { 0, square/3, square, square}, animal[peixe].frame, GRAY);
-                        DrawTextureRec(item.textura, (Rectangle) { 0, 0, square, square}, item.frame, RAYWHITE);
-                        DrawRectangle(5*square, 7*square, 2*square, square, WHITE);
-                        DrawText(animal[peixe].item->nome, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-                    if(cena == cenaTerminou){
-                        DrawText(animal[peixe].fim, 5.5*square, 7.5*square, 25, BLACK);
-                    }
-
-                }
-                
-                //desenho da cena com os boss
-                /*
-                if(capivara.bossDerrotados == 0){
-
-                }
-                if(capivara.bossDerrotados == 1){
-                    
-                }
-                if(capivara.bossDerrotados == 2){
-                    
-                }
-                if(capivara.bossDerrotados == 3){
-                    
-                }
-                */
-            }
-
+            
+            //checa se o player está interagindo
             capivara.interacao.interagindo = (IsKeyDown(KEY_Z)) ? 1 : 0;
 
-            fixCollision(&capivara, &(sala[salaAtual]));
-            updateInteracaoHitbox(&capivara);
-            updateLendoPlaca(&capivara, &(sala[salaAtual]), &pausado, &lendoPlaca, &lendo);
-            updateRoom(&capivara, &(sala[salaAtual]));
-            updatePorta(&capivara, &sala[capivara.salaAtual]);
-            //tem algo de errado
-            if(IsKeyPressed(KEY_X) && pausado && !lendo){ updateDialogo(&cena); }
+            //funções do gameMode explorando:
+            fixCollision(&capivara, &(sala[salaAtual])); //conserta a colisão
+            updateInteracaoHitbox(&capivara); //atualiza para a hitbox de interacão ficar onde o player está olhando
+            updateLendo(&capivara, &(sala[salaAtual]), &pausado, &lendoPlaca, &lendo); //checa se o player está lendo algo
+            updateRoom(&capivara, &(sala[salaAtual])); //muda a sala do player
+            updatePorta(&capivara, &sala[salaAtual]); //abre as portas se o player tiver a chave
 
             BeginDrawing();
             ClearBackground(RAYWHITE);
-            DrawTextureRec(Fundo,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE);
+            DrawTextureRec(Fundo,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE); //bota um fundo do ibama
 
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
             /*
@@ -422,20 +294,38 @@ int main(){
             // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
 
 
-            // anima a capivara normalmente desde o último movimento
+            //anima a capivara normalmente desde o último movimento
             if (!pausado) { par = ((int)GetTime())%3; }
+
+            //desenha a sala
             DrawTexture(sala[salaAtual].textura, sala[salaAtual].frame.x, sala[salaAtual].frame.y, (pausado) ? DARKGRAY : WHITE);
+            //desenha as portas trancadas
             for (int i = 0; i < 4; i++){
                 if (sala[salaAtual].porta[i].temTextura && !(sala[salaAtual].porta[i].aberta)){
-                    DrawTexture(sala[salaAtual].porta[i].textura, sala[salaAtual].porta[i].hitbox.x, sala[salaAtual].porta[i].hitbox.y, RAYWHITE);
+                    DrawTexture(sala[salaAtual].porta[i].textura, sala[salaAtual].porta[i].hitbox.x, sala[salaAtual].porta[i].hitbox.y,
+                    (pausado) ? DARKGRAY : WHITE);
                 }
             }
+            //desenha a chave atual do player
             if (capivara.temChave){
-                DrawTextureRec(chaves, (Rectangle){0.0f, 64.0f*numeroDaChave, 64.0f, 64.0f},
-                               (Vector2){sala[salaJardim].frame.x + 16.0f, sala[salaJardim].frame.y + 16.0f}, RAYWHITE);
+                if (capivara.chaves == 0){
+                    DrawTexture(chaveCagado, sala[salaJardim].frame.x + 16.0f, sala[salaJardim].frame.y + 16.0f, RAYWHITE);
+                }
+                if (capivara.chaves == 1){
+                    DrawTexture(chaveAranhas, sala[salaJardim].frame.x + 16.0f, sala[salaJardim].frame.y + 16.0f, RAYWHITE);
+                }
+                if (capivara.chaves == 2){
+                    DrawTexture(chaveGalinha, sala[salaJardim].frame.x + 16.0f, sala[salaJardim].frame.y + 16.0f, RAYWHITE);
+                }
+                if (capivara.chaves == 3){
+                    DrawTexture(chavePeixe, sala[salaJardim].frame.x + 16.0f, sala[salaJardim].frame.y + 16.0f, RAYWHITE);
+                }
+
             }
+            //desenha o player
             DrawTextureRec(capivara.textura, (Rectangle) {(desenho_capivara - square) + (square * par), desenho_skin, square, square},
                            capivara.frame, (pausado) ? DARKGRAY : WHITE);
+            //desenha a placa do jardim ou o pensamento do player
             if (lendo){
                 for (int i = 0; i < sala[salaAtual].qtdObjetos && interagindoCom == -1; i++){
                     if(CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.interacao.hitbox)){
@@ -454,32 +344,47 @@ int main(){
                 }
             }
             interagindoCom = -1;
-            if (prevGameMode == combate){ prevGameMode = explorando; }
-            capivara.prevHitbox = capivara.hitbox;
+            //checa se o player ganhou o jogo
+            if (capivara.bossDerrotados == 4){ ganhou = true; pausado = true; }
+            if (ganhou){
+                DrawTexture(texturaLendo, sala[salaAtual].frame.x + 2*square, sala[salaAtual].frame.y + 7*square, RAYWHITE);
+                DrawText("Parabéns! Você salvou os animais\ndas garras de Thalya!",
+                         sala[salaAtual].frame.x + 2.25*square + 15, sala[salaAtual].frame.y + 7.375*square, 40, BLACK);
+            }
             EndDrawing();
-
+            
+            //atualiza a prevHitbox para a função fixCollision
+            capivara.prevHitbox = capivara.hitbox;
+            //checa se o player vai entrar em combate
             gameMode = updateBossfight(&capivara, &(sala[salaAtual]), &musicaCombate);
             if (gameMode == combate){ prevGameMode = explorando; round = escolherAtaqueCapivara; }
-            if (IsKeyPressed(KEY_X)){ pausado = 0; lendoPlaca = 0; lendo = 0; }
+
+            //passa o diálogo e abre o menu
+            if (IsKeyPressed(KEY_X) && !ganhou){ pausado = 0; lendoPlaca = 0; lendo = 0; }
+            if (IsKeyPressed(KEY_X) && ganhou){ gameMode = restart; }
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = explorando; }
         }
 //-----------------------------------------------------------------COMBATE------------------------------------------------------------------
         else if (gameMode == combate){
-            
+            //musica do combate
             UpdateMusicStream(musicaCombate);
             PlayMusicStream(musicaCombate);
             SetMusicVolume(musicaCombate, 0.2);
 
+            //para simplificar na leitura/escrita
             int selecionado = capivara.ataqueSelecionado;
             int bossAtual = capivara.bossDerrotados;
             int animalAtual = bossAtual;
 
+            //atualiza a vida do player e do boss na arena
             sprintf(vidaExibidaCapivara, "%2d/%2d", capivara.vida, capivara.vidaMaxima);
             sprintf(vidaExibidaBoss, "%2d/%2d", boss[bossAtual].vida, boss[bossAtual].vidaMaxima);
 
             BeginDrawing();
             ClearBackground(WHITE);
+            DrawTextureRec(Fundo,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE);
             
+            //precessa em qual round o combate está
             if (round == escolherAtaqueCapivara && capivara.vida > 0){
                 if (IsKeyPressed(KEY_DOWN) && selecionado < 3 &&  capivara.ataque[selecionado + 1].desbloqueado){ capivara.ataqueSelecionado++; }
 
@@ -502,9 +407,19 @@ int main(){
                         capivara.ataque[selecionado].usos--;
                     
                     }
-                    else{ // escolheuErrado
-                        sprintf(scene, "você não tem mais usos para esse Ataque!");                       
-                        round = escolheuErrado;
+                    else{
+                        semAtaques = true;
+                        for (int i = 0; i < 4 && semAtaques; i++){
+                            if (capivara.ataque[i].usos > 0){ semAtaques = false; }
+                        }
+                        if (semAtaques){ // não tem mais ataques
+                            sprintf(scene, "você não tem mais ataques");
+                            round = acabaramOsUsos;
+                        }
+                        else{ // escolheuErrado
+                            sprintf(scene, "você não tem mais usos para esse Ataque!");
+                            round = escolheuErrado;
+                        }
                     }
                 }
             }
@@ -545,6 +460,26 @@ int main(){
             if (round == escolherAtaqueBoss && boss[bossAtual].vida == 0){
                 sprintf(scene, "Parabéns! Você derrotou\n%s", boss[bossAtual].nome);
                 round = mostrarBossMorreu;
+            }
+
+            if (round == escolherIntroAnimal){
+                sprintf(scene, animal[bossAtual].intro);
+                round = mostrarIntroAnimal;
+            }
+
+            if (round == escolherAgradecimentoAnimal){
+                sprintf(scene, animal[bossAtual].arigato);
+                round = mostrarAgradecimentoAnimal;
+            }
+
+            if (round == escolherItemDado){
+                sprintf(scene, animal[bossAtual].itemNovo);
+                round = mostrarItemDado;
+            }
+
+            if (round == escolherFimDialogo){
+                sprintf(scene, animal[bossAtual].fim);
+                round = mostrarFimDialogo;
             }
 
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
@@ -594,6 +529,7 @@ int main(){
             */
             // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
 
+            //desenha a arena
             if (round == escolherAtaqueCapivara && capivara.vida > 0){
                 DrawTexture(arena.texturaEscolherAtaque, arena.frame.x, arena.frame.y, RAYWHITE);
                 for (int i = 0; i < 4; i++){
@@ -627,33 +563,44 @@ int main(){
                 DrawText("Aperte z para escolher o ataque", arena.frame.x + 0.25*square, arena.frame.y + 0.25*square, 20, DARKBROWN);
             }
             else{
-                DrawTexture(arena.texturaDescricao, arena.frame.x, arena.frame.y, RAYWHITE);
+                DrawTexture(arena.texturaDescricao, arena.frame.x, arena.frame.y, (round > mostrarBossMorreu) ? DARKGRAY : RAYWHITE);
+                DrawTexture(arena.texturaParteDeBaixo, arena.frame.x, arena.frame.y, RAYWHITE);
                 DrawText(scene, arena.frame.x + 0.25*square, arena.frame.y + 7.25*square, 50, BLACK);
                 DrawText("aperte x para passar", arena.frame.x + 5.75*square, arena.frame.y + 9.25*square, 50, BLACK);
             }
 
-            //desenho do animal
+            //desenho dos personagens
             DrawTextureRec(animal[animalAtual].textura, (Rectangle){0, 0, square, square}, 
-
                           (Vector2){arena.animalInfo.frame.x, arena.animalInfo.frame.y}, RAYWHITE);
             DrawTextureRec(boss[bossAtual].textura, (Rectangle){0, 0, 3*square, 3*square}, 
-                          (Vector2){arena.bossInfo.frame.x + 0.5*square, arena.bossInfo.frame.y - 0.125*square}, RAYWHITE);
+                          (Vector2){arena.bossInfo.frame.x + 0.5*square, arena.bossInfo.frame.y - 0.125*square},
+                          (round > mostrarBossMorreu) ? DARKGRAY : RAYWHITE);
             DrawTextureRec(capivara.texturaCombate, (Rectangle){0, desenho_skin_combate, 3.5*square, 3*square},
-                          (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y}, RAYWHITE);
+                          (Vector2){arena.capivaraInfo.frame.x, arena.capivaraInfo.frame.y},
+                          (round > mostrarBossMorreu) ? DARKGRAY : RAYWHITE);
             DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
             DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
-            DrawText(boss[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
-            DrawText(vidaExibidaBoss, arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
+            if (round <= mostrarBossMorreu){
+                DrawText(boss[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
+                DrawText(vidaExibidaBoss, arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
+            }
+            else{
+                DrawText(animal[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
+            }
+            if (round == mostrarItemDado){
+                DrawTextureRec(objetos[bossAtual], (Rectangle){0.0f, (float)(capivara.bossDerrotados)*4*square, 4*square, 4*square},
+                              (Vector2){arena.frame.x + 4*square, arena.frame.y + 3*square}, RAYWHITE);
+            }
 
             EndDrawing();
 
+            //passa o diálogo e abre o menu
             if (IsKeyPressed(KEY_X)){ updateRound(&round, &capivara, &desenho_skin, &desenho_skin_combate, &gameMode, &pausado); }
-
             if (IsKeyPressed(KEY_Q)){ gameMode = menu; prevGameMode = combate; }
         }
-//-----------------------------------------------------------------GAMEOVER-----------------------------------------------------------------
-        else if (gameMode == gameOver){
-            // Reload
+//-----------------------------------------------------------------restart-----------------------------------------------------------------
+        else if (gameMode == restart){
+            //reseta o jogo para o player jogar novamente
             loadCapivaraExplorando(&capivara, screenWidth, screenHeight);
             loadCapivaraCombate(&capivara, &arena);
 
@@ -687,26 +634,36 @@ int main(){
             if (sala[salaPeixe].objeto == NULL){
                 for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); printf("Erro de alocacao\n"); exit(1); }
             }
+            
+            chaveCagado = LoadTexture("./assets/cenarios/explorando/chaveCagado.png");
+            chaveAranhas = LoadTexture("./assets/cenarios/explorando/chaveAranhas.png");
+            chaveGalinha = LoadTexture("./assets/cenarios/explorando/chaveGalinha.png");
+            chavePeixe = LoadTexture("./assets/cenarios/explorando/chavePeixe.png");
 
             gameMode = menu; prevGameMode = explorando;
-            par = 0;
+            par = 0; ganhou = false;
             pausado = false; lendo = false; lendoPlaca = false;
             round = escolherAtaqueCapivara;
             desenho_skin = 0; desenho_skin_combate = 0;
         }
     }
 
-    //UNLOADS // FREES
+    //UNLOADS / FREES
     UnloadTexture(capivara.textura);
-    UnloadTexture(item.textura);
-    UnloadTexture(chaves);
+    UnloadTexture(capivara.texturaCombate);
+    UnloadTexture(chaveCagado);
+    UnloadTexture(chaveAranhas);
+    UnloadTexture(chaveGalinha);
+    UnloadTexture(chavePeixe);
+    UnloadTexture(Controles); UnloadTexture(Menu); UnloadTexture(Creditos); UnloadTexture(Fundo);
+    UnloadTexture(texturaPlaca); UnloadTexture(texturaLendo);
+    for (int i = 0; i < 4; i++){ UnloadTexture(objetos[i]); }
     for (int i = 0; i < 4; i++){ UnloadTexture(boss[i].textura); }
     for (int i = 0; i < 4; i++){ UnloadTexture(animal[i].textura); }
     for (int i = 0; i < 6; i++){ unloadSalas(&(sala[i])); }
     unloadArena(&arena);
-    UnloadMusicStream(musica);
-    UnloadTexture(capivara.texturaCombate);
-    
+    UnloadMusicStream(musica); UnloadMusicStream(musicaCombate);
+
     CloseAudioDevice();
     CloseWindow();
     return 0;

@@ -33,7 +33,6 @@ void updateInteracaoHitbox(Capivara *capivara){
 }
 
 void fixCollision(Capivara *capivara, Sala *sala){
-
     bool collision = 0;
     bool collisionX = 0;
     bool collisionY = 0;
@@ -101,23 +100,22 @@ void fixCollision(Capivara *capivara, Sala *sala){
 
 void updatePorta(Capivara *capivara, Sala *sala){
     if (capivara->interacao.interagindo){
-        if (capivara->chaves == 1 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[esquerda].hitbox, capivara->interacao.hitbox)){
+        if (capivara->chaves == 0 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[esquerda].hitbox, capivara->interacao.hitbox)){
             sala->porta[esquerda].aberta = true; capivara->temChave = false;
         }
-        if (capivara->chaves == 2 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[direita].hitbox, capivara->interacao.hitbox)){
+        if (capivara->chaves == 1 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[direita].hitbox, capivara->interacao.hitbox)){
             sala->porta[direita].aberta = true; capivara->temChave = false;
         }
-        if (capivara->chaves == 3 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[cima].hitbox, capivara->interacao.hitbox)){
+        if (capivara->chaves == 2 && capivara->salaAtual == salaHub && CheckCollisionRecs(sala->porta[cima].hitbox, capivara->interacao.hitbox)){
             sala->porta[cima].aberta = true; capivara->temChave = false;
         }
-        if (capivara->chaves == 4 && capivara->salaAtual == salaGalinha && CheckCollisionRecs(sala->porta[cima].hitbox, capivara->interacao.hitbox)){
+        if (capivara->chaves == 3 && capivara->salaAtual == salaGalinha && CheckCollisionRecs(sala->porta[cima].hitbox, capivara->interacao.hitbox)){
             sala->porta[cima].aberta = true; capivara->temChave = false;
         }
     }
 }
 
 void updateRoom(Capivara *capivara, Sala *sala){
-
     bool collision = 0;
 
     for (int i = 0; i < 4; i++){
@@ -156,7 +154,7 @@ void updateRoom(Capivara *capivara, Sala *sala){
     }
 }
 
-void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca, bool *lendo){
+void updateLendo(Capivara *capivara, Sala *sala, bool *pausado, bool *lendoPlaca, bool *lendo){
     if (capivara->interacao.interagindo){
         for (int i = 0; i < sala->qtdObjetos && !(*lendo); i++){
             *pausado = CheckCollisionRecs(sala->objeto[i].hitbox, capivara->interacao.hitbox);
@@ -165,14 +163,10 @@ void updateLendoPlaca(Capivara *capivara, Sala *sala, bool *pausado, bool *lendo
         if (capivara->salaAtual == salaJardim){
             *lendoPlaca = CheckCollisionRecs(sala->objeto[7].hitbox, capivara->interacao.hitbox);
             if (capivara->chaves == 0){
-                capivara->chaves = 1; capivara->temChave = true;
+                capivara->temChave = true;
             }
         }
     }
-}
-
-void updateDialogo(){
-    
 }
 
 int updateBossfight(Capivara *capivara, Sala *sala, Music *musicaCombate){

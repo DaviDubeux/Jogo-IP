@@ -6,7 +6,6 @@
 #include "defines.h"
 
 
-
 void loadSalas(Sala *sala, const float screenW, const float screenH){ // dá load em coisas em comuns das salas
     sala->width = 12*square; // em quadrados
     sala->height = 10*square; // em quadrados
@@ -114,11 +113,11 @@ void loadSala2(Sala *sala2){
     sala2->objeto[0].mensagem[0] = '\0';
     strcpy(sala2->objeto[0].mensagem, "Um sofá suspeito");
 
-    sala2->objeto[1].hitbox = (Rectangle){sala2->frame.x, sala2->frame.y, square, square};
+    sala2->objeto[1].hitbox = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 2*square, 1*square};
     sala2->objeto[1].mensagem[0] = '\0';
     strcpy(sala2->objeto[1].mensagem, "Umas gavetas");
 
-    sala2->objeto[2].hitbox = (Rectangle){sala2->frame.x + 8*square, sala2->frame.y + 1*square, 3*square, 1*square};
+    sala2->objeto[2].hitbox = (Rectangle){sala2->frame.x + 10*square, sala2->frame.y + 1*square, 1*square, 1*square};
     sala2->objeto[2].mensagem[0] = '\0';
     strcpy(sala2->objeto[2].mensagem, "Plantas vivas");
 
@@ -300,7 +299,7 @@ void loadSala5(Sala *sala5){
 
     sala5->objeto[8].hitbox = (Rectangle){sala5->frame.x + 8*square, sala5->frame.y + 8*square, 2*square, 1*square};
     sala5->objeto[8].mensagem[0] = '\0';
-    strcpy(sala5->objeto[8].mensagem, "Isso vai para o meu relatório");
+    strcpy(sala5->objeto[8].mensagem, "Isso vai para o meu\nrelatório");
 
 
     sala5->porta[cima].aberta = false; sala5->porta[cima].temTextura = true;

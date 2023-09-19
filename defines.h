@@ -3,6 +3,8 @@
 #include "C:\raylib\raylib\src\raylib.h"
 #define square 96.0f
 
+// structs, enums e defines usados no código
+
 //----- ----------------------------------------------------------ENUMS-------------------------------------------------------------------
 enum{
     sentidoCima = 1, // sentidoCima = 1
@@ -16,6 +18,7 @@ enum{
     ataqueCriticoCapivara,
     mostrarCriticoCapivara,
     escolheuErrado,
+    acabaramOsUsos,
     mostrarAtaqueCapivara,
     mostrarCuraCapivara,
     mostrarCapivaraMorreu,
@@ -25,7 +28,16 @@ enum{
     mostrarCriticoBoss,
     mostrarAtaqueBoss,
     mostrarCuraBoss,
-    mostrarBossMorreu   
+    mostrarBossMorreu,
+
+    escolherIntroAnimal,
+    mostrarIntroAnimal,
+    escolherAgradecimentoAnimal,
+    mostrarAgradecimentoAnimal,
+    escolherItemDado,
+    mostrarItemDado,
+    escolherFimDialogo,
+    mostrarFimDialogo
 }Round;
 
 enum {
@@ -48,24 +60,15 @@ enum{
     menu,        // menu = 0
     explorando,  // explorando = 1
     combate,     // combate = 2
-    gameOver,    // gameOver = 3
+    restart,    // gameOver = 3
 }Mode;
-
-enum{
-    introducao,
-    agradecimento,
-
-    itemDado,
-    itemMostrado,
-    cenaTerminou,
-} Cenas;
 
 enum{
     cagado,
     aranha,
     galinha,
     peixe,
-} Animais;
+}Animais;
 
 //----- ---------------------------------------------------------STRUCTS------------------------------------------------------------------
 typedef struct{
@@ -136,7 +139,6 @@ typedef struct{
     Texture2D textura;
 } Animal;
 
-
 //-------------------
 
 typedef struct{
@@ -158,6 +160,7 @@ typedef struct{
     Rectangle ataqueInfo;
     Texture2D texturaEscolherAtaque;
     Texture2D texturaDescricao;
+    Texture2D texturaParteDeBaixo;
 }Arena;
 
 //-------------------

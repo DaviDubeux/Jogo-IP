@@ -38,7 +38,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->ataque[0].nome[0] = '\0';
     strcpy(capivara->ataque[0].nome, "Canetada do Ibama");
 
-    capivara->ataque[1].dano = 35; capivara->ataque[1].chanceDeCritico = 25;
+    capivara->ataque[1].dano = 45; capivara->ataque[1].chanceDeCritico = 25;
     capivara->ataque[1].usos = 15; capivara->ataque[1].usosMaximo = 15;
     capivara->ataque[1].desbloqueado = false;
     capivara->ataque[1].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 7.85*square};
@@ -54,7 +54,7 @@ void loadCapivaraCombate(Capivara *capivara, Arena *arena){
     capivara->ataque[2].nome[0] = '\0';
     strcpy(capivara->ataque[2].nome, "Bandaid de teia");
 
-    capivara->ataque[3].dano = 45; capivara->ataque[3].chanceDeCritico = 40;
+    capivara->ataque[3].dano = 60; capivara->ataque[3].chanceDeCritico = 40;
     capivara->ataque[3].usos = 10; capivara->ataque[3].usosMaximo = 10;
     capivara->ataque[3].desbloqueado = false;
     capivara->ataque[3].frame = (Vector2){arena->frame.x + 1.1*square, arena->frame.y + 9.2*square};
@@ -166,25 +166,18 @@ void loadBoss4(Boss *boss){
 
 //------------------------------
 
-void loadItem(Itens *item){
-    item->textura = LoadTexture("./assets/animais/objetos_96.png");
-}
-
 void loadAnimal1(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Cagado");
 
-    animal->item->nome[0] = '\0';
-    strcpy(animal->item->nome, "Escudo");
-
     animal->intro[0] = '\0';
-    strcpy(animal->intro, "Sou o Cagado que ainda está vivo nessa casa");
+    strcpy(animal->intro, "Sou o Cagado que ainda\nestá vivo nessa casa");
 
     animal->arigato[0] = '\0';
-    strcpy(animal->arigato, "Um outro foi negligênciado e esquecido aqui também");
+    strcpy(animal->arigato, "Um outro foi negligênciado\ne esquecido aqui também");
 
     animal->itemNovo[0] = '\0';
-    strcpy(animal->itemNovo, "Tudo o que sobrou foi esse casco, acho que ele pode te ajudar mais do que eu");
+    strcpy(animal->itemNovo, "Tudo o que sobrou foi esse casco,\nacho que ele pode te ajudar\nmais do que eu");
 
     animal->fim[0] = '\0';
     strcpy(animal->fim, "Agora você tem um escudo");
@@ -198,20 +191,17 @@ void loadAnimal2(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Aranha");
 
-    animal->item->nome[0] = '\0';
-    strcpy(animal->item->nome, "Bandaid");
-
     animal->intro[0] = '\0';
     strcpy(animal->intro, "Sou uma das aranhas desse lugar");
 
     animal->arigato[0] = '\0';
-    strcpy(animal->arigato, "Essa louca me confundiu com lixo, que absurdo!");
+    strcpy(animal->arigato, "Essa louca me confundiu com lixo,\nque absurdo!");
 
     animal->itemNovo[0] = '\0';
-    strcpy(animal->itemNovo, "Como agradecimento, tenho esse bandaid de teia que fiz");
+    strcpy(animal->itemNovo, "Como agradecimento, tenho esse\nbandaid de teia que fiz");
     
     animal->fim[0] = '\0';
-    strcpy(animal->fim, "Agora você consegue se curar durante as batalhas");
+    strcpy(animal->fim, "Agora você consegue se\ncurar durante as batalhas");
 
 
     animal->textura = LoadTexture("./assets/animais/aranha.png");
@@ -223,20 +213,17 @@ void loadAnimal3(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Galinha");
 
-    animal->item->nome[0] = '\0';
-    strcpy(animal->item->nome, "Mochila com asas");
-
     animal->intro[0] = '\0';
     strcpy(animal->intro, "Sou uma das aves daqui");
 
     animal->arigato[0] = '\0';
-    strcpy(animal->arigato, "As outras não tiveram tanta sorte quanto eu...");
+    strcpy(animal->arigato, "As outras não tiveram tanta sorte\nquanto eu...");
 
     animal->itemNovo[0] = '\0';
-    strcpy(animal->itemNovo, "Para te agradecer, posso me transformar numa mochila com asas");
+    strcpy(animal->itemNovo, "Para te agradecer, posso me\ntransformar numa mochila com asas");
     
     animal->fim[0] = '\0';
-    strcpy(animal->fim, "Agora você consegue planar e tem mais um ataque no arsenal");
+    strcpy(animal->fim, "Agora você consegue planar e tem\nmais um ataque no arsenal");
 
 
     animal->textura = LoadTexture("./assets/animais/galinha.png");
@@ -248,20 +235,17 @@ void loadAnimal4(Animal *animal){
     animal->nome[0] = '\0';
     strcpy(animal->nome, "Peixe");
 
-    animal->item->nome[0] = '\0';
-    strcpy(animal->item->nome, "Coroa");
-
     animal->intro[0] = '\0';
     strcpy(animal->intro, "Sou um peixe dourado");
 
     animal->arigato[0] = '\0';
-    strcpy(animal->arigato, "Ía ser comido vivo porque ela me confundiu com uma laranja");
+    strcpy(animal->arigato, "Ía ser comido vivo porque\nela me confundiu com uma laranja");
 
     animal->itemNovo[0] = '\0';
-    strcpy(animal->itemNovo, "Eu tenho um presente daqui do meu aquário");
+    strcpy(animal->itemNovo, "Eu tenho um presente daqui\ndo meu aquário");
     
     animal->fim[0] = '\0';
-    strcpy(animal->fim, "Você coseguiu salvar os animais da casa de Thalya");
+    strcpy(animal->fim, "Obrigado por nos salvar\nagente do ibama!!!");
 
 
     animal->textura = LoadTexture("./assets/animais/peixe.png");

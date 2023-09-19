@@ -35,13 +35,16 @@ void loadArena(Arena *arena, const float screenW, const float screenH){
 
     arena->texturaEscolherAtaque = LoadTexture("./assets/cenarios/combate/arenaEscolherAtaque.png");
     arena->texturaDescricao = LoadTexture("./assets/cenarios/combate/arenaDescricao.png");
+    arena->texturaParteDeBaixo = LoadTexture("./assets/cenarios/combate/arenaParteDeBaixo.png");
     arena->texturaEscolherAtaque.width = 1152.0f; arena->texturaEscolherAtaque.height = 960.0f;
     arena->texturaDescricao.width = 1152.0f; arena->texturaDescricao.height = 960.0f;
+    arena->texturaParteDeBaixo.width = 1152.0f; arena->texturaParteDeBaixo.height = 960.0f;
 }
 
 void unloadArena(Arena *arena){
     UnloadTexture(arena->texturaEscolherAtaque);
     UnloadTexture(arena->texturaDescricao);
+    UnloadTexture(arena->texturaParteDeBaixo);
 }
 
 void updateRound(int *round, Capivara *capivara, int* desenho_skin, int* desenho_skin_combate, int *gameMode, bool *pausado){
@@ -49,12 +52,18 @@ void updateRound(int *round, Capivara *capivara, int* desenho_skin, int* desenho
     if (*round == mostrarCriticoCapivara){ *round = mostrarAtaqueCapivara; }
     if (*round == mostrarCuraCapivara){ *round = escolherAtaqueBoss; }
     if (*round == escolheuErrado){ *round = escolherAtaqueCapivara; }
-    if (*round == mostrarCapivaraMorreu){ *gameMode = gameOver; }
+    if (*round == acabaramOsUsos){ *round = capivara->vida = 0; }
+    if (*round == mostrarCapivaraMorreu){ *gameMode = restart; }
 
     if (*round == ataqueCriticoBoss){ *round = mostrarAtaqueBoss; }
     if (*round == mostrarAtaqueBoss){ *round = escolherAtaqueCapivara; }
     if (*round == mostrarCuraBoss){ *round = escolherAtaqueCapivara; }
-    if (*round == mostrarBossMorreu){
+    
+    if (*round == mostrarBossMorreu){ *round = escolherIntroAnimal; }
+    if (*round == mostrarIntroAnimal){ *round = escolherAgradecimentoAnimal; }
+    if (*round == mostrarAgradecimentoAnimal){ *round = escolherItemDado; }
+    if (*round == mostrarItemDado){ *round = escolherFimDialogo; }
+    if (*round == mostrarFimDialogo){
         capivara->vida = capivara->vidaMaxima;
         capivara->bossDerrotados++;
         capivara->chaves++; capivara->temChave = true;
