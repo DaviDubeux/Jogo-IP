@@ -245,55 +245,6 @@ int main(){
             ClearBackground(RAYWHITE);
             DrawTextureRec(Fundo,(Rectangle){0, 0, screenWidth, screenHeight}, (Vector2){0, 0}, RAYWHITE); //bota um fundo do ibama
 
-            // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
-            /*
-            DrawRectangleV(sala[salaAtual].frame, (Vector2){sala[salaAtual].width, sala[salaAtual].height}, LIGHTGRAY);
-
-            // desenha as paredes
-            for (int i = 0; i < 8; i++){
-                DrawRectangle(sala[salaAtual].paredes[i].x,     sala[salaAtual].paredes[i].y,
-                            sala[salaAtual].paredes[i].width, sala[salaAtual].paredes[i].height,
-                            (CheckCollisionRecs(sala[salaAtual].paredes[i], capivara.hitbox)) ? ORANGE : RED);
-            }
-
-            // desenha portas
-            for (int i = 0; i < 4; i++){
-                DrawRectangle(sala[salaAtual].porta[i].hitbox.x, sala[salaAtual].porta[i].hitbox.y,
-                            sala[salaAtual].porta[i].hitbox.width, sala[salaAtual].porta[i].hitbox.height,
-                            (sala[salaAtual].porta[i].aberta) ? BLUE : 
-                            CheckCollisionRecs(sala[salaAtual].porta[i].hitbox, capivara.hitbox) ? ORANGE : RED);
-            }
-
-            // desenha saidas
-            for (int i = 0; i < 4; i++){
-                DrawRectangle(sala[salaAtual].saida[i].hitbox.x, sala[salaAtual].saida[i].hitbox.y,
-                            sala[salaAtual].saida[i].hitbox.width, sala[salaAtual].saida[i].hitbox.height,
-                            (CheckCollisionRecs(sala[salaAtual].saida[i].hitbox, capivara.hitbox)) ? GREEN : LIME);
-            }
-
-            // desenha objetos
-            for (int i = 0; i < sala[salaAtual].qtdObjetos; i++){
-                DrawRectangle(sala[salaAtual].objeto[i].hitbox.x, sala[salaAtual].objeto[i].hitbox.y,
-                            sala[salaAtual].objeto[i].hitbox.width, sala[salaAtual].objeto[i].hitbox.height,
-                            (CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.hitbox)) ? SKYBLUE : DARKBLUE);
-                if (capivara.interacao.interagindo){
-                    DrawRectangle(sala[salaAtual].objeto[i].hitbox.x, sala[salaAtual].objeto[i].hitbox.y,
-                                  sala[salaAtual].objeto[i].hitbox.width, sala[salaAtual].objeto[i].hitbox.height,
-                                  (CheckCollisionRecs(sala[salaAtual].objeto[i].hitbox, capivara.interacao.hitbox)) ? SKYBLUE : DARKBLUE);
-                }
-            }
-
-            // desenha capivara
-            DrawRectangle(capivara.hitbox.x, capivara.hitbox.y, capivara.hitbox.width, capivara.hitbox.height, GOLD);
-
-            // desenha interacao
-            if (capivara.interacao.interagindo){ DrawRectangle(capivara.interacao.hitbox.x, capivara.interacao.hitbox.y,
-                                                 capivara.hitbox.width, capivara.hitbox.height, PINK); }
-
-            */
-            // -----------------------------------------------DEBUG DE COLISÃO--------------------------------------------------------------
-
-
             //anima a capivara normalmente desde o último movimento
             if (!pausado) { par = ((int)GetTime())%3; }
 
@@ -481,53 +432,6 @@ int main(){
                 sprintf(scene, animal[bossAtual].fim);
                 round = mostrarFimDialogo;
             }
-
-            // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
-            /*
-            // arena retangulo cinza
-            DrawRectangleV(arena.frame, (Vector2){arena.width, arena.height}, LIGHTGRAY);
-
-            // info do personagem
-            DrawRectangleV(arena.capivaraInfo.frame, (Vector2){arena.capivaraInfo.width, arena.capivaraInfo.height}, GOLD);
-            DrawRectangle(arena.capivaraInfo.statsFrame.x, arena.capivaraInfo.statsFrame.y,
-                          arena.capivaraInfo.statsFrame.width, arena.capivaraInfo.statsFrame.height, DARKGREEN);
-            DrawText(capivara.nome, arena.capivaraInfo.nomeFrame.x, arena.capivaraInfo.nomeFrame.y, 40, BLACK);
-            DrawText(vidaExibidaCapivara, arena.capivaraInfo.vidaFrame.x, arena.capivaraInfo.vidaFrame.y, 40, BLACK);
-            
-            // info do boss
-            DrawRectangle(arena.bossInfo.frame.x, arena.bossInfo.frame.y,
-                          arena.bossInfo.width, arena.bossInfo.height, GOLD);
-            DrawRectangle(arena.bossInfo.statsFrame.x, arena.bossInfo.statsFrame.y,
-                          arena.bossInfo.statsFrame.width, arena.bossInfo.statsFrame.height, DARKGREEN);
-            DrawText(boss[bossAtual].nome, arena.bossInfo.nomeFrame.x, arena.bossInfo.nomeFrame.y, 40, BLACK);
-            DrawText(vidaExibidaBoss, arena.bossInfo.vidaFrame.x, arena.bossInfo.vidaFrame.y, 40, BLACK);
-
-            // box dos ataques
-            DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 8*square, 3*square, SKYBLUE);
-            
-            // box do dano
-            DrawRectangle(arena.frame.x + 8*square, arena.frame.y + 7*square, 4*square, 3*square, BLUE);
-
-            if (round == escolherAtaqueCapivara){
-                // ataques
-                for (int i = 0; i < 4; i++){
-                    DrawRectangle(capivara.ataque[i].frame.x, capivara.ataque[i].frame.y,
-                                capivara.ataque[i].width, capivara.ataque[i].height,
-                                (i%2 == 0) ? LIGHTGRAY : DARKGRAY);
-                    
-                }
-                DrawCircle(capivara.ataque[selecionado].frame.x - 0.5*square, capivara.ataque[selecionado].frame.y + 0.375*square,
-                           0.375*square, ORANGE);
-                DrawRectangle(arena.ataqueInfo.x, arena.ataqueInfo.y, arena.ataqueInfo.width, arena.ataqueInfo.height, LIGHTGRAY);
-            }
-            else{
-                DrawRectangle(arena.frame.x, arena.frame.y + 7*square, 12*square, 3*square, SKYBLUE);
-                DrawText(scene, arena.frame.x, arena.frame.y + 7*square, 40, BLACK);
-            }
-
-            
-            */
-            // -----------------------------------------------DEBUG DE HUD------------------------------------------------------------------
 
             //desenha a arena
             if (round == escolherAtaqueCapivara && capivara.vida > 0){
