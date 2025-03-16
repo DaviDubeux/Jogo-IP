@@ -5,7 +5,7 @@
   <p> 🦡 <a href="https://github.com/vbmp2">Victor Bastos<a><p>
   <p> ✌️ <a href="https://github.com/henvv-cin">Henrique Vasconcelos<a></p>
   <p> 💪 <a href="https://github.com/joaopedromarinho">João Pedro Marinho</a></p>
-  <p> 🏳️‍⚧️ <a href="https://github.com/mayres-2">Mayres Andrey</a></p>
+  <p> 🏳️‍⚧️ <a href="https://github.com/mauricioAndrey">Maurício Andrey</a></p>
   <p> Thalya </p>
   
 
